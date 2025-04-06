@@ -7,97 +7,135 @@
     <link rel="stylesheet" href="../styles.css">
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 20px;
             background-color: #f8f9fa;
             transition: background-color 0.3s ease;
         }
-        h1 {
-            color: black; /* Set the text color to black */
-        }
+
         .container {
-            width: 80%;
+            width: 90%;
+            max-width: 1200px;
             margin: auto;
             padding: 20px;
             background: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* Dark shadow */
-            transition: transform 0.3s ease;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
+
         .header {
             display: flex;
-            background: rgb(255, 255, 255);
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
             align-items: center;
-            gap: 15px;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* Dark shadow */
+            gap: 20px;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
         }
+
         .header img {
             width: 150px;
             height: auto;
         }
-        .question {
-            font-size: 1.5em;
-            margin-bottom: 20px;
+
+        .header h1 {
+            color: #333;
+            margin: 0;
+            font-size: 2.2em;
         }
-        .options {
-            display: flex;
-            flex-direction: column;
-            width: 1000px;
-            margin: auto;
-            gap: 15px;
+
+        .quick-diagnosis {
+            background: #83b81a;
             padding: 20px;
             border-radius: 10px;
-            background-color: #e9ecef;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* Dark shadow */
+            margin-bottom: 30px;
         }
-        .options button {
-            background-color: #83b81a;
-            color: white;
-            border: none;
-            padding: 20px;
-            cursor: pointer;
-            border-radius: 50px;
-            font-size: 1.2em;
+
+        .quick-diagnosis h2 {
+            color: #ffffff;
+            margin-top: 0;
+        }
+
+        .problem-selection {
+            color: #333;
+            margin: 30px 0 15px 20px;
+            font-size: 1.8em;
             font-weight: bold;
-            transition: background-color 0.3s ease, transform 0.2s ease;
+            text-align: left;
         }
-        .options button:hover {
-            background-color: #4b7100;
-            transform: scale(1.3);
+
+        .common-issues {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
         }
-        .back-button {
-            margin-top: 20px;
-            padding: 12px 20px;
-            background-color: #6c757d;
-            color: white;
-            border: none;
-            border-radius: 5px;
+
+        .issue-card {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .issue-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .severity {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            margin-bottom: 8px;
+        }
+
+        .severity.high {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .severity.medium {
+            background: #fff3e0;
+            color: #ef6c00;
+        }
+
+        .severity.low {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .option-button {
+            background: white;
+            border: 2px solid #83b81a;
+            padding: 20px;
+            border-radius: 12px;
             cursor: pointer;
             font-size: 1.1em;
-            transition: background-color 0.3s ease, transform 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            text-align: left;
         }
-        .back-button:hover {
-            background-color: #5a6268;
-            transform: scale(1.05);
-        }
-        .start-over-button {
-            margin-top: 20px;
-            padding: 10px 20px; /* Increased padding for larger button */
-            background-color: #007bff; /* Change color if needed */
+
+        .option-button:hover {
+            background: #83b81a;
             color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1.3em; /* Increased font size */
-            transition: background-color 0.3s ease, transform 0.2s ease;
+            transform: translateY(-3px);
         }
-        .start-over-button:hover {
-            background-color: #0056b3; /* Darker shade on hover */
-            transform: scale(1.05);
-        }
+
         .modal {
             display: none;
             position: fixed;
@@ -106,35 +144,141 @@
             top: 0;
             width: 100%;
             height: 100%;
-            overflow: auto;
             background-color: rgba(0, 0, 0, 0.5);
-            justify-content: center;
-            align-items: center;
+            backdrop-filter: blur(5px);
         }
+
         .modal-content {
-            background-color: white;
-            padding: 20px;
-            font-size: 1.5em;
-            border-radius: 10px;
+            background: white;
+            margin: 5% auto;
+            padding: 60px 40px 20px 40px;
             width: 80%;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            max-width: 800px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            position: relative;
         }
-        .close {
-            color: #a9a9a9;
-            float: right;
-            font-size: 80px;
-            font-weight: bold;
+
+        .solution-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
         }
-        .close:hover,
-        .close:focus {
-            color: black;
+
+        .solution-meta {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .solution-steps {
+            margin-bottom: 20px;
+        }
+
+        .step {
+            margin-bottom: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .step-number {
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            background: #83b81a;
+            color: white;
+            text-align: center;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .guide-link {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 8px 15px;
+            background: #83b81a;
+            color: white;
             text-decoration: none;
-            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
         }
-        .issue-selection {
-            font-size: 1.8em; /* Increase the font size as needed */
-            margin-bottom: 20px; /* Add some space below the text */
-            font-weight: bold; /* Optional: make the text bold */
+
+        .guide-link:hover {
+            background: #6b9515;
+        }
+
+        .close {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            font-size: 100px;
+            cursor: pointer;
+            color: #666;
+            z-index: 1;
+            padding: 10px;
+        }
+
+        .close:hover {
+            color: #333;
+        }
+
+        .back-button {
+            background: #83b81a;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .back-button:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+
+        .preventive-tips {
+            margin-top: 20px;
+            padding: 15px;
+            background: #e8f5e9;
+            border-radius: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+                padding: 10px;
+            }
+
+            .header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .options {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                width: 95%;
+                margin: 10% auto;
+                padding: 20px;
+            }
         }
     </style>
 </head>
@@ -142,29 +286,112 @@
     <div class="container">
         <header class="header">
             <img src="../images/acer.png" alt="Acer Logo">
-            <h1>Troubleshooting 🤖 Assistant</h1>
+            <h1>Acer Troubleshooting Assistant 🛠️</h1>
+            <button class='back-button' onclick="goBack()">Go Back</button>
         </header>
-        <p class="issue-selection">Select your Acer Laptop Issue:</p>
+
+        <div class="quick-diagnosis">
+            <h2>Quick Diagnosis</h2>
+            <div class="common-issues">
+                <div class="issue-card" onclick="showSolution('notCharging')">
+                    <span class="severity high">High Priority</span>
+                    <h3>🔋 Battery Not Charging</h3>
+                    <p>Battery won't charge or holds charge for very short time</p>
+                </div>
+                <div class="issue-card" onclick="showSolution('overheat')">
+                    <span class="severity medium">Medium Priority</span>
+                    <h3>🌡️ Overheating</h3>
+                    <p>Laptop feels hot or shuts down unexpectedly</p>
+                </div>
+                <div class="issue-card" onclick="showSolution('slowPerformance')">
+                    <span class="severity low">Low Priority</span>
+                    <h3>🐢 Slow Performance</h3>
+                    <p>System running slower than usual</p>
+                </div>
+                <div class="issue-card" onclick="showSolution('fanNoise')">
+                    <span class="severity medium">Medium Priority</span>
+                    <h3>🔊 Fan Noise</h3>
+                    <p>Unusual noise coming from the fan</p>
+                </div>
+                <div class="issue-card" onclick="showSolution('hddFailure')">
+                    <span class="severity high">High Priority</span>
+                    <h3>💽 Hard Drive Issues</h3>
+                    <p>Hard drive is making strange noises or not detected</p>
+                </div>
+                <div class="issue-card" onclick="showSolution('screenFlicker')">
+                    <span class="severity medium">Medium Priority</span>
+                    <h3>🖼️ Screen Flickering</h3>
+                    <p>Screen flickers or shows artifacts</p>
+                </div>
+                <div class="issue-card" onclick="showSolution('softwareCrash')">
+                    <span class="severity high">High Priority</span>
+                    <h3>💻 Software Crashes</h3>
+                    <p>Applications are crashing or freezing</p>
+                </div>
+                <div class="issue-card" onclick="showSolution('networkIssue')">
+                    <span class="severity medium">Medium Priority</span>
+                    <h3>🌐 Network Issues</h3>
+                    <p>Unable to connect to Wi-Fi or internet</p>
+                </div>
+            </div>
+        </div>
+        <h2 class="problem-selection">Problem Selection:</h2>
         <main id="troubleshooting-tree">
-            <div class="question" id="question">What issue are you facing?</div>
             <div class="options" id="options">
-                <button onclick="showNext('battery')" aria-label="Battery Issues">🔋 Battery Issues</button>
-                <button onclick="showNext('hardware')" aria-label="Hardware Issues">🖥️ Hardware Issues</button>
-                <button onclick="showNext('ram')" aria-label="RAM Issues">🧠 RAM Issues</button>
-                <button onclick="showNext('screen')" aria-label="Screen Issues">🖼️ Screen Issues</button>
-                <button onclick="showNext('software')" aria-label="Software Issues">💻 Software Issues</button>
-                <button onclick="showNext('network')" aria-label="Network Issues">🌐 Network Issues</button>
-                <button class='back-button' onclick="goBack()" aria-label="Go Back">Go Back</button>
+                <button class="option-button" onclick="showNext('battery')">
+                    🔋 Battery Issues
+                    <span class="badge">Common</span>
+                </button>
+                <button class="option-button" onclick="showNext('hardware')">
+                    🖥️ Hardware Issues
+                    <span class="badge">Technical</span>
+                </button>
+                <button class="option-button" onclick="showNext('ram')">
+                    🧠 RAM Issues
+                    <span class="badge">Performance</span>
+                </button>
+                <button class="option-button" onclick="showNext('screen')">
+                    🖼️ Screen Issues
+                    <span class="badge">Visual</span>
+                </button>
+                <button class="option-button" onclick="showNext('software')">
+                    💻 Software Issues
+                    <span class="badge">System</span>
+                </button>
+                <button class="option-button" onclick="showNext('network')">
+                    🌐 Network Issues
+                    <span class="badge">Connectivity</span>
+                </button>
             </div>
         </main>
     </div>
 
     <div class="modal" id="solutionModal">
         <div class="modal-content">
-            <span class="close" onclick="closeModal()" aria-label="Close Modal">&times;</span>
-            <h3 id="solutionTitle">Solution:</h3>
-            <p id="solutionText"></p>
-            <button class="start-over-button" onclick="location.reload()" aria-label="Start Over">🔄 Start Over</button>
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div class="solution-header">
+                <h2 id="solutionTitle">Solution</h2>
+            </div>
+            <div class="solution-meta">
+                <div class="meta-item">
+                    <span>⏱️ Time:</span>
+                    <span id="estimatedTime">15-30 minutes</span>
+                </div>
+                <div class="meta-item">
+                    <span>📊 Difficulty:</span>
+                    <span id="difficulty">Moderate</span>
+                </div>
+                <div class="meta-item">
+                    <span>🛠️ Tools:</span>
+                    <span id="tools">Basic</span>
+                </div>
+            </div>
+            <div class="solution-steps" id="solutionSteps">
+                <!-- Steps will be inserted here -->
+            </div>
+            <div class="preventive-tips" id="preventiveTips">
+                <!-- Preventive tips will be inserted here -->
+            </div>
         </div>
     </div>
 
@@ -177,367 +404,335 @@
             switch (category) {
                 case 'battery':
                     content = `
-                        <h3>What is the battery issue?</h3>
-                        <button onclick="showSubtree('notCharging')">🔌 Not Charging</button>
-                        <button onclick="showSubtree('turnOff')">⚡ Turns Off Randomly</button>
-                        <button onclick="showSubtree('fastDrain')">⏳ Fast Battery Drain</button>
-                        <button onclick="showSubtree('swollenBattery')">⚠️ Swollen Battery</button>
+                        <h3>Select Battery Issue:</h3>
+                        <button class="option-button" onclick="showSolution('notCharging')">
+                            🔌 Not Charging
+                            <span class="severity high">High Priority</span>
+                        </button>
+                        <button class="option-button" onclick="showSolution('fastDrain')">
+                            ⚡ Fast Battery Drain
+                            <span class="severity medium">Medium Priority</span>
+                        </button>
+                        <button class="option-button" onclick="showSolution('swollenBattery')">
+                            ⚠️ Swollen Battery
+                            <span class="severity high">Critical</span>
+                        </button>
                     `;
                     break;
                 case 'hardware':
                     content = `
-                        <h3>What is the hardware issue?</h3>
-                        <button onclick="showSubtree('overheat')">🔥 Overheating</button>
-                        <button onclick="showSubtree('fanNoise')">🔊 Noisy Fan</button>
-                        <button onclick="showSubtree('keyboard')">⌨️ Keyboard Not Working</button>
-                        <button onclick="showSubtree('touchpad')">🖱️ Touchpad Unresponsive</button>
-                        <button onclick="showSubtree('usbPorts')">🔌 USB Ports Not Working</button>
+                        <h3>Select Hardware Issue:</h3>
+                        <button class="option-button" onclick="showSolution('overheat')">
+                            🔥 Overheating
+                            <span class="severity high">High Priority</span>
+                        </button>
+                        <button class="option-button" onclick="showSolution('hddFailure')">
+                            💽 Hard Drive Issues
+                            <span class="severity high">High Priority</span>
+                        </button>
+                        <button class="option-button" onclick="showSolution('fanNoise')">
+                            🔊 Fan Noise
+                            <span class="severity medium">Medium Priority</span>
+                        </button>
                     `;
                     break;
                 case 'ram':
                     content = `
-                        <h3>What is the RAM issue?</h3>
-                        <button onclick="showSubtree('slow')">🐢 Slow Performance</button>
-                        <button onclick="showSubtree('crash')">💥 Frequent Crashes</button>
-                        <button onclick="showSubtree('upgrade')">⬆️ Upgrade Recommendation</button>
-                        <button onclick="showSubtree('incompatibility')">❌ RAM Incompatibility</button>
+                        <h3>Select RAM Issue:</h3>
+                        <button class="option-button" onclick="showSolution('slowPerformance')">
+                            🐢 Slow Performance
+                            <span class="severity low">Low Priority</span>
+                        </button>
+                        <button class="option-button" onclick="showSolution('ramUpgrade')">
+                            ⬆️ RAM Upgrade
+                            <span class="severity medium">Medium Priority</span>
+                        </button>
                     `;
                     break;
                 case 'screen':
                     content = `
-                        <h3>What is the screen issue?</h3>
-                        <button onclick="showSubtree('noDisplay')">🚫 No Display</button>
-                        <button onclick="showSubtree('flicker')">⚡ Screen Flickering</button>
-                        <button onclick="showSubtree('deadPixels')">🔴 Dead Pixels</button>
-                        <button onclick="showSubtree('backlight')">💡 Backlight Issues</button>
+                        <h3>Select Screen Issue:</h3>
+                        <button class="option-button" onclick="showSolution('screenFlicker')">
+                            🔄 Screen Flickering
+                            <span class="severity medium">Medium Priority</span>
+                        </button>
+                        <button class="option-button" onclick="showSolution('screenCrack')">
+                            🖼️ Cracked Screen
+                            <span class="severity high">High Priority</span>
+                        </button>
                     `;
                     break;
                 case 'software':
                     content = `
-                        <h3>What is the software issue?</h3>
-                        <button onclick="showSubtree('slowBoot')">🐢 Slow Boot</button>
-                        <button onclick="showSubtree('crash')">💥 Application Crashes</button>
-                        <button onclick="showSubtree('update')">🔄 Windows Update Issues</button>
-                        <button onclick="showSubtree('malware')">🦠 Malware Infection</button>
+                        <h3>Select Software Issue:</h3>
+                        <button class="option-button" onclick="showSolution('softwareCrash')">
+                            💻 Software Crashes
+                            <span class="severity high">High Priority</span>
+                        </button>
+                        <button class="option-button" onclick="showSolution('slowBoot')">
+                            ⏳ Slow Boot
+                            <span class="severity medium">Medium Priority</span>
+                        </button>
                     `;
                     break;
                 case 'network':
                     content = `
-                        <h3>What is the network issue?</h3>
-                        <button onclick="showSubtree('wifiNotConnecting')">📶 Wi-Fi Not Connecting</button>
-                        <button onclick="showSubtree('slowInternet')">🐢 Slow Internet</button>
-                        <button onclick="showSubtree('bluetooth')">🔵 Bluetooth Issues</button>
+                        <h3>Select Network Issue:</h3>
+                        <button class="option-button" onclick="showSolution('networkIssue')">
+                            🌐 Network Issues
+                            <span class="severity medium">Medium Priority</span>
+                        </button>
+                        <button class="option-button" onclick="showSolution('wifiNotConnecting')">
+                            📶 Wi-Fi Not Connecting
+                            <span class="severity high">High Priority</span>
+                        </button>
                     `;
                     break;
-                default:
-                    content = '<p>No issues found.</p>';
-            }
-            document.getElementById('options').innerHTML = content + getBackButton();
-        }
-
-        function showSubtree(issue) {
-            historyStack.push(document.getElementById('options').innerHTML);
-            let content = '';
-            switch (issue) {
-                case 'notCharging':
-                    content = `
-                        <h3>What is the possible cause?</h3>
-                        <button onclick="showSolution('batteryCalibration')">🔧 Battery Calibration</button>
-                        <button onclick="showSolution('powerSupply')">🔌 Power Supply Issues</button>
-                    `;
-                    break;
-                case 'turnOff':
-                    content = `
-                        <h3>Possible causes?</h3>
-                        <button onclick="showSolution('overheatShutdown')">🔥 Overheating Shutdown</button>
-                        <button onclick="showSolution('batteryHealth')">💔 Battery Health Issues</button>
-                    `;
-                    break;
-                case 'fastDrain':
-                    content = `
-                        <h3>Possible causes?</h3>
-                        <button onclick="showSolution('backgroundApps')">📱 Background Apps</button>
-                        <button onclick="showSolution('powerSettings')">⚙️ Power Settings</button>
-                    `;
-                    break;
-                case 'swollenBattery':
-                    content = `
-                        <h3>Action Needed</h3>
-                        <button onclick="showSolution('immediateReplacement')">⚠️ Replace Battery Immediately</button>
-                    `;
-                    break;
-                case 'overheat':
-                    content = `
-                        <h3>What is causing the overheating?</h3>
-                        <button onclick="showSolution('blockedVents')">🚪 Blocked Vents</button>
-                        <button onclick="showSolution('dustAccumulation')">🧹 Dust Accumulation</button>
-                    `;
-                    break;
-                case 'fanNoise':
-                    content = `
-                        <h3>What is causing the noisy fan?</h3>
-                        <button onclick="showSolution('fanMalfunction')">🔧 Fan Malfunction</button>
-                        <button onclick="showSolution('dustBuildUp')">🧹 Dust Build-Up</button>
-                    `;
-                    break;
-                case 'keyboard':
-                    content = `
-                        <h3>Keyboard Issue</h3>
-                        <button onclick="showSolution('driverUpdate')">🔄 Update Keyboard Drivers</button>
-                        <button onclick="showSolution('hardwareCheck')">🔍 Check Hardware Connections</button>
-                    `;
-                    break;
-                case 'touchpad':
-                    content = `
-                        <h3>Touchpad Issue</h3>
-                        <button onclick="showSolution('enableTouchpad')">✅ Enable Touchpad from Settings</button>
-                        <button onclick="showSolution('driverUpdate')">🔄 Update Touchpad Drivers</button>
-                    `;
-                    break;
-                case 'usbPorts':
-                    content = `
-                        <h3>USB Ports Issue</h3>
-                        <button onclick="showSolution('checkConnections')">🔌 Check USB Connections</button>
-                        <button onclick="showSolution('driverUpdate')">🔄 Update USB Drivers</button>
-                    `;
-                    break;
-                case 'slow':
-                    content = `
-                        <h3>What is causing slow performance?</h3>
-                        <button onclick="showSolution('insufficientRAM')">🧠 Insufficient RAM</button>
-                        <button onclick="showSolution('backgroundProcesses')">🔄 Background Processes</button>
-                    `;
-                    break;
-                case 'crash':
-                    content = `
-                        <h3>What is causing frequent crashes?</h3>
-                        <button onclick="showSolution('ramIncompatibility')">❌ RAM Incompatibility</button>
-                        <button onclick="showSolution('corruptedFiles')">🗂️ Corrupted Files</button>
-                    `;
-                    break;
-                case 'upgrade':
-                    content = `
-                        <h3>Upgrade Recommendation</h3>
-                        <button onclick="showSolution('bestPractices')">📈 Best Practices for Upgrading</button>
-                    `;
-                    break;
-                case 'incompatibility':
-                    content = `
-                        <h3>What is the RAM incompatibility issue?</h3>
-                        <button onclick="showSolution('checkCompatibility')">✅ Check Compatibility</button>
-                    `;
-                    break;
-                case 'noDisplay':
-                    content = `
-                        <h3>What could be causing no display?</h3>
-                        <button onclick="showSolution('powerIssues')">🔋 Power Issues</button>
-                        <button onclick="showSolution('displayConnection')">🔌 Display Connection Issues</button>
-                    `;
-                    break;
-                case 'flicker':
-                    content = `
-                        <h3>What could be causing screen flickering?</h3>
-                        <button onclick="showSolution('driverIssues')">🔄 Driver Issues</button>
-                        <button onclick="showSolution('refreshRate')">⚙️ Refresh Rate Settings</button>
-                    `;
-                    break;
-                case 'deadPixels':
-                    content = `
-                        <h3>What to do about dead pixels?</h3>
-                        <button onclick="showSolution('manufacturingDefect')">🏭 Manufacturing Defect</button>
-                    `;
-                    break;
-                case 'backlight':
-                    content = `
-                        <h3>What could be causing backlight issues?</h3>
-                        <button onclick="showSolution('hardwareFailure')">⚠️ Hardware Failure</button>
-                    `;
-                    break;
-                case 'slowBoot':
-                    content = `
-                        <h3>What could be causing slow boot?</h3>
-                        <button onclick="showSolution('startupPrograms')">🔄 Disable Startup Programs</button>
-                        <button onclick="showSolution('diskCheck')">🗂️ Check Disk for Errors</button>
-                    `;
-                    break;
-                case 'applicationCrashes':
-                    content = `
-                        <h3>What could be causing application crashes?</h3>
-                        <button onclick="showSolution('updateSoftware')">🔄 Update Software</button>
-                        <button onclick="showSolution('reinstall')">🔄 Reinstall Application</button>
-                    `;
-                    break;
-                case 'update':
-                    content = `
-                        <h3>What could be causing Windows update issues?</h3>
-                        <button onclick="showSolution('checkInternet')">🌐 Check Internet Connection</button>
-                        <button onclick="showSolution('updateTroubleshooter')">🔧 Run Update Troubleshooter</button>
-                    `;
-                    break;
-                case 'malware':
-                    content = `
-                        <h3>What to do about malware infection?</h3>
-                        <button onclick="showSolution('runAntivirus')">🦠 Run Antivirus Scan</button>
-                        <button onclick="showSolution('restoreSystem')">🔄 Restore System to Previous State</button>
-                    `;
-                    break;
-                case 'wifiNotConnecting':
-                    content = `
-                        <h3>What could be causing Wi-Fi not to connect?</h3>
-                        <button onclick="showSolution('checkRouter')">🔄 Check Router Settings</button>
-                        <button onclick="showSolution('networkReset')">🔄 Reset Network Settings</button>
-                    `;
-                    break;
-                case 'slowInternet':
-                    content = `
-                        <h3>What could be causing slow internet?</h3>
-                        <button onclick="showSolution('checkBandwidth')">📊 Check Bandwidth Usage</button>
-                        <button onclick="showSolution('routerPosition')">📡 Optimize Router Position</button>
-                    `;
-                    break;
-                case 'bluetooth':
-                    content = `
-                        <h3>What could be causing Bluetooth issues?</h3>
-                        <button onclick="showSolution('checkDevice')">🔄 Check Bluetooth Device</button>
-                        <button onclick="showSolution('driverUpdate')">🔄 Update Bluetooth Drivers</button>
-                    `;
-                    break;
-                default:
-                    content = '<p>No additional information available.</p>';
             }
             document.getElementById('options').innerHTML = content + getBackButton();
         }
 
         function showSolution(issue) {
-            historyStack.push(document.getElementById('options').innerHTML);
-            let solution = '';
-            switch (issue) {
-                case 'batteryCalibration':
-                    solution = '✅ Use the Acer Care Center to run battery diagnostics and recalibrate your battery.';
-                    break;
-                case 'powerSupply':
-                    solution = '✅ Check the power adapter for damage and ensure it is properly connected.';
-                    break;
-                case 'overheatShutdown':
-                    solution = '✅ Clean the internal components using Acer\'s cleaning guide to prevent overheating.';
-                    break;
-                case 'batteryHealth':
-                    solution = '✅ Check battery health using the Acer Care Center and consider a battery replacement if necessary.';
-                    break;
-                case 'backgroundApps':
-                    solution = '✅ Disable unnecessary background applications through Task Manager.';
-                    break;
-                case 'powerSettings':
-                    solution = '✅ Adjust power settings to Battery Saver mode via Windows settings.';
-                    break;
-                case 'immediateReplacement':
-                    solution = '✅ Contact Acer Support immediately for battery replacement to avoid safety hazards.';
-                    break;
-                case 'blockedVents':
-                    solution = '✅ Ensure vents are clear and use Acer\'s cooling pad for better airflow.';
-                    break;
-                case 'dustAccumulation':
-                    solution = '✅ Follow Acer\'s cleaning guide to safely clean internal components.';
-                    break;
-                case 'fanMalfunction':
-                    solution = '✅ Check for obstructions and consider using Acer\'s Fan Control software to adjust settings.';
-                    break;
-                case 'dustBuildUp':
-                    solution = '✅ Clean the fan using Acer\'s maintenance guide.';
-                    break;
-                case 'driverUpdate':
-                    solution = '✅ Update drivers using Acer\'s support page.';
-                    break;
-                case 'hardwareCheck':
-                    solution = '✅ Verify hardware connections as per Acer\'s troubleshooting guide.';
-                    break;
-                case 'enableTouchpad':
-                    solution = '✅ Enable touchpad in BIOS or Windows settings.';
-                    break;
-                case 'checkConnections':
-                    solution = '✅ Ensure USB devices are properly connected and try different ports.';
-                    break;
-                case 'insufficientRAM':
-                    solution = '✅ Consider upgrading RAM based on Acer\'s compatibility guide.';
-                    break;
-                case 'backgroundProcesses':
-                    solution = '✅ Use Task Manager to close unnecessary applications.';
-                    break;
-                case 'ramIncompatibility':
-                    solution = '✅ Check RAM compatibility using Acer\'s memory compatibility tool.';
-                    break;
-                case 'corruptedFiles':
-                    solution = '✅ Run Windows Memory Diagnostic to check for issues.';
-                    break;
-                case 'bestPractices':
-                    solution = '✅ Refer to Acer\'s upgrade guide for recommended RAM specifications.';
-                    break;
-                case 'checkCompatibility':
-                    solution = '✅ Use Acer\'s compatibility tool to ensure new RAM is suitable for your device.';
-                    break;
-                case 'powerIssues':
-                    solution = '✅ Ensure the laptop is charged and try a hard reset as per Acer\'s troubleshooting guide.';
-                    break;
-                case 'displayConnection':
-                    solution = '✅ Check connections and consider using an external monitor to diagnose.';
-                    break;
-                case 'driverIssues':
-                    solution = '✅ Update graphics drivers through Acer\'s support page.';
-                    break;
-                case 'refreshRate':
-                    solution = '✅ Adjust refresh rate settings in Display Settings.';
-                    break;
-                case 'manufacturingDefect':
-                    solution = '✅ Contact Acer Support for warranty service if dead pixels are confirmed.';
-                    break;
-                case 'hardwareFailure':
-                    solution = '✅ Check for hardware issues and contact Acer Support for repairs.';
-                    break;
-                case 'startupPrograms':
-                    solution = '✅ Disable unnecessary startup programs via Task Manager.';
-                    break;
-                case 'diskCheck':
-                    solution = '✅ Run a disk check using Windows tools to fix errors.';
-                    break;
-                case 'updateSoftware':
-                    solution = '✅ Ensure all software is up to date to avoid compatibility issues.';
-                    break;
-                case 'reinstall':
-                    solution = '✅ Reinstall the application to resolve any corruption.';
-                    break;
-                case 'checkInternet':
-                    solution = '✅ Ensure your internet connection is stable and working.';
-                    break;
-                case 'updateTroubleshooter':
-                    solution = '✅ Run the Windows Update Troubleshooter to fix update issues.';
-                    break;
-                case 'runAntivirus':
-                    solution = '✅ Use a trusted antivirus program to scan for malware.';
-                    break;
-                case 'restoreSystem':
-                    solution = '✅ Restore your system to a previous point before the infection.';
-                    break;
-                case 'checkRouter':
-                    solution = '✅ Restart your router and check its settings.';
-                    break;
-                case 'networkReset':
-                    solution = '✅ Reset your network settings in Windows.';
-                    break;
-                case 'checkBandwidth':
-                    solution = '✅ Monitor your bandwidth usage to identify heavy usage applications.';
-                    break;
-                case 'routerPosition':
-                    solution = '✅ Ensure your router is placed in a central location for better coverage.';
-                    break;
-                case 'checkDevice':
-                    solution = '✅ Ensure the Bluetooth device is charged and in pairing mode.';
-                    break;
-                default:
-                    solution = '❗ No solution available.';
-            }
-            document.getElementById('solutionText').innerText = solution;
-            document.getElementById('solutionTitle').innerText = 'Solution:';
-            document.getElementById('solutionModal').style.display = 'flex';
+            const modal = document.getElementById('solutionModal');
+            const solutionTitle = document.getElementById('solutionTitle');
+            const solutionSteps = document.getElementById('solutionSteps');
+            const preventiveTips = document.getElementById('preventiveTips');
+            const estimatedTime = document.getElementById('estimatedTime');
+            const difficulty = document.getElementById('difficulty');
+            const tools = document.getElementById('tools');
+
+            let solution = getSolutionDetails(issue);
+            
+            solutionTitle.textContent = solution.title;
+            estimatedTime.textContent = solution.time;
+            difficulty.textContent = solution.difficulty;
+            tools.textContent = solution.tools;
+
+            // Generate steps HTML
+            let stepsHTML = '';
+            solution.steps.forEach((step, index) => {
+                stepsHTML += `
+                    <div class="step">
+                        <span class="step-number">${index + 1}</span>
+                        ${step}
+                    </div>
+                `;
+            });
+            solutionSteps.innerHTML = stepsHTML;
+
+            // Generate preventive tips HTML
+            let tipsHTML = `
+                <h3>💡 Preventive Tips:</h3>
+                <ul>
+                    ${solution.preventiveTips.map(tip => `<li>${tip}</li>`).join('')}
+                </ul>
+            `;
+            preventiveTips.innerHTML = tipsHTML;
+
+            modal.style.display = 'block';
+        }
+
+        function getSolutionDetails(issue) {
+            const solutions = {
+                'notCharging': {
+                    title: 'Battery Not Charging',
+                    time: '15-30 minutes',
+                    difficulty: 'Moderate',
+                    tools: 'None required',
+                    steps: [
+                        'Check if the power adapter is properly connected to both the laptop and wall outlet.',
+                        'Verify that the power outlet is working by testing with another device.',
+                        'Inspect the power adapter and cord for any physical damage.',
+                        'Remove the battery (if removable) and reinsert it.',
+                        'Try using the laptop without the battery using just the power adapter.',
+                        'Check for battery driver updates in Device Manager.',
+                        'Run the Acer Care Center battery check utility.',
+                        `For detailed battery replacement guide, visit: <a href="../Guides/Acer/hdd/hdd.html" class="guide-link">Battery Replacement Guide</a>`
+                    ],
+                    preventiveTips: [
+                        'Avoid completely draining your battery regularly',
+                        'Keep your laptop updated with the latest BIOS and drivers',
+                        'Use original Acer power adapters only',
+                        'Perform monthly battery calibration'
+                    ]
+                },
+                'overheat': {
+                    title: 'Laptop Overheating',
+                    time: '30-45 minutes',
+                    difficulty: 'Moderate',
+                    tools: 'Compressed air, screwdriver',
+                    steps: [
+                        'Ensure the laptop is on a hard, flat surface with good ventilation.',
+                        'Clean the air vents using compressed air.',
+                        'Check if the cooling fan is running properly.',
+                        'Close resource-intensive applications.',
+                        'Check CPU usage in Task Manager.',
+                        'Consider using a cooling pad.',
+                        `For detailed cleaning guide, visit: <a href="../Guides/Acer/hdd/hdd.html" class="guide-link">Maintenance Guide</a>`
+                    ],
+                    preventiveTips: [
+                        'Clean vents regularly (every 3-6 months)',
+                        'Avoid using laptop on soft surfaces like beds',
+                        'Keep ambient temperature moderate',
+                        'Monitor CPU temperature regularly'
+                    ]
+                },
+                'hddFailure': {
+                    title: 'Hard Drive Issues',
+                    time: '1-2 hours',
+                    difficulty: 'High',
+                    tools: 'Screwdriver, replacement drive',
+                    steps: [
+                        'Back up your important data immediately.',
+                        'Run Windows CHKDSK utility to scan for errors.',
+                        'Check drive health using Acer Care Center.',
+                        'Listen for unusual clicking or grinding sounds.',
+                        'Consider replacing the hard drive if issues persist.',
+                        `For HDD replacement guide, visit: <a href="../Guides/Acer/hdd/hdd.html" class="guide-link">HDD Replacement Guide</a>`
+                    ],
+                    preventiveTips: [
+                        'Regular backup of important data',
+                        'Avoid moving laptop while HDD is active',
+                        'Monitor drive health monthly',
+                        'Keep some free space on the drive'
+                    ]
+                },
+                'fanNoise': {
+                    title: 'Fan Noise',
+                    time: '15-30 minutes',
+                    difficulty: 'Easy',
+                    tools: 'None required',
+                    steps: [
+                        'Check if the fan is obstructed by dust or debris.',
+                        'Clean the fan using compressed air.',
+                        'Ensure the laptop is on a flat surface for proper airflow.',
+                        'If noise persists, consider replacing the fan.',
+                        `For detailed fan maintenance guide, visit: <a href="../Guides/Acer/hdd/hdd.html" class="guide-link">Fan Maintenance Guide</a>`
+                    ],
+                    preventiveTips: [
+                        'Regularly clean the fan and vents',
+                        'Avoid using the laptop on soft surfaces',
+                        'Monitor fan performance using software tools'
+                    ]
+                },
+                'slowPerformance': {
+                    title: 'Slow Performance',
+                    time: '30-60 minutes',
+                    difficulty: 'Moderate',
+                    tools: 'None required',
+                    steps: [
+                        'Close unnecessary applications running in the background.',
+                        'Run a virus scan to check for malware.',
+                        'Check for software updates and install them.',
+                        'Consider upgrading RAM if performance issues persist.',
+                        `For detailed performance optimization guide, visit: <a href="../Guides/Acer/hdd/hdd.html" class="guide-link">Performance Optimization Guide</a>`
+                    ],
+                    preventiveTips: [
+                        'Keep your system updated',
+                        'Regularly clean up disk space',
+                        'Avoid installing unnecessary software'
+                    ]
+                },
+                'screenFlicker': {
+                    title: 'Screen Flickering',
+                    time: '15-30 minutes',
+                    difficulty: 'Moderate',
+                    tools: 'None required',
+                    steps: [
+                        'Check the display cable connection.',
+                        'Update graphics drivers.',
+                        'Adjust the refresh rate in display settings.',
+                        'If the issue persists, consider hardware diagnostics.',
+                        `For detailed screen troubleshooting guide, visit: <a href="../Guides/Acer/hdd/hdd.html" class="guide-link">Screen Troubleshooting Guide</a>`
+                    ],
+                    preventiveTips: [
+                        'Regularly update graphics drivers',
+                        'Avoid using the laptop in extreme temperatures',
+                        'Keep the laptop on a flat surface'
+                    ]
+                },
+                'softwareCrash': {
+                    title: 'Software Crashes',
+                    time: '30-60 minutes',
+                    difficulty: 'Moderate',
+                    tools: 'None required',
+                    steps: [
+                        'Check for software updates and install them.',
+                        'Run a virus scan to check for malware.',
+                        'Reinstall the problematic software.',
+                        'Check system requirements for the software.',
+                        `For detailed software troubleshooting guide, visit: <a href="../Guides/Acer/hdd/hdd.html" class="guide-link">Software Troubleshooting Guide</a>`
+                    ],
+                    preventiveTips: [
+                        'Keep your software updated',
+                        'Avoid running too many applications simultaneously',
+                        'Regularly scan for malware'
+                    ]
+                },
+                'networkIssue': {
+                    title: 'Network Issues',
+                    time: '15-30 minutes',
+                    difficulty: 'Moderate',
+                    tools: 'None required',
+                    steps: [
+                        'Check if the Wi-Fi is turned on.',
+                        'Restart the router and laptop.',
+                        'Forget the network and reconnect.',
+                        'Run the network troubleshooter in Windows.',
+                        `For detailed network troubleshooting guide, visit: <a href="../Guides/Acer/hdd/hdd.html" class="guide-link">Network Troubleshooting Guide</a>`
+                    ],
+                    preventiveTips: [
+                        'Keep your network drivers updated',
+                        'Avoid interference from other devices',
+                        'Regularly restart your router'
+                    ]
+                },
+                'slowBoot': {
+                    title: 'Slow Boot',
+                    time: '30-60 minutes',
+                    difficulty: 'Moderate',
+                    tools: 'None required',
+                    steps: [
+                        'Disable unnecessary startup programs.',
+                        'Run disk cleanup to free up space.',
+                        'Check for malware that may slow down boot time.',
+                        'Consider upgrading to an SSD for faster boot times.',
+                        `For detailed boot optimization guide, visit: <a href="../Guides/Acer/hdd/hdd.html" class="guide-link">Boot Optimization Guide</a>`
+                    ],
+                    preventiveTips: [
+                        'Keep your system clean and organized',
+                        'Regularly update your operating system',
+                        'Avoid installing unnecessary software'
+                    ]
+                },
+                'wifiNotConnecting': {
+                    title: 'Wi-Fi Not Connecting',
+                    time: '15-30 minutes',
+                    difficulty: 'Moderate',
+                    tools: 'None required',
+                    steps: [
+                        'Check if the Wi-Fi is enabled on your laptop.',
+                        'Restart your laptop and router.',
+                        'Forget the Wi-Fi network and reconnect.',
+                        'Update your network drivers.',
+                        `For detailed Wi-Fi troubleshooting guide, visit: <a href="../Guides/Acer/hdd/hdd.html" class="guide-link">Wi-Fi Troubleshooting Guide</a>`
+                    ],
+                    preventiveTips: [
+                        'Keep your network drivers updated',
+                        'Avoid using the laptop in areas with weak signals',
+                        'Regularly check your router settings'
+                    ]
+                }
+            };
+
+            return solutions[issue] || {
+                title: 'Generic Solution',
+                time: '15-30 minutes',
+                difficulty: 'Moderate',
+                tools: 'Basic tools',
+                steps: ['No specific steps available for this issue.'],
+                preventiveTips: ['Regular maintenance recommended']
+            };
         }
 
         function closeModal() {
@@ -553,7 +748,14 @@
         }
 
         function getBackButton() {
-            return `<button class='back-button' onclick="goBack()" aria-label="Go Back">Go Back</button>`;
+            return `<button class='back-button' onclick="goBack()" aria-label="Go Back">← Go Back</button>`;
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            if (event.target == document.getElementById('solutionModal')) {
+                closeModal();
+            }
         }
     </script>
 </body>

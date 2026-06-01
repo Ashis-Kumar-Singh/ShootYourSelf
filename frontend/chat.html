@@ -2,32 +2,28 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"/>
-<meta http-equiv="refresh" content="0;url=/?from=chat"/>
+<meta http-equiv="refresh" content="0;url=/"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>ShootYourSelf — Repair Chat</title>
+<title>FixItSelf — Repair Chat</title>
 <link rel="icon" href="images/symbol.svg" type="image/svg+xml">
 <script>
-  window.tailwind = window.tailwind || {};
-  tailwind.config = {
-    theme: {
-      extend: {
-        colors: { "forest-deep": "#0F403A", "bg-cream": "#F6F0E6", "ink-gray": "#4A4A4A" },
-        fontFamily: { "headline": ["Libre Caslon Text", "serif"], "body": ["Hanken Grotesk", "sans-serif"] }
-      }
-    }
-  }
+window.tailwind=window.tailwind||{};
+tailwind.config={darkMode:"class",theme:{extend:{colors:{
+primary:"#0F766E",accent:"#EA580C",bg:"#FAFAF9",
+surface:"#FFFFFF",border:"#E7E5E4",muted:"#64748B",text:"#0F172A"
+},fontFamily:{headline:["Libre Caslon Text","Georgia","serif"],body:["Hanken Grotesk","system-ui","sans-serif"],mono:["JetBrains Mono","monospace"]}}}};
 </script>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:wght@400;700&amp;family=Hanken+Grotesk:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:wght@400;700&family=Hanken+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <link href="styles.css" rel="stylesheet"/>
 </head>
-<body class="bg-bg-cream text-on-background font-body min-h-screen flex items-center justify-center p-6">
-  <div class="glass-surface rounded-xl p-8 text-center max-w-sm w-full">
-    <div class="w-12 h-12 mx-auto mb-4 rounded-xl bg-gradient-to-br from-forest-deep to-accent-orange flex items-center justify-center">
-      <span class="material-symbols-outlined text-white text-2xl">forward</span>
+<body style="background:var(--color-bg);color:var(--color-text);font-family:var(--font-body);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px">
+  <div class="card" style="padding:32px;max-width:360px;width:100%;text-align:center">
+    <div style="width:48px;height:48px;margin:0 auto 16px;border-radius:12px;background:linear-gradient(135deg,var(--color-primary),var(--color-accent));display:flex;align-items:center;justify-content:center">
+      <span class="material-symbols-outlined" style="font-size:24px;color:#fff">forward</span>
     </div>
-    <p class="text-ink-gray text-lg font-semibold">Redirecting to the repair chat...</p>
+    <p style="font-weight:600;font-size:var(--fs-16);color:var(--color-text)">Redirecting to the repair chat...</p>
   </div>
 </body>
 </html>

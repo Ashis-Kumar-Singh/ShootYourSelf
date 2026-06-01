@@ -1,11 +1,11 @@
 {
-  "name": "ShootYourSelf - Open Repair Intelligence",
+  "name": "FixItSelf - Open Repair Intelligence",
   "short_name": "SYS",
-  "description": "Editorial-tech repair workflow with guided triage, telemetry, and protocol cards.",
+  "description": "Free device troubleshooting with multi-engine search, diagnostic guidance, and community repair intelligence.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#F6F0E6",
-  "theme_color": "#0F403A",
+  "background_color": "#FAFAF9",
+  "theme_color": "#0F766E",
   "icons": [
     {
       "src": "images/symbol.svg",

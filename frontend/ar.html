@@ -3,59 +3,74 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>TECH_OS // REPAIR — AR Assistant</title>
+<title>SYS — AR Assistant</title>
 <link rel="icon" href="images/symbol.svg" type="image/svg+xml">
 <script>
-  window.tailwind = window.tailwind || {};
-  tailwind.config = {
-    theme: {
-      extend: {
-        colors: {
-          "forest-deep": "#0F403A", "accent-orange": "#C86A2C", "accent-orange-vibrant": "#E87C36",
-          "bg-cream": "#F6F0E6", "ink-black": "#0A0A0A", "ink-gray": "#4A4A4A",
-          "surface": "#f9f9f8", "surface-container-low": "#f3f4f2", "surface-container-high": "#e8e8e7",
-          "primary": "#002924", "on-background": "#1a1c1b", "on-surface-variant": "#404847",
-          "outline-variant": "#c0c8c6", "primary-container": "#0f403a"
-        },
-        fontFamily: {
-          "headline": ["Libre Caslon Text", "serif"],
-          "body": ["Hanken Grotesk", "sans-serif"],
-          "mono-label": ["JetBrains Mono", "monospace"]
-        }
-      }
-    }
-  }
+window.tailwind=window.tailwind||{};
+tailwind.config={darkMode:"class",theme:{extend:{colors:{
+primary:"#0F766E",accent:"#EA580C",bg:"#FAFAF9",
+surface:"#FFFFFF","surface-sunken":"#F5F5F4",
+border:"#E7E5E4",muted:"#64748B",text:"#0F172A","text-secondary":"#334155"
+},fontFamily:{headline:["Libre Caslon Text","Georgia","serif"],body:["Hanken Grotesk","system-ui","sans-serif"],mono:["JetBrains Mono","monospace"]}}}};
 </script>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:wght@400;700&family=Hanken+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:wght@400;700&family=Hanken+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <link href="styles.css" rel="stylesheet"/>
 </head>
-<body class="bg-bg-cream text-on-background font-body min-h-screen">
-<div class="max-w-6xl mx-auto p-4 md:p-6">
-  <div class="flex items-center justify-between mb-6">
-    <div class="flex items-center gap-3">
-      <a href="/" class="w-9 h-9 rounded-lg bg-gradient-to-br from-forest-deep to-accent-orange flex items-center justify-center text-white font-headline font-bold text-sm no-underline">SY</a>
+<body style="background:var(--color-bg);color:var(--color-text);font-family:var(--font-body);min-height:100vh">
+<header class="app-header" style="position:sticky;top:0;z-index:50">
+  <div class="app-header__brand">
+    <div class="app-header__logo">SYS</div>
+    <span>Command Center</span>
+  </div>
+  <nav class="app-header__nav" data-nav>
+    <a href="/">Systems</a>
+    <a href="community.html">Archive</a>
+    <a href="ecosystem.html">Manuals</a>
+  </nav>
+  <div class="app-header__spacer"></div>
+  <div class="app-header__actions">
+    <a href="admin.html">Admin</a>
+    <span class="sep">|</span>
+    <a href="privacy.html">Privacy</a>
+    <button id="darkModeToggle" class="icon-btn" aria-label="Toggle dark mode">
+      <span class="material-symbols-outlined">dark_mode</span>
+    </button>
+    <div class="user-pill">
+      <span class="user-pill__avatar">T</span>
+      <span>T-4029</span>
+    </div>
+  </div>
+</header>
+<div class="app-main__inner" style="max-width:1280px;margin:0 auto;padding:24px 16px">
+  <div class="page-head">
+    <div class="page-head__title">
+      <div class="page-head__icon" style="background:linear-gradient(135deg,var(--color-primary),var(--color-accent))">AR</div>
       <div>
-        <h1 class="font-headline text-2xl font-bold text-forest-deep">AR Repair Assistant</h1>
-        <p class="text-xs text-ink-gray">Augmented reality overlay data for repair guidance</p>
+        <h1 style="font-family:var(--font-headline);font-size:var(--fs-30);font-weight:700;margin:0">AR Repair Assistant</h1>
+        <p style="color:var(--color-text-muted);font-size:var(--fs-14);margin-top:2px">Augmented reality overlay data for repair guidance</p>
       </div>
     </div>
-    <a href="/" class="btn-secondary text-sm no-underline"><span class="material-symbols-outlined text-lg">arrow_back</span> Back</a>
   </div>
 
   <div class="page-nav">
-    <a href="#" class="active" data-tab="model">Repair Model</a>
+    <a href="#" class="is-active" data-tab="model">Repair Model</a>
     <a href="#" data-tab="screws">Screw Positions</a>
     <a href="#" data-tab="components">Components</a>
     <a href="#" data-tab="overlay">Overlay</a>
   </div>
 
-  <div id="arContent">
-    <div class="text-center py-12"><p class="text-ink-gray">Loading...</p></div>
+  <div id="arContent" style="min-height:200px">
+    <div class="card" style="text-align:center;padding:48px">
+      <p style="color:var(--color-text-muted)">Loading...</p>
+    </div>
   </div>
 </div>
 
-<script src="js/ar.js"></script>
+<div class="toast-container" id="toastContainer"></div>
+<script src="js/api.js?v=20260601-1"></script>
+<script src="js/ar.js?v=20260601-1"></script>
+<script src="js/chrome.js?v=20260601-1"></script>
 </body>
 </html>

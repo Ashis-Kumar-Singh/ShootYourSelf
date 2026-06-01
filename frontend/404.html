@@ -3,34 +3,33 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>404 — ShootYourSelf</title>
+<title>404 — FixItSelf</title>
 <link rel="icon" href="images/symbol.svg" type="image/svg+xml">
 <script>
-  window.tailwind = window.tailwind || {};
-  tailwind.config = {
-    theme: {
-      extend: {
-        colors: { "forest-deep": "#0F403A", "accent-orange": "#C86A2C", "bg-cream": "#F6F0E6", "ink-gray": "#4A4A4A" },
-        fontFamily: { "headline": ["Libre Caslon Text", "serif"], "body": ["Hanken Grotesk", "sans-serif"] }
-      }
-    }
-  }
+window.tailwind=window.tailwind||{};
+tailwind.config={darkMode:"class",theme:{extend:{colors:{
+primary:"#0F766E",accent:"#EA580C",bg:"#FAFAF9",
+surface:"#FFFFFF",border:"#E7E5E4",muted:"#64748B",text:"#0F172A"
+},fontFamily:{headline:["Libre Caslon Text","Georgia","serif"],body:["Hanken Grotesk","system-ui","sans-serif"],mono:["JetBrains Mono","monospace"]}}}};
 </script>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:wght@400;700&amp;family=Hanken+Grotesk:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:wght@400;700&family=Hanken+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <link href="styles.css" rel="stylesheet"/>
 </head>
-<body class="bg-bg-cream text-on-background font-body min-h-screen flex items-center justify-center p-6">
-  <div class="glass-surface rounded-xl p-10 md:p-14 max-w-md w-full text-center">
-    <div class="w-16 h-16 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-forest-deep to-accent-orange flex items-center justify-center">
-      <span class="material-symbols-outlined text-white text-3xl">search_off</span>
-    </div>
-    <h1 class="font-headline text-6xl font-bold text-forest-deep mb-2">404</h1>
-    <p class="text-lg text-ink-gray mb-8">This page doesn't exist or has moved.</p>
-    <a href="/" class="inline-flex items-center gap-2 bg-forest-deep text-white px-6 py-3 rounded-lg font-semibold hover:bg-forest-deep/90 transition-all shadow-md">
-      <span class="material-symbols-outlined">arrow_back</span> Back to Repair Chat
-    </a>
+<body style="background:var(--color-bg);color:var(--color-text);font-family:var(--font-body);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px">
+
+<div class="card" style="padding:48px;max-width:400px;width:100%;text-align:center">
+  <div style="width:64px;height:64px;margin:0 auto 24px;border-radius:16px;background:linear-gradient(135deg,var(--color-primary),var(--color-accent));display:flex;align-items:center;justify-content:center">
+    <span class="material-symbols-outlined" style="font-size:32px;color:#fff">search_off</span>
   </div>
+  <h1 style="font-family:var(--font-headline);font-size:60px;font-weight:700;color:var(--color-primary);margin:0 0 8px">404</h1>
+  <p style="color:var(--color-text-muted);font-size:var(--fs-16);margin-bottom:32px">This page doesn't exist or has moved.</p>
+  <a href="/" class="btn btn--primary" style="display:inline-flex;align-items:center;gap:8px;padding:14px 28px;height:auto;font-size:var(--fs-15)">
+    <span class="material-symbols-outlined" style="font-size:18px">arrow_back</span>
+    Back to Repair Chat
+  </a>
+</div>
+
 </body>
 </html>

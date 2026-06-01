@@ -125,6 +125,34 @@
     sessionId: null,
   };
 
+  function showToast(message, type) {
+    type = type || "info";
+    var container = document.getElementById("toastContainer");
+    if (!container) {
+      container = document.createElement("div");
+      container.className = "toast-container";
+      container.id = "toastContainer";
+      document.body.appendChild(container);
+    }
+    var icons = { success: "check_circle", error: "error", info: "info" };
+    var toast = document.createElement("div");
+    toast.className = "toast toast-" + type;
+    toast.innerHTML =
+      '<span class="material-symbols-outlined toast-icon">' + (icons[type] || "info") + '</span>' +
+      '<span class="toast-msg">' + escapeHtml(message) + '</span>' +
+      '<button class="toast-close" aria-label="Dismiss">&times;</button>';
+    container.appendChild(toast);
+    var closeBtn = toast.querySelector(".toast-close");
+    closeBtn.addEventListener("click", function () { dismissToast(toast); });
+    setTimeout(function () { dismissToast(toast); }, 4000);
+  }
+
+  function dismissToast(toast) {
+    if (toast.classList.contains("removing")) return;
+    toast.classList.add("removing");
+    setTimeout(function () { if (toast.parentNode) toast.parentNode.removeChild(toast); }, 260);
+  }
+
   function init() {
     bindEvents();
     chatBox.addEventListener("scroll", onChatScroll);
@@ -133,7 +161,11 @@
       problemInput.addEventListener("input", autoResizeProblemInput);
     }
 
-    const scrollBtn = document.createElement("button");
+    // Remove skeleton loading
+    var loadingEl = document.getElementById("chatLoading");
+    if (loadingEl) loadingEl.remove();
+
+    var scrollBtn = document.createElement("button");
     scrollBtn.id = "scrollBottomBtn";
     scrollBtn.type = "button";
     scrollBtn.className = "scroll-bottom-btn";

@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta name="description" content="Editorial-tech repair workflow with guided triage, telemetry, and protocol cards."/>
+<meta name="keywords" content="device repair, troubleshooting, laptop repair, phone repair, DIY fix, tech support"/>
+<meta property="og:title" content="TECH_OS // REPAIR - Command Center"/>
+<meta property="og:description" content="Editorial-tech repair workflow with guided triage, telemetry, and protocol cards."/>
+<meta property="og:type" content="website"/>
+<meta name="twitter:card" content="summary"/>
+<title>TECH_OS // REPAIR - Command Center</title>
+<link rel="icon" href="images/symbol.svg" type="image/svg+xml"/>
+<link rel="manifest" href="manifest.json"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<style id="fallback-layout">
+  body{background:#F6F0E6;color:#1a1c1b;margin:0;font-family:sans-serif;line-height:1.5}
+</style>
+<script id="tailwind-config">
+      window.tailwind = window.tailwind || {};
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                "on-tertiary-container": "#ce9583",
+                "on-primary-fixed-variant": "#204e48",
+                "surface-container-lowest": "#ffffff",
+                "forest-deep": "#0F403A",
+                "secondary-fixed": "#ffdbc9",
+                "on-secondary-container": "#6e2f00",
+                "secondary": "#994706",
+                "accent-orange-vibrant": "#E87C36",
+                "surface-variant": "#e2e3e1",
+                "surface-glass": "rgba(255, 252, 247, 0.75)",
+                "surface-dim": "#d9dad9",
+                "secondary-fixed-dim": "#ffb68d",
+                "on-primary-container": "#7daba3",
+                "bg-cream": "#F6F0E6",
+                "surface-container-highest": "#e2e3e1",
+                "ink-black": "#0A0A0A",
+                "accent-orange": "#C86A2C",
+                "on-primary-fixed": "#00201c",
+                "outline-variant": "#c0c8c6",
+                "surface-container-high": "#e8e8e7",
+                "primary-fixed-dim": "#a1d0c7",
+                "surface-bright": "#f9f9f8",
+                "on-primary": "#ffffff",
+                "on-tertiary-fixed-variant": "#663c2e",
+                "on-secondary": "#ffffff",
+                "background": "#f9f9f8",
+                "primary": "#002924",
+                "on-background": "#1a1c1b",
+                "forest-muted": "#1A2625",
+                "surface-tint": "#39665f",
+                "on-error-container": "#93000a",
+                "tertiary-fixed-dim": "#f6b8a5",
+                "on-surface": "#1a1c1b",
+                "inverse-surface": "#2e3130",
+                "tertiary-fixed": "#ffdbd0",
+                "tertiary": "#3c190e",
+                "surface-container-low": "#f3f4f2",
+                "error": "#ba1a1a",
+                "inverse-on-surface": "#f0f1ef",
+                "secondary-container": "#fc9351",
+                "on-error": "#ffffff",
+                "surface": "#f9f9f8",
+                "inverse-primary": "#a1d0c7",
+                "on-secondary-fixed-variant": "#763300",
+                "surface-container": "#edeeec",
+                "primary-container": "#0f403a",
+                "on-tertiary": "#ffffff",
+                "primary-fixed": "#bcece3",
+                "outline": "#707977",
+                "tertiary-container": "#562e21",
+                "on-secondary-fixed": "#331200",
+                "ink-gray": "#4A4A4A",
+                "error-container": "#ffdad6",
+                "on-surface-variant": "#404847",
+                "on-tertiary-fixed": "#321207"
+            },
+            "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+            },
+            "spacing": {
+                "margin-mobile": "16px",
+                "stack-lg": "32px",
+                "gutter": "24px",
+                "stack-sm": "8px",
+                "margin-desktop": "40px",
+                "stack-md": "16px",
+                "unit": "4px"
+            },
+            "fontFamily": {
+                "headline-lg": ["Libre Caslon Text"],
+                "headline-md": ["Libre Caslon Text"],
+                "body-lg": ["Hanken Grotesk"],
+                "headline-xl": ["Libre Caslon Text"],
+                "label-mono": ["JetBrains Mono"],
+                "button-text": ["Hanken Grotesk"],
+                "body-md": ["Hanken Grotesk"]
+            },
+            "fontSize": {
+                "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                "label-mono": ["13px", {"lineHeight": "1.0", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                "button-text": ["15px", {"lineHeight": "1.0", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}]
+            }
+          }
+        }
+      }
+    </script>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:wght@400;700&amp;family=Hanken+Grotesk:wght@400;500;600&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="styles.css" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-family: 'Material Symbols Outlined', monospace;
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-surface {
+            background: rgba(255, 252, 247, 0.75);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.04), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+        }
+        .precision-border-orange { border-top: 4px solid #C86A2C; }
+        .precision-border-green { border-top: 4px solid #0F403A; }
+        .aluminum-edge { box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.2); }
+        .shimmer-bg {
+            background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0) 100%);
+            background-size: 200% 100%;
+            animation: shimmer 3s infinite linear;
+        }
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        .chat-message {
+            position: relative;
+            animation: message-in 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        @keyframes message-in {
+            from { opacity: 0; transform: translateY(12px) scale(0.97); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .chat-message p { margin: 0; }
+        .assistant-avatar,
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            flex-shrink: 0;
+            margin-top: 4px;
+        }
+        .assistant-avatar { background: #0F403A; }
+        .user-avatar { background: #C86A2C; }
+        .chat-message.assistant .msg-bubble {
+            backdrop-filter: blur(20px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.04), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+            max-width: 85%;
+        }
+        .chat-message.user .msg-bubble {
+            box-shadow: 0 4px 16px rgba(15, 64, 58, 0.18);
+            max-width: 85%;
+        }
+        .prompt-chip {
+            appearance: none;
+            display: inline-flex;
+            align-items: center;
+            min-height: 36px;
+            padding: 0 14px;
+            border-radius: 9999px;
+            border: 1px solid rgba(15, 64, 58, 0.12);
+            background: rgba(255, 255, 255, 0.78);
+            color: #000;
+            font: inherit;
+            font-size: 0.84rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .prompt-chip:hover {
+            transform: translateY(-1px);
+            border-color: #0F403A;
+            color: #0F403A;
+            box-shadow: 0 6px 18px rgba(15, 64, 58, 0.1);
+        }
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #c0c8c6; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #707977; }
+    </style>
+</head>
+<body class="bg-bg-cream text-on-background font-body-md min-h-screen overflow-hidden selection:bg-accent-orange/30">
+<header class="flex justify-between items-center w-full px-margin-desktop h-16 sticky top-0 z-50 bg-surface-glass/80 backdrop-blur-xl border-b border-white/10 shadow-sm">
+<div class="flex items-center gap-stack-md">
+<span class="font-headline-md text-headline-md font-bold tracking-tight text-primary">TECH_OS // REPAIR</span>
+<nav class="hidden md:flex gap-gutter ml-stack-lg">
+<a class="font-label-mono text-label-mono text-primary border-b-2 border-accent-orange pb-1" href="#">Systems</a>
+<a class="font-label-mono text-label-mono text-on-surface-variant/70 hover:text-primary transition-colors" href="#">Archive</a>
+<a class="font-label-mono text-label-mono text-on-surface-variant/70 hover:text-primary transition-colors" href="#">Manuals</a>
+</nav>
+</div>
+<div class="flex items-center gap-stack-md">
+<div class="flex items-center gap-stack-sm mr-gutter">
+<a class="font-label-mono text-[11px] uppercase tracking-widest text-on-surface-variant/50 hover:text-primary" href="admin.html">Admin</a>
+<span class="text-outline-variant/30">|</span>
+<a class="font-label-mono text-[11px] uppercase tracking-widest text-on-surface-variant/50 hover:text-primary" href="privacy.html">Privacy</a>
+</div>
+<button class="p-2 hover:bg-surface-container-low/50 rounded-lg transition-all"><span class="material-symbols-outlined text-on-surface-variant">settings</span></button>
+<button class="p-2 hover:bg-surface-container-low/50 rounded-lg transition-all"><span class="material-symbols-outlined text-on-surface-variant">notifications</span></button>
+<button class="p-2 hover:bg-surface-container-low/50 rounded-lg transition-all flex items-center gap-2">
+<span class="material-symbols-outlined text-on-surface-variant" style="font-variation-settings: 'FILL' 1;">account_circle</span>
+<span class="font-label-mono text-label-mono text-primary font-semibold">T-4029</span>
+</button>
+</div>
+</header>
+<div class="flex h-[calc(100vh-64px)] overflow-hidden">
+<aside class="w-72 h-full bg-surface-container-low border-r border-outline-variant/20 flex flex-col p-4 gap-stack-md shrink-0">
+<div class="p-4 rounded-xl glass-surface border border-outline-variant/10">
+<div class="flex items-center gap-stack-sm mb-stack-md">
+<span class="material-symbols-outlined text-accent-orange" style="font-variation-settings: 'FILL' 1;">android_fingerprint</span>
+<h2 class="font-headline-sm text-headline-sm font-semibold text-primary" id="statusPill">Active Scan</h2>
+</div>
+<dl class="space-y-stack-md summary-list">
+<div>
+<dt class="font-label-mono text-[10px] text-on-surface-variant/60 uppercase tracking-widest">Device</dt>
+<dd class="font-body-md font-semibold text-primary" id="summaryDevice">Lumix S5II</dd>
+</div>
+<div>
+<dt class="font-label-mono text-[10px] text-on-surface-variant/60 uppercase tracking-widest">Brand</dt>
+<dd class="font-body-md font-semibold text-primary" id="summaryBrand">Panasonic</dd>
+</div>
+<div>
+<dt class="font-label-mono text-[10px] text-on-surface-variant/60 uppercase tracking-widest">Model</dt>
+<dd class="font-body-md font-semibold text-primary" id="summaryModel">DC-S5M2</dd>
+</div>
+<div>
+<dt class="font-label-mono text-[10px] text-on-surface-variant/60 uppercase tracking-widest">Issue</dt>
+<dd class="font-body-md font-semibold text-accent-orange" id="summaryIssue">Sensor Alignment</dd>
+</div>
+</dl>
+<div class="mt-stack-lg">
+<div class="flex justify-between mb-1">
+<span class="font-label-mono text-[11px] text-primary" id="progressCopy">Diagnostic Depth</span>
+<span class="font-label-mono text-[11px] text-accent-orange">74%</span>
+</div>
+<div class="h-1 w-full bg-outline-variant/20 rounded-full overflow-hidden session-progress-bar">
+<div class="h-full bg-accent-orange-vibrant w-3/4 rounded-full transition-all duration-500" id="progressFill"></div>
+</div>
+</div>
+</div>
+<nav class="flex flex-col gap-1 flex-grow overflow-y-auto">
+<a class="flex items-center gap-3 p-3 bg-primary-container text-on-primary-container font-semibold rounded-lg shadow-sm border-l-4 border-accent-orange transition-all" href="/">
+<span class="material-symbols-outlined">terminal</span>
+<span class="font-label-mono text-label-mono">Command Center</span>
+</a>
+<a class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-container-high rounded-lg hover:translate-x-1 transition-all" href="community.html">
+<span class="material-symbols-outlined">diversity_3</span>
+<span class="font-label-mono text-label-mono">Community</span>
+</a>
+<a class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-container-high rounded-lg hover:translate-x-1 transition-all" href="vision.html">
+<span class="material-symbols-outlined">image_search</span>
+<span class="font-label-mono text-label-mono">Visual Diagnostics</span>
+</a>
+<a class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-container-high rounded-lg hover:translate-x-1 transition-all" href="telemetry.html">
+<span class="material-symbols-outlined">query_stats</span>
+<span class="font-label-mono text-label-mono">Telemetry</span>
+</a>
+<a class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-container-high rounded-lg hover:translate-x-1 transition-all" href="device-memory.html">
+<span class="material-symbols-outlined">memory</span>
+<span class="font-label-mono text-label-mono">Device Memory</span>
+</a>
+<a class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-container-high rounded-lg hover:translate-x-1 transition-all" href="offline.html">
+<span class="material-symbols-outlined">cloud_off</span>
+<span class="font-label-mono text-label-mono">Offline Mode</span>
+</a>
+<a class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-container-high rounded-lg hover:translate-x-1 transition-all" href="ar.html">
+<span class="material-symbols-outlined">view_in_ar</span>
+<span class="font-label-mono text-label-mono">AR Assistant</span>
+</a>
+<a class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-container-high rounded-lg hover:translate-x-1 transition-all" href="ecosystem.html">
+<span class="material-symbols-outlined">public</span>
+<span class="font-label-mono text-label-mono">Ecosystem</span>
+</a>
+</nav>
+<div class="mt-auto space-y-stack-sm">
+<button class="w-full bg-accent-orange hover:bg-accent-orange-vibrant text-white font-button-text text-button-text py-4 rounded-lg aluminum-edge shadow-lg flex items-center justify-center gap-2 transition-all active:scale-95" id="restartBtn">
+<span class="material-symbols-outlined text-[20px]">add_circle</span>
+Initialize New Repair
+</button>
+<div class="flex gap-2">
+<button class="flex-1 p-2 flex flex-col items-center gap-1 text-on-surface-variant/70 hover:bg-surface-container-high rounded-lg transition-all">
+<span class="material-symbols-outlined text-[20px]">help_center</span>
+<span class="font-label-mono text-[10px]">Support</span>
+</button>
+<button class="flex-1 p-2 flex flex-col items-center gap-1 text-on-surface-variant/70 hover:bg-surface-container-high rounded-lg transition-all">
+<span class="material-symbols-outlined text-[20px]">terminal</span>
+<span class="font-label-mono text-[10px]">Logs</span>
+</button>
+</div>
+</div>
+</aside>
+<main class="flex-1 h-full overflow-hidden p-6 bg-background">
+<div class="h-full w-full max-w-[1600px] mx-auto grid grid-cols-12 gap-gutter">
+<section class="col-span-12 lg:col-span-7 flex flex-col h-full gap-stack-md overflow-hidden">
+<div class="glass-surface p-stack-lg rounded-[1.5rem] relative overflow-hidden shrink-0">
+<div class="shimmer-bg absolute inset-0 pointer-events-none opacity-30"></div>
+<div class="relative z-10">
+<h1 class="font-headline-lg text-headline-lg text-primary mb-stack-sm">Command Center</h1>
+<p class="font-body-md text-on-surface-variant mb-stack-lg">State the malfunction for high-fidelity triage.</p>
+<form class="relative" id="problemIntakeForm">
+<textarea class="w-full bg-surface-container-high/40 rounded-xl p-stack-md pr-20 font-label-mono text-body-md border-none focus:ring-0 focus:bg-surface-container-high/70 transition-all resize-none h-28 placeholder:text-outline/60" id="problemInput" placeholder="Input diagnostic query or sensor fault codes..."></textarea>
+<button class="absolute bottom-4 right-4 bg-primary text-white p-3 rounded-xl hover:scale-105 active:scale-95 transition-all shadow-md aluminum-edge" id="problemSubmitBtn" type="submit">
+<span class="material-symbols-outlined">send</span>
+</button>
+</form>
+<div class="flex flex-wrap gap-2 mt-stack-md problem-intake-chips">
+<button class="prompt-chip" data-problem-example="Sensor alignment failure on Lumix S5II" type="button">#Sensor_Stuck</button>
+<button class="prompt-chip" data-problem-example="IBIS failure after firmware update" type="button">#IBIS_Failure</button>
+<button class="prompt-chip" data-problem-example="Camera stuck in boot loop" type="button">#Firmware_Loop</button>
+<button class="prompt-chip" data-problem-example="Loose lens mount connection" type="button">#Mount_Play</button>
+</div>
+</div>
+</div>
+<div class="flex-grow glass-surface rounded-xl flex flex-col overflow-hidden">
+<div class="p-4 border-b border-outline-variant/10 flex justify-between items-center bg-white/40">
+<span class="font-label-mono text-label-mono text-on-surface-variant uppercase tracking-widest">Active Thread // 0429-X</span>
+<span class="flex items-center gap-2 text-green-600 font-label-mono text-[11px]">
+<span class="w-2 h-2 rounded-full bg-green-600 animate-pulse"></span>
+Uplink Secured
+</span>
+</div>
+<div aria-live="polite" class="flex-grow overflow-y-auto p-stack-lg space-y-stack-lg relative" id="chatBox">
+<div class="chat-message assistant flex gap-4 items-start">
+<div class="assistant-avatar"><span class="material-symbols-outlined text-[18px]">memory</span></div>
+<div class="msg-bubble glass-surface border-l-4 border-forest-deep p-5 rounded-r-lg">
+<p class="font-body-md text-on-background">I've analyzed the initial telemetry for Unit 88-XF-01. The sensor alignment failure suggests a mechanical resistance in the 5-axis stabilization cradle. Are you hearing a clicking sound during the initialization phase?</p>
+<div class="mt-stack-md flex gap-stack-sm flex-wrap">
+<button class="bg-forest-deep text-white px-4 py-2 rounded font-button-text text-[13px] hover:opacity-90 transition-all">Yes, audible click</button>
+<button class="border border-outline-variant px-4 py-2 rounded font-button-text text-[13px] hover:bg-surface-container-high transition-all">No sound detected</button>
+</div>
+</div>
+</div>
+<div class="chat-message user flex gap-4 items-start justify-end">
+<div class="msg-bubble bg-forest-deep text-white p-5 rounded-lg rounded-tr-none">
+<p class="font-body-md">Confirming audible clicking from the mount area. It sounds like a mechanical reset loop.</p>
+</div>
+<div class="user-avatar"><span class="material-symbols-outlined text-[18px]">person</span></div>
+</div>
+</div>
+<form class="p-4 border-t border-outline-variant/10 bg-white/40" id="composer" novalidate="">
+<div class="flex flex-col gap-2">
+<div class="flex flex-wrap gap-2" id="quickPrompts"></div>
+<div class="relative flex items-end gap-2">
+<textarea class="flex-grow bg-surface-container-high/40 rounded-xl p-3 font-label-mono text-body-md border-none focus:ring-1 focus:ring-primary/20 transition-all resize-none" id="userInput" placeholder="Loading repair flow..." rows="1"></textarea>
+<div class="flex gap-1 mb-1">
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-all hidden" id="backBtn" type="button"><span class="material-symbols-outlined text-[20px]">arrow_back</span></button>
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-all hidden" id="skipBtn" type="button"><span class="material-symbols-outlined text-[20px]">skip_next</span></button>
+<button class="bg-primary text-white p-3 rounded-xl hover:scale-105 active:scale-95 transition-all shadow-md aluminum-edge" id="sendBtn" type="submit">
+<span class="material-symbols-outlined text-[20px]">send</span>
+</button>
+</div>
+</div>
+<div class="flex justify-between items-center px-1">
+<p class="font-label-mono text-[10px] text-on-surface-variant/50 uppercase tracking-tighter" id="inputMeta">Enter to send • Shift+Enter for newline</p>
+<p class="font-label-mono text-[10px] text-on-surface-variant/50" id="composerHint">Continuous input available</p>
+</div>
+</div>
+</form>
+</div>
+</section>
+<section class="col-span-12 lg:col-span-5 flex flex-col h-full overflow-hidden gap-stack-md" id="resultsPanel">
+<div class="flex justify-between items-end px-2">
+<h3 class="font-headline-md text-headline-md text-primary" id="resultsTitle">Repair Protocol</h3>
+<span class="font-label-mono text-[11px] text-on-surface-variant/50" id="resultCount">3 Solutions Found</span>
+</div>
+<div class="flex-grow overflow-y-auto space-y-stack-md pr-1">
+<div id="extractedSolutions"></div>
+<div class="space-y-stack-md" id="resultsGrid">
+<div class="glass-surface rounded-xl precision-border-orange overflow-hidden transition-all hover:translate-y-[-2px] hover:shadow-xl">
+<div class="p-4">
+<div class="flex justify-between items-start mb-2">
+<span class="font-label-mono text-[10px] bg-accent-orange/10 text-accent-orange px-2 py-0.5 rounded uppercase font-bold tracking-wider">Priority Alpha</span>
+<span class="material-symbols-outlined text-accent-orange text-[20px]">engineering</span>
+</div>
+<h4 class="font-headline-md text-[20px] text-primary mb-2">IBIS Manual Reset Procedure</h4>
+<p class="font-body-md text-on-surface-variant text-[14px] mb-stack-md">Forced recalibration of the In-Body Image Stabilization system via the service menu terminal.</p>
+<div class="aspect-video w-full rounded-lg bg-forest-muted overflow-hidden relative group">
+<img alt="Camera internals" class="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBtc8pSUbsytXbqAU0P8YXAHE4i-zch7Uu3oHSEn4Hm2XpxTKhvtWNZD07QRooMuf__Kdbs5WC1boL_hywnubOJPBL_t-3A7w97os0T3cXAj6k-cj8k1Q_CGcGgi_JoeayILdYrBVVIPuNgRRoUL2S5FglV1R233KNbjI4bZLz1neqDHlyT0iTNSaLU1M31RcQRPsxE3pFqhjEWAa-vrIy9gut_OyRctJvfv177sf-2BDrVi8WcC_B4HP9DGToeyxuF5b2XLAL0nnjR"/>
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="w-12 h-12 rounded-full bg-accent-orange/90 flex items-center justify-center text-white shadow-lg cursor-pointer hover:scale-110 transition-all">
+<span class="material-symbols-outlined">play_arrow</span>
+</div>
+</div>
+<div class="absolute bottom-2 left-2 px-2 py-1 bg-black/60 backdrop-blur-md rounded text-[10px] text-white font-label-mono uppercase">Guide // 04:22</div>
+</div>
+<div class="mt-stack-md flex justify-between items-center">
+<a class="font-label-mono text-[11px] text-primary flex items-center gap-1 hover:underline" href="#">
+<span class="material-symbols-outlined text-[14px]">link</span> Source: Service Manual p.142
+</a>
+<button class="bg-primary text-white font-button-text text-[12px] px-3 py-1.5 rounded aluminum-edge">Execute Plan</button>
+</div>
+</div>
+</div>
+<div class="glass-surface rounded-xl precision-border-green overflow-hidden transition-all hover:translate-y-[-2px] hover:shadow-lg">
+<div class="p-4">
+<div class="flex justify-between items-start mb-2">
+<span class="font-label-mono text-[10px] bg-forest-deep/10 text-forest-deep px-2 py-0.5 rounded uppercase font-bold tracking-wider">Maintenance</span>
+<span class="material-symbols-outlined text-forest-deep text-[20px]">verified_user</span>
+</div>
+<h4 class="font-headline-md text-[20px] text-primary mb-2">Firmware Rollback (v1.2)</h4>
+<p class="font-body-md text-on-surface-variant text-[14px] mb-stack-md">Known conflict with v1.4 firmware and specific Lumix S-Pro lenses causes IBIS jitter. Revert to stable build.</p>
+<div class="p-3 bg-surface-container-high/60 rounded-lg flex items-center gap-stack-md border border-outline-variant/10">
+<span class="material-symbols-outlined text-forest-deep">download</span>
+<div class="flex-grow">
+<p class="font-label-mono text-[12px] font-semibold text-primary">S5II_V120_STABLE.bin</p>
+<p class="font-label-mono text-[10px] text-on-surface-variant/60">412 MB // MD5: A3F9...</p>
+</div>
+<button class="text-primary hover:scale-110 transition-transform">
+<span class="material-symbols-outlined">open_in_new</span>
+</button>
+</div>
+</div>
+</div>
+<div class="glass-surface rounded-xl precision-border-green overflow-hidden transition-all hover:translate-y-[-2px] hover:shadow-lg">
+<div class="p-4">
+<div class="flex justify-between items-start mb-2">
+<span class="font-label-mono text-[10px] bg-forest-deep/10 text-forest-deep px-2 py-0.5 rounded uppercase font-bold tracking-wider">Hardware Check</span>
+<span class="material-symbols-outlined text-forest-deep text-[20px]">settings_input_component</span>
+</div>
+<h4 class="font-headline-md text-[20px] text-primary mb-2">Mount Pin Tensioning</h4>
+<p class="font-body-md text-on-surface-variant text-[14px]">Electronic communication failure can trigger mechanical resets. Ensure the 11-pin mount is free of oxidation.</p>
+</div>
+</div>
+</div>
+<div class="opacity-60 space-y-2 py-4 border-t border-outline-variant/10" id="resultsSources">
+<p class="font-label-mono text-[10px] uppercase tracking-widest text-on-surface-variant">Validated Sources</p>
+<div class="flex gap-4">
+<span class="text-[11px] font-label-mono">• Panasonic Service DB</span>
+<span class="text-[11px] font-label-mono">• Lumix Community Wiki</span>
+</div>
+</div>
+<div id="resultsAffiliate"></div>
+</div>
+<div class="p-4 glass-surface rounded-xl bg-forest-deep text-white flex justify-between items-center shadow-2xl mt-auto">
+<div class="flex flex-col">
+<span class="font-label-mono text-[10px] opacity-60 uppercase tracking-widest">Unit Status</span>
+<span class="font-body-md font-semibold">Ready for Intervention</span>
+</div>
+<button class="bg-accent-orange text-white px-6 py-2 rounded-lg font-button-text text-button-text hover:bg-accent-orange-vibrant transition-all shadow-md active:scale-95">Start Automated Triage</button>
+</div>
+</section>
+</div>
+</main>
+</div>
+<div class="fixed inset-0 pointer-events-none -z-10 overflow-hidden">
+<div class="absolute top-[-10%] right-[-5%] w-[40%] h-[60%] rounded-full bg-primary/5 blur-[120px]"></div>
+<div class="absolute bottom-[-10%] left-[-5%] w-[30%] h-[50%] rounded-full bg-accent-orange/5 blur-[100px]"></div>
+</div>
+<script src="js/app.js?v=20260524-5"></script>
+<script src="js/api.js?v=20260524-5"></script>
+<script src="js/chat.js?v=20260524-5"></script>
+<script>
+    const textarea = document.getElementById('problemInput');
+    const container = textarea?.closest('.glass-surface');
+    if (textarea && container) {
+        textarea.addEventListener('focus', () => {
+            container.style.backgroundColor = 'rgba(232, 232, 231, 0.6)';
+            container.style.transition = 'all 0.4s ease';
+        });
+        textarea.addEventListener('blur', () => {
+            container.style.backgroundColor = 'rgba(255, 252, 247, 0.75)';
+        });
+    }
+    const navLinks = document.querySelectorAll('nav a');
+    navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            navLinks.forEach(l => {
+                l.classList.remove('text-primary', 'border-b-2', 'border-accent-orange', 'pb-1');
+                l.classList.add('text-on-surface-variant/70');
+            });
+            link.classList.add('text-primary', 'border-b-2', 'border-accent-orange', 'pb-1');
+            link.classList.remove('text-on-surface-variant/70');
+        });
+    });
+</script>
+</body>
+</html>

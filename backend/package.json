@@ -1,0 +1,31 @@
+{
+  "dependencies": {
+    "better-sqlite3": "^12.10.0",
+    "cheerio": "^1.2.0",
+    "compression": "^1.8.1",
+    "cors": "^2.8.6",
+    "cross-env": "^10.1.0",
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.5.2",
+    "helmet": "^8.2.0",
+    "morgan": "^1.10.1",
+    "undici": "^7.0.0"
+  },
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "start:prod": "cross-env NODE_ENV=production node server.js",
+    "start:docker": "docker compose up --build -d",
+    "stop:docker": "docker compose down",
+    "test": "node test/run-tests.js",
+    "clean": "node -e \"const{rmSync,existsSync}=require('fs');const{join}=require('path');const d=join(__dirname,'data');if(existsSync(join(d,'logs')))rmSync(join(d,'logs'),{recursive:true,force:true});['.db','.json'].forEach(e=>require('fs').readdirSync(d).filter(f=>f.endsWith(e)).forEach(f=>rmSync(join(d,f))))\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs"
+}

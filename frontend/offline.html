@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>TECH_OS // REPAIR — Offline Mode</title>
+<link rel="icon" href="images/symbol.svg" type="image/svg+xml">
+<script>
+  window.tailwind = window.tailwind || {};
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          "forest-deep": "#0F403A", "accent-orange": "#C86A2C", "accent-orange-vibrant": "#E87C36",
+          "bg-cream": "#F6F0E6", "ink-black": "#0A0A0A", "ink-gray": "#4A4A4A",
+          "surface": "#f9f9f8", "surface-container-low": "#f3f4f2", "surface-container-high": "#e8e8e7",
+          "primary": "#002924", "on-background": "#1a1c1b", "on-surface-variant": "#404847",
+          "outline-variant": "#c0c8c6", "primary-container": "#0f403a"
+        },
+        fontFamily: {
+          "headline": ["Libre Caslon Text", "serif"],
+          "body": ["Hanken Grotesk", "sans-serif"],
+          "mono-label": ["JetBrains Mono", "monospace"]
+        }
+      }
+    }
+  }
+</script>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:wght@400;700&family=Hanken+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="styles.css" rel="stylesheet"/>
+</head>
+<body class="bg-bg-cream text-on-background font-body min-h-screen">
+<div class="max-w-6xl mx-auto p-4 md:p-6">
+  <div class="flex items-center justify-between mb-6">
+    <div class="flex items-center gap-3">
+      <a href="/" class="w-9 h-9 rounded-lg bg-gradient-to-br from-forest-deep to-accent-orange flex items-center justify-center text-white font-headline font-bold text-sm no-underline">SY</a>
+      <div>
+        <h1 class="font-headline text-2xl font-bold text-forest-deep">Offline Mode</h1>
+        <p class="text-xs text-ink-gray">Download repair packs for offline use</p>
+      </div>
+    </div>
+    <a href="/" class="btn-secondary text-sm no-underline"><span class="material-symbols-outlined text-lg">arrow_back</span> Back</a>
+  </div>
+
+  <div class="page-nav">
+    <a href="#" class="active" data-tab="browse">Browse Packs</a>
+    <a href="#" data-tab="generate">Generate Pack</a>
+  </div>
+
+  <div id="offlineContent">
+    <div class="text-center py-12"><p class="text-ink-gray">Loading...</p></div>
+  </div>
+</div>
+
+<script src="js/offline.js"></script>
+</body>
+</html>

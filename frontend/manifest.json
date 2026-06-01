@@ -1,0 +1,27 @@
+{
+  "name": "ShootYourSelf - Open Repair Intelligence",
+  "short_name": "SYS",
+  "description": "Editorial-tech repair workflow with guided triage, telemetry, and protocol cards.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F6F0E6",
+  "theme_color": "#0F403A",
+  "icons": [
+    {
+      "src": "images/symbol.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ],
+  "shortcuts": [
+    { "name": "Command Center", "short_name": "Repair", "url": "/" },
+    { "name": "Community", "short_name": "Community", "url": "/community.html" },
+    { "name": "Visual Diagnostics", "short_name": "Vision", "url": "/vision.html" },
+    { "name": "Telemetry", "short_name": "Telemetry", "url": "/telemetry.html" },
+    { "name": "Device Profiles", "short_name": "Devices", "url": "/device-memory.html" },
+    { "name": "Offline Packs", "short_name": "Offline", "url": "/offline.html" },
+    { "name": "AR Assistant", "short_name": "AR", "url": "/ar.html" },
+    { "name": "Ecosystem", "short_name": "Ecosystem", "url": "/ecosystem.html" },
+    { "name": "Admin", "short_name": "Admin", "url": "/admin.html" }
+  ]
+}

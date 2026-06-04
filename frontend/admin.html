@@ -37,33 +37,18 @@
 <link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:wght@400;700&family=Hanken+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&display=swap" rel="stylesheet"/>
 
-<link href="styles.css?v=3" rel="stylesheet"/>
-<style>
-  .stat-value { font-family: var(--font-mono); font-size: var(--fs-30); font-weight: 700; color: var(--color-text); line-height: 1.1; letter-spacing: -0.02em; }
-  .stat-label { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-text-muted); margin-top: 4px; font-weight: 500; }
-  .badge-green { background: var(--color-success-soft); color: var(--color-success); display: inline-flex; align-items: center; gap: 4px; padding: 2px 10px; border-radius: 9999px; font-family: var(--font-mono); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; white-space: nowrap; }
-  .badge-red { background: var(--color-danger-soft); color: var(--color-danger); display: inline-flex; align-items: center; gap: 4px; padding: 2px 10px; border-radius: 9999px; font-family: var(--font-mono); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; white-space: nowrap; }
-  .badge-blue { background: var(--color-info-soft); color: var(--color-info); display: inline-flex; align-items: center; gap: 4px; padding: 2px 10px; border-radius: 9999px; font-family: var(--font-mono); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; white-space: nowrap; }
-  .badge-orange { background: var(--color-accent-soft); color: var(--color-accent-strong); display: inline-flex; align-items: center; gap: 4px; padding: 2px 10px; border-radius: 9999px; font-family: var(--font-mono); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; white-space: nowrap; }
-  .trust-meter { display: flex; align-items: center; gap: 8px; font-size: var(--fs-13); }
-  .trust-bar { flex: 1; height: 4px; border-radius: 9999px; background: var(--color-bg-subtle); overflow: hidden; }
-  .trust-bar-fill { height: 100%; border-radius: 9999px; transition: width 300ms ease; }
-  .trust-bar-fill.high { background: var(--color-success); }
-  .trust-bar-fill.medium { background: var(--color-warning); }
-  .trust-bar-fill.low { background: var(--color-danger); }
-  .font-mono-label { font-family: var(--font-mono); }
-</style>
+<link href="styles.css?v=4" rel="stylesheet"/>
 </head>
-<body style="background:var(--color-bg);color:var(--color-text);font-family:var(--font-body);min-height:100vh">
+<body class="app-body">
 <header class="app-header">
   <div class="app-header__brand">
     <div class="app-header__logo">AD</div>
     <span>Admin Panel</span>
   </div>
   <nav class="app-header__nav" data-nav>
-    <a href="/"><span class="material-symbols-outlined">dns</span>Systems</a>
-    <a href="community.html"><span class="material-symbols-outlined">archive</span>Archive</a>
-    <a href="ecosystem.html"><span class="material-symbols-outlined">menu_book</span>Manuals</a>
+    <a href="/"><img src="images/icon-terminal.svg" alt="" class="nav-icon" width="20" height="20">Systems</a>
+    <a href="community.html"><img src="images/icon-community.svg" alt="" class="nav-icon" width="20" height="20">Archive</a>
+    <a href="ecosystem.html"><img src="images/icon-book.svg" alt="" class="nav-icon" width="20" height="20">Manuals</a>
   </nav>
   <div class="app-header__spacer"></div>
   <div class="app-header__actions">
@@ -71,7 +56,7 @@
     <span class="sep">|</span>
     <a href="privacy.html">Privacy</a>
     <button id="darkModeToggle" class="icon-btn" aria-label="Toggle dark mode">
-      <span class="material-symbols-outlined">dark_mode</span>
+      <img src="images/icon-dark-mode.svg" alt="" class="nav-icon" width="22" height="22">
     </button>
     <div class="user-pill">
       <span class="user-pill__avatar">T</span>
@@ -92,13 +77,13 @@
       </div>
       <div class="page-head__actions">
         <button class="btn btn--secondary btn--sm" onclick="setAdminKey()">
-          <span class="material-symbols-outlined">key</span> Set Key
+          <img src="images/icon-fingerprint.svg" alt="" class="nav-icon" width="20" height="20"> Set Key
         </button>
         <button class="btn btn--secondary btn--sm" onclick="clearAdminKey()">
-          <span class="material-symbols-outlined">logout</span> Clear Key
+          <img src="images/icon-offline.svg" alt="" class="nav-icon" width="20" height="20"> Clear Key
         </button>
         <button class="btn btn--primary btn--sm" onclick="refreshAll()">
-          <span class="material-symbols-outlined">refresh</span> Refresh
+          <img src="images/icon-telemetry.svg" alt="" class="nav-icon" width="20" height="20"> Refresh
         </button>
         <span class="mono-label" id="uptimeDisplay" style="font-size:11px;align-self:center;margin-left:8px"></span>
       </div>
@@ -106,25 +91,25 @@
 
     <nav class="tabs" id="tabNav">
       <button class="tab tab-btn is-active" data-tab="overview" onclick="switchTab('overview')">
-        <span class="material-symbols-outlined">dashboard</span> Overview
+        <img src="images/icon-monitor.svg" alt="" class="nav-icon" width="20" height="20"> Overview
       </button>
       <button class="tab tab-btn" data-tab="engines" onclick="switchTab('engines')">
-        <span class="material-symbols-outlined">travel_explore</span> Engines
+        <img src="images/icon-visual.svg" alt="" class="nav-icon" width="20" height="20"> Engines
       </button>
       <button class="tab tab-btn" data-tab="feedback" onclick="switchTab('feedback')">
-        <span class="material-symbols-outlined">bar_chart</span> Feedback
+        <img src="images/icon-telemetry.svg" alt="" class="nav-icon" width="20" height="20"> Feedback
       </button>
       <button class="tab tab-btn" data-tab="popular" onclick="switchTab('popular')">
-        <span class="material-symbols-outlined">trending_up</span> Popular
+        <img src="images/icon-telemetry.svg" alt="" class="nav-icon" width="20" height="20"> Popular
       </button>
       <button class="tab tab-btn" data-tab="upvotes" onclick="switchTab('upvotes')">
-        <span class="material-symbols-outlined">thumb_up</span> Upvotes
+        <img src="images/icon-community.svg" alt="" class="nav-icon" width="20" height="20"> Upvotes
       </button>
       <button class="tab tab-btn" data-tab="recent" onclick="switchTab('recent')">
-        <span class="material-symbols-outlined">history</span> Recent
+        <img src="images/icon-terminal.svg" alt="" class="nav-icon" width="20" height="20"> Recent
       </button>
       <button class="tab tab-btn" data-tab="cache" onclick="switchTab('cache')">
-        <span class="material-symbols-outlined">storage</span> Cache
+        <img src="images/icon-memory.svg" alt="" class="nav-icon" width="20" height="20"> Cache
       </button>
     </nav>
 

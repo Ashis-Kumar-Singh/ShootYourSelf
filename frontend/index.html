@@ -28,23 +28,25 @@ tailwind.config={darkMode:"class",theme:{extend:{colors:{
 </script>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:wght@400;700&family=Hanken+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&display=swap" rel="stylesheet"/>
-<link href="styles.css?v=3" rel="stylesheet"/>
+<link href="styles.css?v=4" rel="stylesheet"/>
 </head>
-<body class="font-body text-[var(--color-text)] min-h-screen" style="background:var(--color-bg)">
+<body class="app-body">
 
-<header class="app-header" style="position:sticky;top:0;z-index:50">
+<header class="app-header">
   <button id="sidebarToggle" class="sidebar-toggle" aria-label="Toggle navigation" data-sidebar-toggle>
-    <span class="material-symbols-outlined">menu</span>
+    <img src="images/icon-menu.svg" alt="" class="nav-icon" width="22" height="22">
   </button>
   <div class="app-header__brand">
     <div class="app-header__logo">SYS</div>
-    <span>Command Center</span>
+    <div class="app-header__brand-text">
+      <span class="app-header__brand-name">SHOOTYOURSELF</span>
+      <span class="app-header__brand-sub">Open Repair Intelligence</span>
+    </div>
   </div>
   <nav class="app-header__nav" data-nav>
-    <a href="/" class="is-active"><span class="material-symbols-outlined">dns</span>Systems</a>
-    <a href="community.html"><span class="material-symbols-outlined">archive</span>Archive</a>
-    <a href="ecosystem.html"><span class="material-symbols-outlined">menu_book</span>Manuals</a>
+    <a href="/" class="is-active"><img src="images/icon-terminal.svg" alt="" class="nav-icon" width="20" height="20">Systems</a>
+    <a href="community.html"><img src="images/icon-community.svg" alt="" class="nav-icon" width="20" height="20">Archive</a>
+    <a href="ecosystem.html"><img src="images/icon-ecosystem.svg" alt="" class="nav-icon" width="20" height="20">Manuals</a>
   </nav>
   <div class="app-header__spacer"></div>
   <div class="app-header__actions">
@@ -52,7 +54,7 @@ tailwind.config={darkMode:"class",theme:{extend:{colors:{
     <span class="sep">|</span>
     <a href="privacy.html">Privacy</a>
     <button id="darkModeToggle" class="icon-btn" aria-label="Toggle dark mode">
-      <span class="material-symbols-outlined">dark_mode</span>
+      <img src="images/icon-dark-mode.svg" alt="" class="nav-icon" width="22" height="22">
     </button>
     <div class="user-pill">
       <span class="user-pill__avatar">T</span>
@@ -63,11 +65,11 @@ tailwind.config={darkMode:"class",theme:{extend:{colors:{
 
 <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-<div class="app-layout" style="min-height:calc(100vh - 64px)">
+<div class="app-layout">
   <aside class="app-sidebar" id="appSidebar">
     <div class="sidebar-section">
       <div class="sidebar-section__head">
-        <span class="material-symbols-outlined">fingerprint</span>
+        <img src="images/icon-fingerprint.svg" alt="" class="nav-icon" width="20" height="20">
         <h2 class="font-headline" id="statusPill">Standing By</h2>
       </div>
       <dl class="sidebar-dl summary-list">
@@ -88,28 +90,28 @@ tailwind.config={darkMode:"class",theme:{extend:{colors:{
     </div>
 
     <nav class="sidebar-nav">
-      <a href="/"><span class="material-symbols-outlined">terminal</span>Command Center</a>
-      <a href="community.html"><span class="material-symbols-outlined">diversity_3</span>Community</a>
-      <a href="vision.html"><span class="material-symbols-outlined">image_search</span>Visual Diagnostics</a>
-      <a href="telemetry.html"><span class="material-symbols-outlined">query_stats</span>Telemetry</a>
-      <a href="device-memory.html"><span class="material-symbols-outlined">memory</span>Device Memory</a>
-      <a href="offline.html"><span class="material-symbols-outlined">cloud_off</span>Offline Mode</a>
-      <a href="ar.html"><span class="material-symbols-outlined">view_in_ar</span>AR Assistant</a>
-      <a href="ecosystem.html"><span class="material-symbols-outlined">public</span>Ecosystem</a>
+      <a href="/"><img src="images/icon-terminal.svg" alt="" class="nav-icon" width="20" height="20">Command Center</a>
+      <a href="community.html"><img src="images/icon-community.svg" alt="" class="nav-icon" width="20" height="20">Community</a>
+      <a href="vision.html"><img src="images/icon-visual.svg" alt="" class="nav-icon" width="20" height="20">Visual Diagnostics</a>
+      <a href="telemetry.html"><img src="images/icon-telemetry.svg" alt="" class="nav-icon" width="20" height="20">Telemetry</a>
+      <a href="device-memory.html"><img src="images/icon-memory.svg" alt="" class="nav-icon" width="20" height="20">Device Memory</a>
+      <a href="offline.html"><img src="images/icon-offline.svg" alt="" class="nav-icon" width="20" height="20">Offline Mode</a>
+      <a href="ar.html"><img src="images/icon-ar.svg" alt="" class="nav-icon" width="20" height="20">AR Assistant</a>
+      <a href="ecosystem.html"><img src="images/icon-ecosystem.svg" alt="" class="nav-icon" width="20" height="20">Ecosystem</a>
     </nav>
 
     <div class="sidebar-foot">
       <button class="btn btn--accent btn--block" id="restartBtn">
-        <span class="material-symbols-outlined">add_circle</span>
+        <img src="images/icon-add.svg" alt="" class="nav-icon" width="20" height="20">
         Initialize New Repair
       </button>
       <div class="row">
         <button class="btn btn--ghost btn--sm sidebar-foot-btn">
-          <span class="material-symbols-outlined">help_center</span>
+          <img src="images/icon-help.svg" alt="" class="nav-icon" width="20" height="20">
           <span class="mono-label">Support</span>
         </button>
         <button class="btn btn--ghost btn--sm sidebar-foot-btn">
-          <span class="material-symbols-outlined">terminal</span>
+          <img src="images/icon-terminal.svg" alt="" class="nav-icon" width="20" height="20">
           <span class="mono-label">Logs</span>
         </button>
       </div>
@@ -124,16 +126,16 @@ tailwind.config={darkMode:"class",theme:{extend:{colors:{
         <!-- Left: chat -->
         <section class="app-grid__chat">
         <div class="glass-surface chat-surface">
-          <div style="padding:var(--space-3) var(--space-4);border-bottom:1px solid var(--color-border);display:flex;justify-content:space-between;align-items:center;background:var(--color-bg-subtle)">
+          <div class="chat-header">
             <span class="mono-label">Active Thread // 0429-X</span>
-            <span class="live-pill" style="display:inline-flex;align-items:center;gap:var(--space-2)">
+            <span class="live-pill">
               <span class="status-dot status-dot--online status-dot--pulse"></span>
               Uplink Secured
             </span>
           </div>
-          <div id="chatBox" aria-live="polite" style="flex:1;overflow-y:auto;padding:var(--space-5);display:flex;flex-direction:column;gap:var(--space-4);position:relative">
-            <div id="chatLoading" style="display:flex;align-items:center;justify-content:center;flex:1">
-              <div style="text-align:center;width:100%;max-width:320px">
+          <div id="chatBox" aria-live="polite" class="chat-box">
+            <div id="chatLoading" class="chat-loading">
+              <div class="chat-loading-inner">
                 <div class="skeleton skeleton--block"></div>
                 <div class="skeleton skeleton--text short"></div>
                 <div class="skeleton skeleton--text"></div>
@@ -141,22 +143,22 @@ tailwind.config={darkMode:"class",theme:{extend:{colors:{
               </div>
             </div>
           </div>
-          <form id="composer" style="padding:var(--space-3) var(--space-4);border-top:1px solid var(--color-border);background:var(--color-bg-subtle)" novalidate>
-            <div style="display:flex;flex-direction:column;gap:var(--space-2)">
+          <form id="composer" class="composer" novalidate>
+            <div class="composer-inner">
               <div id="contextExamples" class="context-carousel"></div>
-              <div style="display:flex;align-items:flex-end;gap:var(--space-2);position:relative">
-                <textarea class="input input--mono" id="userInput" aria-label="Type your response" placeholder="Loading repair flow..." rows="1" style="flex:1;min-height:44px;padding:var(--space-3) var(--space-3);background:var(--color-surface);border-color:var(--color-border);border-radius:var(--radius-md);resize:none;font-size:var(--fs-14)"></textarea>
-                <div style="display:flex;gap:4px;flex-shrink:0;margin-bottom:2px">
-                  <button class="btn btn--ghost btn--icon" id="backBtn" type="button" style="display:none" aria-label="Back"><span class="material-symbols-outlined" style="font-size:20px">arrow_back</span></button>
-                  <button class="btn btn--ghost btn--icon" id="skipBtn" type="button" style="display:none" aria-label="Skip"><span class="material-symbols-outlined" style="font-size:20px">skip_next</span></button>
-                  <button class="btn btn--primary btn--icon" id="sendBtn" type="submit" aria-label="Send" style="height:44px;width:44px;border-radius:var(--radius-md)">
-                    <span class="material-symbols-outlined" style="font-size:20px">send</span>
+              <div class="composer-row">
+                <textarea class="input input--mono composer-input" id="userInput" aria-label="Type your response" placeholder="Loading repair flow..." rows="1"></textarea>
+                <div class="composer-actions">
+                   <button class="btn btn--ghost btn--icon" id="backBtn" type="button" hidden aria-label="Back"><img src="images/icon-arrow-back.svg" alt="" class="nav-icon" width="18" height="18"></button>
+                   <button class="btn btn--ghost btn--icon" id="skipBtn" type="button" hidden aria-label="Skip"><img src="images/icon-skip.svg" alt="" class="nav-icon" width="18" height="18"></button>
+                   <button class="btn btn--primary btn--icon send-btn" id="sendBtn" type="submit" aria-label="Send">
+                    <img src="images/icon-send.svg" alt="" class="nav-icon" width="18" height="18">
                   </button>
                 </div>
               </div>
-              <div style="display:flex;justify-content:space-between;padding:0 4px">
-                <span class="mono-label" style="font-size:10px;opacity:0.7" id="inputMeta">Enter to send / Shift+Enter for newline</span>
-                <span class="mono-label" style="font-size:10px;opacity:0.7" id="composerHint">Continuous input available</span>
+              <div class="composer-meta">
+                <span class="mono-label composer-meta-text" id="inputMeta">Enter to send / Shift+Enter for newline</span>
+                <span class="mono-label composer-meta-text" id="composerHint">Continuous input available</span>
               </div>
             </div>
           </form>
@@ -171,23 +173,39 @@ tailwind.config={darkMode:"class",theme:{extend:{colors:{
         </div>
         <div id="resultsContent" class="results-content">
           <div id="extractedSolutions"></div>
-          <div id="findingsPanel" style="display:none;margin-bottom:12px">
-            <div class="glass-surface" style="padding:16px;border-left:4px solid var(--color-accent);border-radius:var(--radius-lg)">
-              <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
-                <span class="material-symbols-outlined" style="color:var(--color-accent);font-size:20px">insights</span>
-                <h4 style="font-family:var(--font-headline);font-size:18px;font-weight:600;color:var(--color-text);margin:0">Telemetry Analysis</h4>
-                <span id="findingsConfidence" class="mono-label" style="font-size:10px;color:var(--color-text-secondary);margin-left:auto"></span>
+          <div id="findingsPanel" class="findings-panel">
+            <div class="glass-surface findings-card">
+              <div class="findings-header">
+                <img src="images/icon-insights.svg" alt="" class="nav-icon findings-icon" width="20" height="20">
+                <h4 class="findings-title">Telemetry Analysis</h4>
+                <span id="findingsConfidence" class="mono-label findings-confidence"></span>
               </div>
-              <div id="findingsSummary" style="font-size:13px;color:var(--color-text-secondary);margin-bottom:12px"></div>
-              <div id="findingsList" style="display:flex;flex-direction:column;gap:6px"></div>
-              <div id="findingsActions" style="margin-top:12px;padding-top:12px;border-top:1px solid var(--color-border)"></div>
+              <div id="findingsSummary" class="findings-summary"></div>
+              <div id="findingsList" class="findings-list"></div>
+              <div id="findingsActions" class="findings-actions"></div>
             </div>
           </div>
           <div id="resultsGrid">
             <div id="resultsEmpty" class="empty-state">
-              <span class="material-symbols-outlined">search_insights</span>
-              <h3>No active repair session</h3>
-              <p>Select a device and describe an issue to see repair solutions from across the web.</p>
+              <img src="images/icon-build.svg" alt="" class="nav-icon empty-state__icon" width="64" height="64">
+              <h3>Ready For Diagnostics</h3>
+              <div class="empty-state__steps">
+                <span class="empty-state__step">
+                  <img src="images/icon-devices.svg" alt="" class="nav-icon" width="18" height="18">
+                  Select Device
+                </span>
+                <span class="empty-state__arrow">→</span>
+                <span class="empty-state__step">
+                  <img src="images/icon-description.svg" alt="" class="nav-icon" width="18" height="18">
+                  Describe Issue
+                </span>
+                <span class="empty-state__arrow">→</span>
+                <span class="empty-state__step">
+                  <img src="images/icon-tools.svg" alt="" class="nav-icon" width="18" height="18">
+                  Get Repair Plan
+                </span>
+              </div>
+              <p>Start a new repair session above to see solutions from across the web.</p>
             </div>
           </div>
           <div id="resultsSources" class="results-sources">

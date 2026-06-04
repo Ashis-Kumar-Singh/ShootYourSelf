@@ -20,24 +20,24 @@ border:"#E7E5E4",muted:"#64748B",text:"#0F172A","text-secondary":"#334155"
 </script>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:wght@400;700&family=Hanken+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&display=swap" rel="stylesheet"/>
 
-<link href="styles.css?v=3" rel="stylesheet"/>
+
+<link href="styles.css?v=4" rel="stylesheet"/>
 </head>
-<body style="background:var(--color-bg);color:var(--color-text);font-family:var(--font-body);min-height:100vh">
+<body class="app-body">
 
-<header class="app-header" style="position:sticky;top:0;z-index:50">
+<header class="app-header">
   <button id="sidebarToggle" class="sidebar-toggle" aria-label="Toggle navigation" data-sidebar-toggle>
-    <span class="material-symbols-outlined">menu</span>
+    <img src="images/icon-menu.svg" alt="" class="nav-icon" width="22" height="22">
   </button>
   <div class="app-header__brand">
     <div class="app-header__logo">SYS</div>
     <span>Command Center</span>
   </div>
   <nav class="app-header__nav" data-nav>
-    <a href="/"><span class="material-symbols-outlined">dns</span>Systems</a>
-    <a href="community.html" class="is-active"><span class="material-symbols-outlined">archive</span>Archive</a>
-    <a href="ecosystem.html"><span class="material-symbols-outlined">menu_book</span>Manuals</a>
+    <a href="/"><img src="images/icon-terminal.svg" alt="" class="nav-icon" width="20" height="20">Systems</a>
+    <a href="community.html" class="is-active"><img src="images/icon-community.svg" alt="" class="nav-icon" width="20" height="20">Archive</a>
+    <a href="ecosystem.html"><img src="images/icon-book.svg" alt="" class="nav-icon" width="20" height="20">Manuals</a>
   </nav>
   <div class="app-header__spacer"></div>
   <div class="app-header__actions">
@@ -45,7 +45,7 @@ border:"#E7E5E4",muted:"#64748B",text:"#0F172A","text-secondary":"#334155"
     <span class="sep">|</span>
     <a href="privacy.html">Privacy</a>
     <button id="darkModeToggle" class="icon-btn" aria-label="Toggle dark mode">
-      <span class="material-symbols-outlined">dark_mode</span>
+      <img src="images/icon-dark-mode.svg" alt="" class="nav-icon" width="22" height="22">
     </button>
     <div class="user-pill">
       <span class="user-pill__avatar">T</span>
@@ -59,7 +59,7 @@ border:"#E7E5E4",muted:"#64748B",text:"#0F172A","text-secondary":"#334155"
 <div class="app-sidebar" id="appSidebar">
   <div class="sidebar-section">
     <div class="sidebar-section__head">
-      <span class="material-symbols-outlined">fingerprint</span>
+      <img src="images/icon-fingerprint.svg" alt="" class="nav-icon" width="20" height="20">
       <h2 class="font-headline" id="statusPill">Standing By</h2>
     </div>
     <dl class="sidebar-dl summary-list">
@@ -80,28 +80,28 @@ border:"#E7E5E4",muted:"#64748B",text:"#0F172A","text-secondary":"#334155"
   </div>
 
   <nav class="sidebar-nav">
-    <a href="/"><span class="material-symbols-outlined">terminal</span>Command Center</a>
-    <a href="community.html"><span class="material-symbols-outlined">diversity_3</span>Community</a>
-    <a href="vision.html"><span class="material-symbols-outlined">image_search</span>Visual Diagnostics</a>
-    <a href="telemetry.html"><span class="material-symbols-outlined">query_stats</span>Telemetry</a>
-    <a href="device-memory.html"><span class="material-symbols-outlined">memory</span>Device Memory</a>
-    <a href="offline.html"><span class="material-symbols-outlined">cloud_off</span>Offline Mode</a>
-    <a href="ar.html"><span class="material-symbols-outlined">view_in_ar</span>AR Assistant</a>
-    <a href="ecosystem.html"><span class="material-symbols-outlined">public</span>Ecosystem</a>
+    <a href="/"><img src="images/icon-terminal.svg" alt="" class="nav-icon" width="20" height="20">Command Center</a>
+    <a href="community.html"><img src="images/icon-community.svg" alt="" class="nav-icon" width="20" height="20">Community</a>
+    <a href="vision.html"><img src="images/icon-visual.svg" alt="" class="nav-icon" width="20" height="20">Visual Diagnostics</a>
+    <a href="telemetry.html"><img src="images/icon-telemetry.svg" alt="" class="nav-icon" width="20" height="20">Telemetry</a>
+    <a href="device-memory.html"><img src="images/icon-memory.svg" alt="" class="nav-icon" width="20" height="20">Device Memory</a>
+    <a href="offline.html"><img src="images/icon-offline.svg" alt="" class="nav-icon" width="20" height="20">Offline Mode</a>
+    <a href="ar.html"><img src="images/icon-ar.svg" alt="" class="nav-icon" width="20" height="20">AR Assistant</a>
+    <a href="ecosystem.html"><img src="images/icon-ecosystem.svg" alt="" class="nav-icon" width="20" height="20">Ecosystem</a>
   </nav>
 
   <div class="sidebar-foot">
     <button class="btn btn--accent btn--block" id="restartBtn">
-      <span class="material-symbols-outlined">add_circle</span>
+      <img src="images/icon-add.svg" alt="" class="nav-icon" width="20" height="20">
       Initialize New Repair
     </button>
     <div class="row">
       <button class="btn btn--ghost btn--sm sidebar-foot-btn">
-        <span class="material-symbols-outlined">help_center</span>
+        <img src="images/icon-help.svg" alt="" class="nav-icon" width="20" height="20">
         <span class="mono-label">Support</span>
       </button>
       <button class="btn btn--ghost btn--sm sidebar-foot-btn">
-        <span class="material-symbols-outlined">terminal</span>
+        <img src="images/icon-terminal.svg" alt="" class="nav-icon" width="20" height="20">
         <span class="mono-label">Logs</span>
       </button>
     </div>

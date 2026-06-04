@@ -22,8 +22,8 @@
     }
     var toggle = document.getElementById('darkModeToggle');
     if (toggle) {
-      var icon = toggle.querySelector('.material-symbols-outlined');
-      if (icon) icon.textContent = isDark ? 'light_mode' : 'dark_mode';
+      var icon = toggle.querySelector('img');
+      if (icon) icon.src = isDark ? 'images/icon-dark-mode.svg' : 'images/icon-dark-mode.svg';
       toggle.setAttribute('aria-pressed', isDark ? 'true' : 'false');
     }
   }

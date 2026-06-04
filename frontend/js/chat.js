@@ -132,11 +132,11 @@
       container.id = "toastContainer";
       document.body.appendChild(container);
     }
-    var icons = { success: "check_circle", error: "error", info: "info" };
+    var iconMap = { success: "icon-check", error: "icon-error", info: "icon-info" };
     var toast = document.createElement("div");
     toast.className = "toast toast-" + type;
     toast.innerHTML =
-      '<span class="material-symbols-outlined toast-icon">' + (icons[type] || "info") + '</span>' +
+      '<img src="images/' + (iconMap[type] || "icon-info") + '.svg" alt="" class="toast-icon nav-icon" width="20" height="20">' +
       '<span class="toast-msg">' + escapeHtml(message) + '</span>' +
       '<button class="toast-close" aria-label="Dismiss">&times;</button>';
     container.appendChild(toast);
@@ -662,7 +662,7 @@
       var retryArticle = document.createElement("article");
       retryArticle.className = "chat-message assistant";
       retryArticle.innerHTML = '<div class="flex gap-4 items-start">' +
-        '<div class="assistant-avatar"><span class="material-symbols-outlined text-[18px]">memory</span></div>' +
+        '<div class="assistant-avatar"><img src="images/icon-avatar-assistant.svg" alt="" class="nav-icon" width="18" height="18"></div>' +
         '<div class="glass-surface border-l-4 border-forest-deep p-4 rounded-r-lg msg-bubble">' +
         '<p><strong>Try again or use direct search:</strong></p>' +
         '<div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;">' +
@@ -753,7 +753,7 @@
           var header = document.createElement("div");
           header.className = "result-group-header";
           header.innerHTML = '<div class="flex items-center gap-2 py-2 mt-1" style="border-bottom:1px solid var(--color-border)">' +
-            '<span class="material-symbols-outlined" style="font-size:16px;color:var(--color-text-secondary);opacity:0.6">' + groupIcons[g] + '</span>' +
+            '<img src="images/icon-search.svg" alt="" class="nav-icon" width="16" height="16" style="opacity:0.6">' +
             '<span class="mono-label" style="font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:var(--color-text-secondary);opacity:0.6">' + groupLabels[g] + ' (' + items.length + ')</span>' +
             '</div>';
           resultsGrid.appendChild(header);
@@ -890,7 +890,7 @@
     var node = document.createElement("article");
     node.className = "chat-message assistant";
     var html = '<div class="flex gap-4 items-start">' +
-      '<div class="assistant-avatar"><span class="material-symbols-outlined text-[18px]">memory</span></div>' +
+      '<div class="assistant-avatar"><img src="images/icon-avatar-assistant.svg" alt="" class="nav-icon" width="18" height="18"></div>' +
       '<div class="glass-surface border-l-4 border-forest-deep p-4 rounded-r-lg msg-bubble" style="max-width:100%">' +
       '<p><strong>Extracted Solutions</strong></p>';
 
@@ -946,7 +946,7 @@
       var card = document.createElement("div");
       card.style.cssText = "display:flex;gap:8px;padding:8px;border-radius:8px;border-left:2px solid " + borderColor + ";background:var(--color-bg-subtle)";
       card.innerHTML =
-        '<span class="material-symbols-outlined" style="font-size:18px;margin-top:2px;flex-shrink:0;color:var(--color-text-secondary)">' + icon + '</span>' +
+        '<img src="images/icon-' + (icon === 'search' ? 'search' : icon === 'bolt' ? 'zap' : icon === 'shield' ? 'shield' : icon === 'doc' ? 'doc' : icon === 'warning' ? 'warning' : icon === 'error' ? 'error' : icon === 'pulse' ? 'pulse' : 'info') + '.svg" alt="" class="nav-icon" style="width:18px;height:18px;margin-top:2px;flex-shrink:0">' +
         '<div style="flex-grow;min-width:0">' +
         '<div style="display:flex;align-items:center;gap:8px">' +
         '<span class="mono-label" style="font-size:9px;text-transform:uppercase;letter-spacing:0.05em;color:var(--color-text-secondary);opacity:0.6">' + escapeHtml(finding.source || "") + '</span>' +
@@ -1529,7 +1529,7 @@
     const node = document.createElement("article");
     node.className = "chat-message assistant";
     node.innerHTML = '<div class="flex gap-4 items-start">' +
-      '<div class="assistant-avatar"><span class="material-symbols-outlined text-[18px]">memory</span></div>' +
+      '<div class="assistant-avatar"><img src="images/icon-avatar-assistant.svg" alt="" class="nav-icon" width="18" height="18"></div>' +
       '<div class="glass-surface border-l-4 border-forest-deep p-4 rounded-r-lg msg-bubble">' +
       (allowHtml === false ? "<p>" + escapeHtml(html) + "</p>" : html) +
       '<span class="message-time">' + getTimestamp() + '</span></div></div>';
@@ -1545,7 +1545,7 @@
       '<div class="bg-forest-deep text-white p-4 rounded-lg rounded-tr-none msg-bubble">' +
       '<p>' + escapeHtml(text) + '</p>' +
       '<span class="message-time">' + getTimestamp() + '</span></div>' +
-      '<div class="user-avatar"><span class="material-symbols-outlined text-[18px]">person</span></div></div>';
+      '<div class="user-avatar"><img src="images/icon-avatar-user.svg" alt="" class="nav-icon" width="18" height="18"></div></div>';
     chatBox.appendChild(node);
     scrollTranscript();
     input.value = "";
@@ -1565,7 +1565,7 @@
     const node = document.createElement("article");
     node.className = "chat-message assistant";
     node.innerHTML = '<div class="flex gap-4 items-start">' +
-      '<div class="assistant-avatar"><span class="material-symbols-outlined text-[18px]">memory</span></div>' +
+      '<div class="assistant-avatar"><img src="images/icon-avatar-assistant.svg" alt="" class="nav-icon" width="18" height="18"></div>' +
       '<div class="glass-surface border-l-4 border-forest-deep p-4 rounded-r-lg msg-bubble">' +
       '<div class="typing-row"><span></span><span></span><span></span></div></div></div>';
     chatBox.appendChild(node);
@@ -1646,10 +1646,10 @@
     input.placeholder = options.placeholder || "";
     composerHint.textContent = options.hint || "";
     inputMeta.textContent = options.meta || "Enter sends. Shift+Enter adds a new line.";
-    const iconMap = { loading: 'hourglass_empty', continue: 'arrow_forward', search: 'search', searching: 'search', done: 'check', send: 'send' };
+    const iconMap = { loading: 'icon-skip', continue: 'icon-arrow-back', search: 'icon-search', searching: 'icon-search', done: 'icon-check', send: 'icon-send' };
     const label = (options.sendLabel || 'Send').toLowerCase();
-    const icon = iconMap[label] || 'send';
-    sendBtn.innerHTML = '<span class="material-symbols-outlined text-[20px]">' + icon + '</span>';
+    const icon = iconMap[label] || 'icon-send';
+    sendBtn.innerHTML = '<img src="images/' + icon + '.svg" alt="" class="nav-icon" width="20" height="20">';
     skipBtn.hidden = !options.showSkip;
     skipBtn.disabled = !!options.disabled;
     backBtn.hidden = !options.showBack;

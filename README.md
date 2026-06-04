@@ -1,4 +1,4 @@
-# FixItSelf — Open Repair Intelligence
+# ShootYourSelf — Open Repair Intelligence
 
 **Free, unlimited device troubleshooting. Answer a few questions, get fixes from across the web.**
 
@@ -8,7 +8,7 @@ No API keys. No accounts. No databases to set up. Just Node.js and the open web.
 
 ## Intent
 
-FixItSelf exists to democratize device repair. The project's core belief is that **nobody should pay to fix their own device** or be locked into manufacturer-authorized repair channels for simple troubleshooting. By scraping the open web — DuckDuckGo, Bing, Google, and YouTube — in parallel and intelligently ranking results, it surfaces the best existing guides, videos, and forum threads for any device problem, free of charge, with no accounts, no paywalls, and no tracking.
+ShootYourSelf exists to democratize device repair. The project's core belief is that **nobody should pay to fix their own device** or be locked into manufacturer-authorized repair channels for simple troubleshooting. By scraping the open web — DuckDuckGo, Bing, Google, and YouTube — in parallel and intelligently ranking results, it surfaces the best existing guides, videos, and forum threads for any device problem, free of charge, with no accounts, no paywalls, and no tracking.
 
 The name is a deliberate paradox: by taking repair into your own hands ("shoot yourself"), you gain independence from expensive repair services. You break things, you learn, and you fix them yourself.
 
@@ -453,7 +453,7 @@ ShootYourself/
 │       ├── scraper.test.js        # Scraper utility tests
 │       └── diagnostic.test.js     # Diagnostic engine tests (failure trees, adaptive questions)
 │
-├── package.json                   # Root workspace (fixitself v2.0.0, convenience scripts)
+├── package.json                   # Root workspace (ShootYourSelf v2.0.0, convenience scripts)
 ├── package-lock.json              # Root lockfile
 ├── LICENSE                        # ISC license
 ├── design-system/                 # Global design system (MASTER.md: colors, typography, components)

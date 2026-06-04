@@ -3,6 +3,7 @@ const express = require('express');
 const sessions = require('../db/repair-sessions');
 const eventLog = require('../event/logger');
 const sanitize = require('../utils/sanitize');
+const { sendError } = require('../utils/errors');
 
 const router = express.Router();
 
@@ -19,7 +20,7 @@ router.post('/sessions', (req, res) => {
 
     res.status(201).json({ session });
   } catch (e) {
-    res.status(500).json({ error: 'Failed to create session' });
+    sendError(res, e, 'Failed to create session');
   }
 });
 
@@ -31,7 +32,7 @@ router.get('/sessions/:id', (req, res) => {
     const steps = sessions.getSessionSteps(req.params.id);
     res.json({ session, steps });
   } catch (e) {
-    res.status(500).json({ error: 'Failed to get session' });
+    sendError(res, e, 'Failed to get session');
   }
 });
 
@@ -57,7 +58,7 @@ router.post('/sessions/:id/steps', (req, res) => {
 
     res.status(201).json({ step });
   } catch (e) {
-    res.status(500).json({ error: 'Failed to add step' });
+    sendError(res, e, 'Failed to add step');
   }
 });
 
@@ -86,7 +87,7 @@ router.post('/sessions/:id/complete', (req, res) => {
 
     res.json({ status: 'ok', sessionId: req.params.id });
   } catch (e) {
-    res.status(500).json({ error: 'Failed to complete session' });
+    sendError(res, e, 'Failed to complete session');
   }
 });
 
@@ -99,7 +100,7 @@ router.post('/sessions/:id/abandon', (req, res) => {
     eventLog.logEvent(req.params.id, 'flow_abandoned', { reason: sanitize(req.body.reason, 500) }, session);
     res.json({ status: 'ok' });
   } catch (e) {
-    res.status(500).json({ error: 'Failed to abandon session' });
+    sendError(res, e, 'Failed to abandon session');
   }
 });
 
@@ -112,7 +113,7 @@ router.get('/sessions', (req, res) => {
     const total = sessions.getSessionCount();
     res.json({ sessions: list, total, limit, offset });
   } catch (e) {
-    res.status(500).json({ error: 'Failed to list sessions' });
+    sendError(res, e, 'Failed to list sessions');
   }
 });
 
@@ -124,7 +125,7 @@ router.get('/outcomes', (req, res) => {
     const list = sessions.getRecentOutcomes(limit, offset);
     res.json({ outcomes: list, limit, offset });
   } catch (e) {
-    res.status(500).json({ error: 'Failed to list outcomes' });
+    sendError(res, e, 'Failed to list outcomes');
   }
 });
 
@@ -138,7 +139,7 @@ router.get('/failure-patterns', (req, res) => {
     const patterns = sessions.getFailurePatternsForDevice(device, brand, model, limit);
     res.json({ patterns });
   } catch (e) {
-    res.status(500).json({ error: 'Failed to get failure patterns' });
+    sendError(res, e, 'Failed to get failure patterns');
   }
 });
 

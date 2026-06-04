@@ -1,10 +1,22 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" width="96" height="96">
   <defs>
     <linearGradient id="g" x1="0" y1="1" x2="1" y2="0">
-      <stop offset="0%" stop-color="#0F403A"/>
-      <stop offset="100%" stop-color="#C86A2C"/>
+      <stop offset="0%" stop-color="#0F766E"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+    <linearGradient id="s" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#115E59"/>
+      <stop offset="100%" stop-color="#C2410C"/>
     </linearGradient>
   </defs>
-  <rect width="96" height="96" rx="20" fill="url(#g)"/>
-  <text x="48" y="62" text-anchor="middle" font-family="Arial,sans-serif" font-size="40" font-weight="700" fill="#fff">SY</text>
+  <rect width="96" height="96" rx="22" fill="url(#g)"/>
+  <!-- Wrench icon -->
+  <g transform="translate(48,46)">
+    <rect x="-8" y="-20" width="16" height="40" rx="3" fill="url(#s)" transform="rotate(45)"/>
+    <rect x="-8" y="-20" width="16" height="40" rx="3" fill="#fff" transform="rotate(-45)"/>
+  </g>
+  <!-- Center gear dot -->
+  <circle cx="48" cy="46" r="6" fill="#fff"/>
+  <!-- Letter mark -->
+  <text x="48" y="86" text-anchor="middle" font-family="'JetBrains Mono','Courier New',monospace" font-size="14" font-weight="700" fill="#fff" letter-spacing="2">SYS</text>
 </svg>

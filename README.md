@@ -1,4 +1,4 @@
-# ShootYourSelf
+# FixItSelf — Open Repair Intelligence
 
 **Free, unlimited device troubleshooting. Answer a few questions, get fixes from across the web.**
 
@@ -8,7 +8,7 @@ No API keys. No accounts. No databases to set up. Just Node.js and the open web.
 
 ## Intent
 
-ShootYourSelf exists to democratize device repair. The project's core belief is that **nobody should pay to fix their own device** or be locked into manufacturer-authorized repair channels for simple troubleshooting. By scraping the open web — DuckDuckGo, Bing, Google, and YouTube — in parallel and intelligently ranking results, it surfaces the best existing guides, videos, and forum threads for any device problem, free of charge, with no accounts, no paywalls, and no tracking.
+FixItSelf exists to democratize device repair. The project's core belief is that **nobody should pay to fix their own device** or be locked into manufacturer-authorized repair channels for simple troubleshooting. By scraping the open web — DuckDuckGo, Bing, Google, and YouTube — in parallel and intelligently ranking results, it surfaces the best existing guides, videos, and forum threads for any device problem, free of charge, with no accounts, no paywalls, and no tracking.
 
 The name is a deliberate paradox: by taking repair into your own hands ("shoot yourself"), you gain independence from expensive repair services. You break things, you learn, and you fix them yourself.
 

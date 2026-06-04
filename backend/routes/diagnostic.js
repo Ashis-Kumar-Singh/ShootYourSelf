@@ -1,19 +1,25 @@
 'use strict';
 const express = require('express');
-const diagnostic = require('../diagnostic');
 const sanitize = require('../utils/sanitize');
+const diagnostic = require('../diagnostic');
+const { logError, sendError } = require('../utils/errors');
+const { validateSearchParams } = require('../utils/validate');
 
 const router = express.Router();
+
+const VALID_EVENTS = ['symptom_selected', 'user_action'];
 
 // Phase 0: Basic diagnostic questions
 router.get('/diagnostic/questions', (req, res) => {
   try {
-    const device = sanitize(req.query.device, 50) || 'laptop';
-    const category = sanitize(req.query.category, 50) || 'troubleshooting';
-    const questions = diagnostic.getDiagnosticQuestions(device, category);
-    res.json({ device, category, questions });
+    const deviceRaw = sanitize(req.query.device, 50) || 'laptop';
+    const categoryRaw = sanitize(req.query.category, 50) || 'troubleshooting';
+    const v = validateSearchParams(deviceRaw, '', categoryRaw);
+    const questions = diagnostic.getDiagnosticQuestions(v.device, v.category);
+    res.json({ device: v.device, category: v.category, questions, warnings: v.warnings.length ? v.warnings : undefined });
   } catch (e) {
-    res.status(500).json({ error: 'Failed to get questions' });
+    logError(req, e, 'Failed to get questions');
+    sendError(res, e, 'Failed to get questions');
   }
 });
 
@@ -27,7 +33,8 @@ router.get('/diagnostic/context', (req, res) => {
     const ctx = diagnostic.getDeviceContext(device, brand, model, category);
     res.json({ context: ctx });
   } catch (e) {
-    res.status(500).json({ error: 'Failed to get context' });
+    logError(req, e, 'Failed to get context');
+    sendError(res, e, 'Failed to get context');
   }
 });
 
@@ -40,7 +47,8 @@ router.get('/diagnostic/paths', (req, res) => {
     const paths = diagnostic.getDiagnosticPaths(device, brand, model);
     res.json({ device, brand, model, paths });
   } catch (e) {
-    res.status(500).json({ error: 'Failed to get diagnostic paths' });
+    logError(req, e, 'Failed to get diagnostic paths');
+    sendError(res, e, 'Failed to get diagnostic paths');
   }
 });
 
@@ -55,7 +63,8 @@ router.get('/diagnostic/trees', (req, res) => {
     const allDevices = diagnostic.failureTrees.getAllDevicesWithTrees();
     res.json({ devices: allDevices });
   } catch (e) {
-    res.status(500).json({ error: 'Failed to list trees' });
+    logError(req, e, 'Failed to list trees');
+    sendError(res, e, 'Failed to list trees');
   }
 });
 
@@ -67,7 +76,8 @@ router.get('/diagnostic/trees/:treeId', (req, res) => {
     if (!tree) return res.status(404).json({ error: 'Tree not found' });
     res.json({ tree });
   } catch (e) {
-    res.status(500).json({ error: 'Failed to get tree' });
+    logError(req, e, 'Failed to get tree');
+    sendError(res, e, 'Failed to get tree');
   }
 });
 
@@ -84,7 +94,8 @@ router.post('/diagnostic/session/start', (req, res) => {
       question,
     });
   } catch (e) {
-    res.status(500).json({ error: 'Failed to start diagnostic session' });
+    logError(req, e, 'Failed to start diagnostic session');
+    sendError(res, e, 'Failed to start diagnostic session');
   }
 });
 
@@ -107,7 +118,8 @@ router.post('/diagnostic/session/answer', (req, res) => {
     }
     res.json(result);
   } catch (e) {
-    res.status(500).json({ error: 'Failed to process answer' });
+    logError(req, e, 'Failed to process answer');
+    sendError(res, e, 'Failed to process answer');
   }
 });
 
@@ -123,7 +135,8 @@ router.post('/diagnostic/probability', (req, res) => {
     const analysis = diagnostic.getProbabilityAnalysis(device, brand, model, category, symptoms, answers);
     res.json({ device, brand, model, category, analysis });
   } catch (e) {
-    res.status(500).json({ error: 'Failed to calculate probabilities' });
+    logError(req, e, 'Failed to calculate probabilities');
+    sendError(res, e, 'Failed to calculate probabilities');
   }
 });
 
@@ -134,7 +147,8 @@ router.get('/diagnostic/validate-device', (req, res) => {
     const valid = diagnostic.isValidDevice(device);
     res.json({ device, valid, supportedDevices: diagnostic.VALID_DEVICE_TYPES });
   } catch (e) {
-    res.status(500).json({ error: 'Validation failed' });
+    logError(req, e, 'Validation failed');
+    sendError(res, e, 'Validation failed');
   }
 });
 

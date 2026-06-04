@@ -3,12 +3,15 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<meta name="description" content="FixItSelf — Open Repair Intelligence. Free, unlimited device troubleshooting with multi-engine search and diagnostic guidance."/>
+<meta name="description" content="ShootYourSelf — Open Repair Intelligence. Free, unlimited device troubleshooting with multi-engine search and diagnostic guidance."/>
 <meta name="keywords" content="device repair, troubleshooting, laptop repair, phone repair, DIY fix, tech support, open repair"/>
 <meta property="og:title" content="SYS — Open Repair Command Center"/>
 <meta property="og:description" content="Free device troubleshooting with multi-engine search, diagnostic guidance, and community repair intelligence."/>
 <meta property="og:type" content="website"/>
-<meta name="twitter:card" content="summary"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta property="og:image" content="images/symbol.svg"/>
+<meta name="twitter:image" content="images/symbol.svg"/>
+<link rel="apple-touch-icon" href="images/symbol.svg"/>
 <title>SYS — Open Repair Command Center</title>
 <link rel="icon" href="images/symbol.svg" type="image/svg+xml"/>
 <link rel="manifest" href="manifest.json"/>
@@ -25,8 +28,8 @@ tailwind.config={darkMode:"class",theme:{extend:{colors:{
 </script>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:wght@400;700&family=Hanken+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
-<link href="styles.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&display=swap" rel="stylesheet"/>
+<link href="styles.css?v=3" rel="stylesheet"/>
 </head>
 <body class="font-body text-[var(--color-text)] min-h-screen" style="background:var(--color-bg)">
 
@@ -39,9 +42,9 @@ tailwind.config={darkMode:"class",theme:{extend:{colors:{
     <span>Command Center</span>
   </div>
   <nav class="app-header__nav" data-nav>
-    <a href="/" class="is-active">Systems</a>
-    <a href="community.html">Archive</a>
-    <a href="ecosystem.html">Manuals</a>
+    <a href="/" class="is-active"><span class="material-symbols-outlined">dns</span>Systems</a>
+    <a href="community.html"><span class="material-symbols-outlined">archive</span>Archive</a>
+    <a href="ecosystem.html"><span class="material-symbols-outlined">menu_book</span>Manuals</a>
   </nav>
   <div class="app-header__spacer"></div>
   <div class="app-header__actions">
@@ -64,7 +67,7 @@ tailwind.config={darkMode:"class",theme:{extend:{colors:{
   <aside class="app-sidebar" id="appSidebar">
     <div class="sidebar-section">
       <div class="sidebar-section__head">
-        <span class="material-symbols-outlined">android_fingerprint</span>
+        <span class="material-symbols-outlined">fingerprint</span>
         <h2 class="font-headline" id="statusPill">Standing By</h2>
       </div>
       <dl class="sidebar-dl summary-list">
@@ -120,28 +123,6 @@ tailwind.config={darkMode:"class",theme:{extend:{colors:{
 
         <!-- Left: chat -->
         <section class="app-grid__chat">
-        <!-- Problem intake -->
-        <div class="glass-surface" style="padding:var(--space-6);border-radius:var(--radius-xl);position:relative;overflow:hidden;flex-shrink:0">
-          <div class="shimmer-bg" style="position:absolute;inset:0;pointer-events:none;opacity:0.3"></div>
-          <div style="position:relative;z-index:1">
-            <h1 style="font-family:var(--font-headline);font-size:var(--fs-30);font-weight:600;color:var(--color-text);margin-bottom:4px">Command Center</h1>
-            <p style="color:var(--color-text-secondary);margin-bottom:var(--space-5);font-size:var(--fs-15);line-height:1.55">Describe the malfunction for guided triage.</p>
-            <form id="problemIntakeForm" style="position:relative">
-              <textarea class="input input--mono" id="problemInput" aria-label="Describe your device issue" placeholder="Input diagnostic query or sensor fault codes..." style="width:100%;min-height:112px;padding:var(--space-4);padding-right:64px;font-size:var(--fs-14);resize:vertical;background:var(--color-bg-subtle);border-color:var(--color-border);border-radius:var(--radius-lg)"></textarea>
-              <button class="btn btn--primary" id="problemSubmitBtn" type="submit" style="position:absolute;bottom:12px;right:12px;width:44px;height:44px;border-radius:var(--radius-md);padding:0;display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow-md)">
-                <span class="material-symbols-outlined">send</span>
-              </button>
-            </form>
-            <div class="problem-intake-chips pill-group" style="margin-top:var(--space-4)">
-              <button class="pill prompt-chip" data-problem-example="Sensor alignment failure on Lumix S5II" type="button"><span class="material-symbols-outlined" style="font-size:16px">sensors</span> Sensor Stuck</button>
-              <button class="pill prompt-chip" data-problem-example="IBIS failure after firmware update" type="button"><span class="material-symbols-outlined" style="font-size:16px">cameraswitch</span> IBIS Failure</button>
-              <button class="pill prompt-chip" data-problem-example="Camera stuck in boot loop" type="button"><span class="material-symbols-outlined" style="font-size:16px">sync_problem</span> Firmware Loop</button>
-              <button class="pill prompt-chip" data-problem-example="Loose lens mount connection" type="button"><span class="material-symbols-outlined" style="font-size:16px">lens</span> Mount Play</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Chat area -->
         <div class="glass-surface chat-surface">
           <div style="padding:var(--space-3) var(--space-4);border-bottom:1px solid var(--color-border);display:flex;justify-content:space-between;align-items:center;background:var(--color-bg-subtle)">
             <span class="mono-label">Active Thread // 0429-X</span>
@@ -162,7 +143,7 @@ tailwind.config={darkMode:"class",theme:{extend:{colors:{
           </div>
           <form id="composer" style="padding:var(--space-3) var(--space-4);border-top:1px solid var(--color-border);background:var(--color-bg-subtle)" novalidate>
             <div style="display:flex;flex-direction:column;gap:var(--space-2)">
-              <div id="quickPrompts" class="pill-group"></div>
+              <div id="contextExamples" class="context-carousel"></div>
               <div style="display:flex;align-items:flex-end;gap:var(--space-2);position:relative">
                 <textarea class="input input--mono" id="userInput" aria-label="Type your response" placeholder="Loading repair flow..." rows="1" style="flex:1;min-height:44px;padding:var(--space-3) var(--space-3);background:var(--color-surface);border-color:var(--color-border);border-radius:var(--radius-md);resize:none;font-size:var(--fs-14)"></textarea>
                 <div style="display:flex;gap:4px;flex-shrink:0;margin-bottom:2px">
@@ -190,6 +171,18 @@ tailwind.config={darkMode:"class",theme:{extend:{colors:{
         </div>
         <div id="resultsContent" class="results-content">
           <div id="extractedSolutions"></div>
+          <div id="findingsPanel" style="display:none;margin-bottom:12px">
+            <div class="glass-surface" style="padding:16px;border-left:4px solid var(--color-accent);border-radius:var(--radius-lg)">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+                <span class="material-symbols-outlined" style="color:var(--color-accent);font-size:20px">insights</span>
+                <h4 style="font-family:var(--font-headline);font-size:18px;font-weight:600;color:var(--color-text);margin:0">Telemetry Analysis</h4>
+                <span id="findingsConfidence" class="mono-label" style="font-size:10px;color:var(--color-text-secondary);margin-left:auto"></span>
+              </div>
+              <div id="findingsSummary" style="font-size:13px;color:var(--color-text-secondary);margin-bottom:12px"></div>
+              <div id="findingsList" style="display:flex;flex-direction:column;gap:6px"></div>
+              <div id="findingsActions" style="margin-top:12px;padding-top:12px;border-top:1px solid var(--color-border)"></div>
+            </div>
+          </div>
           <div id="resultsGrid">
             <div id="resultsEmpty" class="empty-state">
               <span class="material-symbols-outlined">search_insights</span>
@@ -224,19 +217,5 @@ tailwind.config={darkMode:"class",theme:{extend:{colors:{
 <script src="js/api.js?v=20260601-1"></script>
 <script src="js/chat.js?v=20260601-1"></script>
 <script src="js/chrome.js?v=20260601-1"></script>
-<script>
-(function() {
-  var textarea = document.getElementById('problemInput');
-  var container = textarea && textarea.closest('.glass-surface');
-  if (textarea && container) {
-    textarea.addEventListener('focus', function() {
-      container.style.backgroundColor = 'var(--color-surface-sunken)';
-    });
-    textarea.addEventListener('blur', function() {
-      container.style.backgroundColor = '';
-    });
-  }
-})();
-</script>
 </body>
 </html>

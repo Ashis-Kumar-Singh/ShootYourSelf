@@ -1,4 +1,4 @@
-# ShootYourSelf Revolution Roadmap
+# FixItSelf Revolution Roadmap
 
 > Transforming device troubleshooting into the world’s first Open Repair Intelligence Network.
 

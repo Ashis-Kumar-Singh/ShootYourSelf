@@ -74,7 +74,7 @@
       }
 
       if (!analytics.totalOutcomes && !analytics.totalFixes) {
-        html += '<div class="empty-state"><span class="material-symbols-outlined">communities</span><p>No community data yet. Start by submitting fixes or repair outcomes.</p></div>';
+        html += '<div class="empty-state"><span class="material-symbols-outlined">groups</span><p>No community data yet. Start by submitting fixes or repair outcomes.</p></div>';
       }
 
       container.innerHTML = html;

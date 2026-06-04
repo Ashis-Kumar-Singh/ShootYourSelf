@@ -5,6 +5,11 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>SYS — Admin Dashboard</title>
 <link rel="icon" href="images/symbol.svg" type="image/svg+xml">
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta property="og:image" content="images/symbol.svg"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<link rel="apple-touch-icon" href="images/symbol.svg"/>
 <script>
   window.tailwind = window.tailwind || {};
   tailwind.config = {
@@ -30,8 +35,9 @@
 </script>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:wght@400;700&family=Hanken+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
-<link href="styles.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&display=swap" rel="stylesheet"/>
+
+<link href="styles.css?v=3" rel="stylesheet"/>
 <style>
   .stat-value { font-family: var(--font-mono); font-size: var(--fs-30); font-weight: 700; color: var(--color-text); line-height: 1.1; letter-spacing: -0.02em; }
   .stat-label { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-text-muted); margin-top: 4px; font-weight: 500; }
@@ -55,9 +61,9 @@
     <span>Admin Panel</span>
   </div>
   <nav class="app-header__nav" data-nav>
-    <a href="/">Systems</a>
-    <a href="community.html">Archive</a>
-    <a href="ecosystem.html">Manuals</a>
+    <a href="/"><span class="material-symbols-outlined">dns</span>Systems</a>
+    <a href="community.html"><span class="material-symbols-outlined">archive</span>Archive</a>
+    <a href="ecosystem.html"><span class="material-symbols-outlined">menu_book</span>Manuals</a>
   </nav>
   <div class="app-header__spacer"></div>
   <div class="app-header__actions">

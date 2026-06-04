@@ -4,6 +4,7 @@ const path = require('path');
 const fs = require('fs');
 const scraper = require('../scraper');
 const devices = require('../devices');
+const { sendError } = require('../utils/errors');
 
 const router = express.Router();
 
@@ -44,7 +45,9 @@ router.get('/stats', (req, res) => {
       searchVolume, searchErrors, recentSearches: recentSearches.slice(-20),
       ...scraper.getEngineHealth(),
     });
-  } catch (e) { res.status(500).json({ error: "Failed to load stats" }); }
+  } catch (e) {
+    sendError(res, e, 'Failed to load stats');
+  }
 });
 
 module.exports = router;

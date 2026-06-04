@@ -70,11 +70,20 @@ function getEventStats() {
   return { total, breakdown };
 }
 
+const pruneEvents = db.prepare(`DELETE FROM event_log WHERE created_at < ?`);
+
+function pruneOldEvents(maxAgeMs = 90 * 24 * 60 * 60 * 1000) {
+  const cutoff = Date.now() - maxAgeMs;
+  const result = pruneEvents.run(cutoff);
+  return result.changes;
+}
+
 module.exports = {
   logEvent,
   getSessionEvents,
   getEventsByType,
   getDeviceEvents,
   getEventStats,
+  pruneOldEvents,
   VALID_EVENT_TYPES,
 };

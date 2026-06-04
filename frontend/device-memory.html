@@ -5,6 +5,11 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>SYS — Device Memory</title>
 <link rel="icon" href="images/symbol.svg" type="image/svg+xml">
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta property="og:image" content="images/symbol.svg"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<link rel="apple-touch-icon" href="images/symbol.svg"/>
 <script>
 window.tailwind=window.tailwind||{};
 tailwind.config={darkMode:"class",theme:{extend:{colors:{
@@ -15,8 +20,9 @@ border:"#E7E5E4",muted:"#64748B",text:"#0F172A","text-secondary":"#334155"
 </script>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:wght@400;700&family=Hanken+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
-<link href="styles.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&display=swap" rel="stylesheet"/>
+
+<link href="styles.css?v=3" rel="stylesheet"/>
 </head>
 <body style="background:var(--color-bg);color:var(--color-text);font-family:var(--font-body);min-height:100vh">
 <header class="app-header" style="position:sticky;top:0;z-index:50">
@@ -25,9 +31,9 @@ border:"#E7E5E4",muted:"#64748B",text:"#0F172A","text-secondary":"#334155"
     <span>Command Center</span>
   </div>
   <nav class="app-header__nav" data-nav>
-    <a href="/">Systems</a>
-    <a href="community.html">Archive</a>
-    <a href="ecosystem.html">Manuals</a>
+    <a href="/"><span class="material-symbols-outlined">dns</span>Systems</a>
+    <a href="community.html"><span class="material-symbols-outlined">archive</span>Archive</a>
+    <a href="ecosystem.html"><span class="material-symbols-outlined">menu_book</span>Manuals</a>
   </nav>
   <div class="app-header__spacer"></div>
   <div class="app-header__actions">

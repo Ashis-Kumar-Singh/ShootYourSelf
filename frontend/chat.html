@@ -4,26 +4,27 @@
 <meta charset="utf-8"/>
 <meta http-equiv="refresh" content="0;url=/"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>FixItSelf — Repair Chat</title>
+<meta name="description" content="ShootYourSelf — Device troubleshooting chat interface. Free, unlimited repair guidance."/>
+<meta property="og:title" content="ShootYourSelf — Repair Chat"/>
+<meta property="og:description" content="Free device troubleshooting with multi-engine search and diagnostic guidance."/>
+<title>ShootYourSelf — Repair Chat</title>
 <link rel="icon" href="images/symbol.svg" type="image/svg+xml">
-<script>
-window.tailwind=window.tailwind||{};
-tailwind.config={darkMode:"class",theme:{extend:{colors:{
-primary:"#0F766E",accent:"#EA580C",bg:"#FAFAF9",
-surface:"#FFFFFF",border:"#E7E5E4",muted:"#64748B",text:"#0F172A"
-},fontFamily:{headline:["Libre Caslon Text","Georgia","serif"],body:["Hanken Grotesk","system-ui","sans-serif"],mono:["JetBrains Mono","monospace"]}}}};
-</script>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:wght@400;700&family=Hanken+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
-<link href="styles.css" rel="stylesheet"/>
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<style>
+body{background:#FAFAF9;color:#0F172A;margin:0;font-family:'Hanken Grotesk',system-ui,sans-serif;line-height:1.5;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+.card{background:#fff;border:1px solid #E7E5E4;border-radius:12px;padding:32px;max-width:360px;width:100%;text-align:center}
+.icon-wrap{width:48px;height:48px;margin:0 auto 16px;border-radius:12px;background:linear-gradient(135deg,#0F766E,#EA580C);display:flex;align-items:center;justify-content:center}
+.icon-wrap span{font-size:24px;color:#fff}
+p{font-weight:600;font-size:16px;color:#0F172A;margin:0}
+a{display:inline-block;margin-top:12px;font-size:14px;color:#0F766E}
+</style>
 </head>
-<body style="background:var(--color-bg);color:var(--color-text);font-family:var(--font-body);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px">
-  <div class="card" style="padding:32px;max-width:360px;width:100%;text-align:center">
-    <div style="width:48px;height:48px;margin:0 auto 16px;border-radius:12px;background:linear-gradient(135deg,var(--color-primary),var(--color-accent));display:flex;align-items:center;justify-content:center">
-      <span class="material-symbols-outlined" style="font-size:24px;color:#fff">forward</span>
-    </div>
-    <p style="font-weight:600;font-size:var(--fs-16);color:var(--color-text)">Redirecting to the repair chat...</p>
+<body>
+  <div class="card">
+    <div class="icon-wrap"><span>&rarr;</span></div>
+    <p>Redirecting to repair center...</p>
+    <a href="/">Click here if not redirected</a>
   </div>
 </body>
 </html>

@@ -10,9 +10,11 @@ const fs = require("fs");
 const path = require("path");
 const https = require("https");
 const http = require("http");
+const crypto = require("crypto");
 const scraper = require("./scraper");
 const devices = require("./devices");
 const { errorHandler } = require("./utils/errors");
+const { rotateLogFile, createLogStream } = require("./utils/log-rotate");
 const db = require("./db");
 const apiRoutes = require("./routes");
 
@@ -26,6 +28,13 @@ const TRUST_PROXY = parseInt(process.env.TRUST_PROXY_COUNT || '1', 10);
 
 app.set('trust proxy', TRUST_PROXY);
 
+// ---- Request ID for log correlation ----
+app.use((req, res, next) => {
+  req.id = req.headers['x-request-id'] || crypto.randomUUID().slice(0, 8);
+  res.setHeader('X-Request-Id', req.id);
+  next();
+});
+
 // ---- Security with proper CSP ----
 app.use(helmet({
   contentSecurityPolicy: {
@@ -33,7 +42,7 @@ app.use(helmet({
       defaultSrc: ["'self'"],
       scriptSrc: ["'self'", "'unsafe-inline'", "https://cdn.tailwindcss.com"],
       styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
-      fontSrc: ["'self'", "https://fonts.gstatic.com"],
+      fontSrc: ["'self'", "https://fonts.gstatic.com", "https://fonts.googleapis.com"],
       imgSrc: ["'self'", "data:", "https:"],
       connectSrc: ["'self'", "https:"],
       frameSrc: ["'none'"],
@@ -100,38 +109,37 @@ app.use('/api/', apiRoutes);
 
 // ---- Logging ----
 const logDir = path.join(__dirname, 'data', 'logs');
+const eventLogger = require('./event/logger');
 if (!fs.existsSync(logDir)) fs.mkdirSync(logDir, { recursive: true });
 
 if (isProd) {
   const MAX_LOG_SIZE = 10 * 1024 * 1024;
-  function createLogStream(name) {
-    const logPath = path.join(logDir, name);
-    try {
-      if (fs.existsSync(logPath) && fs.statSync(logPath).size > MAX_LOG_SIZE) {
-        const rotated = path.join(logDir, name + '.1');
-        if (fs.existsSync(rotated)) fs.unlinkSync(rotated);
-        fs.renameSync(logPath, rotated);
-      }
-    } catch (e) { /* skip */ }
-    return fs.createWriteStream(logPath, { flags: 'a' });
-  }
-  let accessStream = createLogStream('access.log');
+  let accessStream = createLogStream('access.log', logDir, MAX_LOG_SIZE);
   setInterval(() => {
     try {
       const p = path.join(logDir, 'access.log');
       if (fs.existsSync(p) && fs.statSync(p).size > MAX_LOG_SIZE) {
         accessStream.end();
-        const rotated = p + '.1';
-        if (fs.existsSync(rotated)) fs.unlinkSync(rotated);
-        fs.renameSync(p, rotated);
-        accessStream = createLogStream('access.log');
+        rotateLogFile(p, MAX_LOG_SIZE);
+        accessStream = createLogStream('access.log', logDir, MAX_LOG_SIZE);
       }
     } catch (e) { /* skip */ }
   }, 60000).unref();
-  app.use(morgan('combined', { stream: accessStream }));
+  morgan.token('req-id', (req) => req.id || '-');
+  app.use(morgan(':req-id :remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length]', { stream: accessStream }));
 } else {
-  app.use(morgan('dev'));
+  morgan.token('req-id', (req) => req.id || '-');
+  app.use(morgan(':req-id :method :url :status :response-time ms'));
 }
+
+// ---- Periodic maintenance: prune old event logs (daily) ----
+const EVENT_LOG_RETENTION_MS = parseInt(process.env.EVENT_LOG_RETENTION_MS || (90 * 24 * 60 * 60 * 1000), 10);
+setInterval(() => {
+  try {
+    const pruned = eventLogger.pruneOldEvents(EVENT_LOG_RETENTION_MS);
+    if (pruned > 0) console.log(`  Cleanup: pruned ${pruned} old event log entries`);
+  } catch (e) { /* skip */ }
+}, 24 * 60 * 60 * 1000).unref();
 
 // ---- SEO ----
 app.get('/robots.txt', (req, res) => {
@@ -218,7 +226,7 @@ if (process.env.HTTPS === 'true') {
 
 server.listen(PORT, () => {
   console.log("");
-  console.log("  ShootYourSelf v2.0");
+  console.log("  ShootYourSelf — Open Repair Intelligence v2.0");
   console.log("  " + (isProd ? "https" : "http") + "://" + DOMAIN + ":" + PORT);
   console.log("  Environment: " + NODE_ENV);
   console.log("  Devices:  " + Object.keys(devices.DEVICES).length + " types, " + Object.values(devices.DEVICES).reduce((s, d) => s + d.brands.length, 0) + " brands, " + Object.values(devices.DEVICES).reduce((s, d) => s + Object.keys(d.categories).length, 0) + " categories");

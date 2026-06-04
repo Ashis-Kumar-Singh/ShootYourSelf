@@ -149,7 +149,7 @@ The Docker setup runs two containers:
 
 ### Chat Interface
 
-The main interface is at `/chat.html`. The guided flow:
+The main interface is at `/` (`index.html`). `chat.html` is a redirect stub that forwards to `/`. The guided flow:
 
 1. **Select device** — Click a device card from the grid
 2. **Select brand** — Click your manufacturer
@@ -176,18 +176,155 @@ Visit `/admin.html` to access:
 
 ### API
 
+#### Core
+
 | Method | Path | Description | Rate Limit |
 |--------|------|-------------|------------|
 | GET | `/api/config` | Public config (affiliate tag, version) | — |
 | GET | `/api/health` | Health check with cache/engine stats | 30/min |
 | GET | `/api/devices` | All device types with brands | 30/min |
 | GET | `/api/categories?device=X` | Categories for a device | 30/min |
-| GET | `/api/model-search?device=&brand=&model=&category=` | Search for fixes | 10/min |
+| GET | `/api/model-search?device=&brand=&model=&category=&context=` | Search for fixes | 10/min |
+| POST | `/api/extract-content` | Extract content from a URL | 10/min |
 | POST | `/api/upvote` | Upvote a result link | 30/min |
 | POST | `/api/feedback` | Submit helpfulness feedback | 30/min |
 | GET | `/api/popular` | Popular searches and upvotes | 30/min |
 | GET | `/api/stats` | Feedback stats and engine health | 30/min |
 | GET | `/api/cache-stats` | Cache statistics | 30/min |
+
+#### Sessions
+
+| Method | Path | Description |
+|--------|------|-------------|
+| POST | `/api/sessions` | Create a repair session |
+| GET | `/api/sessions/:id` | Get session by ID with steps |
+| POST | `/api/sessions/:id/steps` | Add a step to a session |
+| POST | `/api/sessions/:id/complete` | Complete a session with outcome |
+| POST | `/api/sessions/:id/abandon` | Abandon a session |
+| GET | `/api/sessions` | List sessions (limit/offset) |
+| GET | `/api/outcomes` | List recent repair outcomes |
+| GET | `/api/failure-patterns` | Get failure patterns for a device |
+
+#### Diagnostic
+
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/api/diagnostic/questions` | Basic diagnostic questions |
+| GET | `/api/diagnostic/context` | Device context info |
+| GET | `/api/diagnostic/paths` | Known diagnostic paths |
+| GET | `/api/diagnostic/trees` | List failure tree categories |
+| GET | `/api/diagnostic/trees/:treeId` | Full failure tree detail |
+| POST | `/api/diagnostic/session/start` | Start adaptive diagnostic session |
+| POST | `/api/diagnostic/session/answer` | Answer diagnostic question |
+| POST | `/api/diagnostic/probability` | Probability analysis for symptoms |
+| GET | `/api/diagnostic/validate-device` | Validate device type support |
+
+#### Events
+
+| Method | Path | Description |
+|--------|------|-------------|
+| POST | `/api/events` | Log a custom event |
+| GET | `/api/events/session/:sessionId` | Events for a session |
+| GET | `/api/events/type/:type` | Events filtered by type |
+| GET | `/api/events/stats` | Aggregate event statistics |
+
+#### Community
+
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/api/community/success-rate` | Repair success rate |
+| GET | `/api/community/top-fixes` | Top community fixes by votes |
+| GET | `/api/community/device-stats` | Stats for a device |
+| GET | `/api/community/analytics` | Global community analytics |
+| POST | `/api/community/technicians` | Create technician profile |
+| GET | `/api/community/technicians/:id` | Get technician by ID |
+| GET | `/api/community/technicians` | Technician leaderboard |
+| POST | `/api/community/fixes` | Submit a community fix |
+| GET | `/api/community/fixes` | Get fixes by device/brand/model |
+| POST | `/api/community/fixes/:id/approve` | Approve a fix |
+| POST | `/api/community/fixes/:id/vote` | Vote on a fix (+1/-1) |
+| POST | `/api/community/warnings` | Submit a repair warning |
+| GET | `/api/community/warnings` | Get warnings by device/brand/model |
+| POST | `/api/community/warnings/:id/upvote` | Upvote a warning |
+| POST | `/api/community/failure-reports` | Submit a failure report |
+| GET | `/api/community/heatmap` | Failure heatmap data |
+| GET | `/api/community/trends` | Failure trends for a device |
+| GET | `/api/community/brand-reliability` | Brand reliability data |
+
+#### Vision
+
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/api/vision/capabilities` | Image detection capabilities |
+| POST | `/api/vision/analyze` | Analyze a base64-encoded image |
+| POST | `/api/vision/analyze-url` | Analyze an image from URL |
+| GET | `/api/vision/overlay/step` | AR step overlay for a repair step |
+| GET | `/api/vision/overlay/path` | Repair path overlay (screw, pry, cable) |
+
+#### Telemetry
+
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/api/telemetry/types` | Supported telemetry data types |
+| POST | `/api/telemetry/report` | Submit a telemetry report |
+| POST | `/api/telemetry/snapshot` | Submit a full telemetry snapshot |
+| GET | `/api/telemetry/history` | Telemetry history with filtering |
+| GET | `/api/telemetry/latest` | Latest telemetry for a device |
+| GET | `/api/telemetry/alerts` | Telemetry alerts |
+| POST | `/api/telemetry/alerts/:id/acknowledge` | Acknowledge a telemetry alert |
+| POST | `/api/telemetry/correlate` | Diagnostic correlation from telemetry + symptoms |
+
+#### Device Memory
+
+| Method | Path | Description |
+|--------|------|-------------|
+| POST | `/api/devices/profile` | Create or retrieve device profile |
+| GET | `/api/devices/profiles` | Get profiles (filter by device/brand/model) |
+| GET | `/api/devices/profiles/:id` | Full profile summary |
+| POST | `/api/devices/profiles/:id/components` | Track a new component |
+| POST | `/api/devices/profiles/:id/components/replace` | Replace a component |
+| POST | `/api/devices/profiles/:id/components/health` | Update component health % |
+| POST | `/api/devices/profiles/:id/events` | Record an event on a profile |
+| POST | `/api/devices/profiles/:id/predict` | Generate failure predictions |
+| GET | `/api/devices/profiles/:id/predictions` | Get active predictions |
+| POST | `/api/devices/predictions/:id/acknowledge` | Acknowledge a prediction |
+| POST | `/api/devices/profiles/:id/repair-outcome` | Record a repair outcome |
+
+#### Offline
+
+| Method | Path | Description |
+|--------|------|-------------|
+| POST | `/api/offline/packs/generate` | Generate an offline repair pack |
+| POST | `/api/offline/packs/generate-all` | Generate all pack types for a device |
+| GET | `/api/offline/packs/:id` | Get a specific pack |
+| GET | `/api/offline/packs` | List packs with device filter |
+
+#### AR
+
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/api/ar/model/:deviceType` | AR repair model for a device |
+| GET | `/api/ar/screws` | Screw positions for a device/assembly |
+| GET | `/api/ar/components` | Component positions for a device |
+| GET | `/api/ar/pry-points` | Pry point positions |
+| GET | `/api/ar/overlay` | Full AR overlay (device, step, dimensions) |
+| POST | `/api/ar/detect-screws` | Detect screws from camera view points |
+
+#### Ecosystem (Public API v1)
+
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/api/v1` | Public API specification |
+| GET | `/api/v1/devices` | All supported devices |
+| GET | `/api/v1/outcomes` | Anonymized repair outcomes |
+| GET | `/api/v1/fixes` | Approved community fixes |
+| GET | `/api/v1/trends` | Failure trends for a device |
+| GET | `/api/v1/failure-patterns` | Failure patterns dataset |
+| GET | `/api/v1/telemetry` | Anonymized telemetry data |
+| GET | `/api/v1/reliability` | Reliability report |
+| GET | `/api/v1/datasets` | List published datasets |
+| POST | `/api/v1/datasets` | Publish a new dataset |
+| GET | `/api/v1/datasets/:id` | Get a specific dataset |
 
 **Auth:** If `ADMIN_KEY` is set, pass it as `?key=<key>` query param or `Authorization: Bearer <key>` header on protected endpoints.
 
@@ -209,7 +346,7 @@ It checks `/api/health` and exits with code 1 after 3 consecutive failures (usef
 ShootYourself/
 ├── frontend/                      # Static frontend (vanilla HTML/CSS/JS)
 │   ├── index.html                 # Home page with device grid
-│   ├── chat.html                  # Guided diagnostic chat (main interface)
+│   ├── chat.html                  # Redirect stub → /
 │   ├── admin.html                 # Admin dashboard
 │   ├── community.html             # Community fixes & tips page
 │   ├── vision.html                # Vision diagnostics page
@@ -232,11 +369,14 @@ ShootYourself/
 │   │   ├── device-memory.js       # Device memory page logic
 │   │   ├── offline.js             # Offline packs page logic
 │   │   ├── ar.js                  # AR page logic
-│   │   └── ecosystem.js           # Ecosystem page logic
+│   │   ├── ecosystem.js           # Ecosystem page logic
+│   │   └── chrome.js              # Chrome extension helpers
 │   ├── sw.js                      # Service worker (PWA offline support)
 │   ├── manifest.json              # PWA manifest (standalone installable)
-│   └── images/
-│       └── symbol.svg             # App icon
+│   ├── images/
+│   │   └── symbol.svg             # App icon (30+ SVG icons for UI)
+│   ├── fonts/
+│   │   └── MaterialSymbolsOutlined.woff2  # Icon font
 │
 ├── backend/
 │   ├── server.js                  # Express API server (routes, security, logging)
@@ -296,7 +436,9 @@ ShootYourself/
 │   │   └── index.js               # Offline pack generation
 │   ├── utils/
 │   │   ├── errors.js              # Custom error classes
-│   │   └── sanitize.js            # Input sanitization helpers
+│   │   ├── sanitize.js            # Input sanitization helpers
+│   │   ├── validate.js            # Input validation (device/brand/category)
+│   │   └── log-rotate.js          # Log file rotation (imported by server.js)
 │   ├── data/                      # Runtime data (gitignored)
 │   │   ├── shootyourself.db       # Main database
 │   │   ├── feedback.json          # User feedback store
@@ -308,8 +450,13 @@ ShootYourself/
 │   └── test/
 │       ├── run-tests.js           # Test runner
 │       ├── devices.test.js        # Device definition tests
-│       └── scraper.test.js        # Scraper utility tests
+│       ├── scraper.test.js        # Scraper utility tests
+│       └── diagnostic.test.js     # Diagnostic engine tests (failure trees, adaptive questions)
 │
+├── package.json                   # Root workspace (fixitself v2.0.0, convenience scripts)
+├── package-lock.json              # Root lockfile
+├── LICENSE                        # ISC license
+├── design-system/                 # Global design system (MASTER.md: colors, typography, components)
 ├── Caddyfile                      # Caddy reverse proxy config
 ├── Dockerfile                     # Multi-stage Docker build (node:22-alpine)
 ├── docker-compose.yml             # App + Caddy services
@@ -368,9 +515,10 @@ All settings are environment variables:
 
 - **Runtime:** Node.js 22
 - **Framework:** Express 5
-- **Scraping:** `fetch` + `cheerio` (HTML parsing)
+- **Scraping:** `undici` (HTTP client) + `cheerio` (HTML parsing)
 - **Search engines:** DuckDuckGo, Bing, Google, YouTube
 - **Cache:** SQLite via `better-sqlite3` (WAL mode)
+- **Env config:** `dotenv`
 - **Rate limiting:** `express-rate-limit` (sliding window)
 - **Security:** `helmet`, `cors`, input sanitization
 - **Logging:** `morgan` (access) + structured JSON (search)
@@ -390,12 +538,13 @@ cd backend
 npm test
 ```
 
-15 unit tests covering:
+42 unit tests covering:
 - Device definitions (11 types, brands, categories)
 - Query building and placeholder replacement
 - Scraper engine health and cache stats
 - Source URL generation
 - Category retrieval for all devices
+- Diagnostic engine (failure trees, adaptive questions, probability scoring, trust layer)
 
 ---
 

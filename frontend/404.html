@@ -21,18 +21,18 @@ surface:"#FFFFFF",border:"#E7E5E4",muted:"#64748B",text:"#0F172A"
 <link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:wght@400;700&family=Hanken+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&display=swap" rel="stylesheet"/>
 
-<link href="styles.css?v=3" rel="stylesheet"/>
+<link href="styles.css?v=4" rel="stylesheet"/>
 </head>
-<body style="background:var(--color-bg);color:var(--color-text);font-family:var(--font-body);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px">
+<body class="app-body page-404">
 
-<div class="card" style="padding:48px;max-width:400px;width:100%;text-align:center">
-  <div style="width:64px;height:64px;margin:0 auto 24px;border-radius:16px;background:linear-gradient(135deg,var(--color-primary),var(--color-accent));display:flex;align-items:center;justify-content:center">
-    <span class="material-symbols-outlined" style="font-size:32px;color:#fff">search_off</span>
+<div class="card page-404-card">
+  <div class="page-404-icon-wrap">
+    <img src="images/icon-visual.svg" alt="" class="nav-icon" width="20" height="20">
   </div>
-  <h1 style="font-family:var(--font-headline);font-size:60px;font-weight:700;color:var(--color-primary);margin:0 0 8px">404</h1>
-  <p style="color:var(--color-text-muted);font-size:var(--fs-16);margin-bottom:32px">This page doesn't exist or has moved.</p>
-  <a href="/" class="btn btn--primary" style="display:inline-flex;align-items:center;gap:8px;padding:14px 28px;height:auto;font-size:var(--fs-15)">
-    <span class="material-symbols-outlined" style="font-size:18px">arrow_back</span>
+  <h1 class="page-404-title">404</h1>
+  <p class="page-404-text">This page doesn't exist or has moved.</p>
+  <a href="/" class="btn btn--primary page-404-link">
+    <img src="images/icon-terminal.svg" alt="" class="nav-icon" width="20" height="20">
     Back to Repair Chat
   </a>
 </div>

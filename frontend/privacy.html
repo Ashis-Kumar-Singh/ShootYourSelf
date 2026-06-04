@@ -20,21 +20,21 @@ border:"#E7E5E4",muted:"#64748B",text:"#0F172A","text-secondary":"#334155"
 </script>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:wght@400;700&family=Hanken+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&display=swap" rel="stylesheet"/>
 
-<link href="styles.css?v=3" rel="stylesheet"/>
+
+<link href="styles.css?v=4" rel="stylesheet"/>
 </head>
-<body style="background:var(--color-bg);color:var(--color-text);font-family:var(--font-body);min-height:100vh">
+<body class="app-body">
 
-<header class="app-header" style="position:sticky;top:0;z-index:50">
+<header class="app-header">
   <div class="app-header__brand">
     <div class="app-header__logo">SYS</div>
     <span>Command Center</span>
   </div>
   <nav class="app-header__nav" data-nav>
-    <a href="/"><span class="material-symbols-outlined">dns</span>Systems</a>
-    <a href="community.html"><span class="material-symbols-outlined">archive</span>Archive</a>
-    <a href="ecosystem.html"><span class="material-symbols-outlined">menu_book</span>Manuals</a>
+    <a href="/"><img src="images/icon-terminal.svg" alt="" class="nav-icon" width="20" height="20">Systems</a>
+    <a href="community.html"><img src="images/icon-community.svg" alt="" class="nav-icon" width="20" height="20">Archive</a>
+    <a href="ecosystem.html"><img src="images/icon-book.svg" alt="" class="nav-icon" width="20" height="20">Manuals</a>
   </nav>
   <div class="app-header__spacer"></div>
   <div class="app-header__actions">
@@ -42,7 +42,7 @@ border:"#E7E5E4",muted:"#64748B",text:"#0F172A","text-secondary":"#334155"
     <span class="sep">|</span>
     <a href="privacy.html">Privacy</a>
     <button id="darkModeToggle" class="icon-btn" aria-label="Toggle dark mode">
-      <span class="material-symbols-outlined">dark_mode</span>
+      <img src="images/icon-dark-mode.svg" alt="" class="nav-icon" width="22" height="22">
     </button>
     <div class="user-pill">
       <span class="user-pill__avatar">T</span>
@@ -69,7 +69,7 @@ border:"#E7E5E4",muted:"#64748B",text:"#0F172A","text-secondary":"#334155"
     </div>
     <div class="divider" style="margin:24px 0"></div>
     <a href="/" class="btn btn--ghost" style="display:inline-flex;gap:8px;align-items:center">
-      <span class="material-symbols-outlined" style="font-size:18px">arrow_back</span>
+      <img src="images/icon-terminal.svg" alt="" class="nav-icon" width="20" height="20">
       Back to Repair Chat
     </a>
   </div>

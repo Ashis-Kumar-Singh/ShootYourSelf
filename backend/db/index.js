@@ -287,7 +287,7 @@ function pruneCache(CACHE_TTL, MAX_CACHE_ENTRIES) {
 
 function getCacheStats(CACHE_TTL, MAX_CACHE_ENTRIES) {
   const row = stmts.countCache.get();
-  return { total: row.c, valid: row.c, max: MAX_CACHE_ENTRIES, ttlHours: CACHE_TTL / 3600000 };
+  return { total: row.c, max: MAX_CACHE_ENTRIES, ttlHours: CACHE_TTL / 3600000 };
 }
 
 module.exports = {

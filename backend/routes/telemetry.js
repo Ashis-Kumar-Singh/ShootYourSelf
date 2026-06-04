@@ -2,6 +2,7 @@
 const express = require('express');
 const telemetry = require('../telemetry');
 const sanitize = require('../utils/sanitize');
+const { sendError } = require('../utils/errors');
 
 const router = express.Router();
 
@@ -11,7 +12,7 @@ router.get('/telemetry/types', (req, res) => {
     const types = telemetry.getDataTypes();
     res.json({ dataTypes: types });
   } catch (e) {
-    res.status(500).json({ error: 'Failed to get data types' });
+    sendError(res, e, 'Failed to get data types');
   }
 });
 
@@ -29,7 +30,7 @@ router.post('/telemetry/report', (req, res) => {
     if (result.error) return res.status(400).json(result);
     res.status(201).json(result);
   } catch (e) {
-    res.status(500).json({ error: 'Failed to submit telemetry' });
+    sendError(res, e, 'Failed to submit telemetry');
   }
 });
 
@@ -43,7 +44,7 @@ router.post('/telemetry/snapshot', (req, res) => {
     const result = telemetry.submitSnapshot(device, brand, model, snapshot);
     res.status(201).json(result);
   } catch (e) {
-    res.status(500).json({ error: 'Failed to submit snapshot' });
+    sendError(res, e, 'Failed to submit snapshot');
   }
 });
 
@@ -58,7 +59,7 @@ router.get('/telemetry/history', (req, res) => {
     const history = telemetry.getTelemetryHistory(device, brand, model, dataType, limit);
     res.json({ device, brand, model, reports: history });
   } catch (e) {
-    res.status(500).json({ error: 'Failed to get history' });
+    sendError(res, e, 'Failed to get history');
   }
 });
 
@@ -71,7 +72,7 @@ router.get('/telemetry/latest', (req, res) => {
     const latest = telemetry.getLatestTelemetry(device, brand, model);
     res.json({ device, brand, model, telemetry: latest });
   } catch (e) {
-    res.status(500).json({ error: 'Failed to get latest telemetry' });
+    sendError(res, e, 'Failed to get latest telemetry');
   }
 });
 
@@ -85,7 +86,7 @@ router.get('/telemetry/alerts', (req, res) => {
     const alerts = telemetry.getTelemetryAlerts(device, brand, model, limit);
     res.json({ device, brand, model, alerts });
   } catch (e) {
-    res.status(500).json({ error: 'Failed to get alerts' });
+    sendError(res, e, 'Failed to get alerts');
   }
 });
 
@@ -95,7 +96,7 @@ router.post('/telemetry/alerts/:id/acknowledge', (req, res) => {
     telemetry.acknowledgeAlert(req.params.id);
     res.json({ status: 'ok' });
   } catch (e) {
-    res.status(500).json({ error: 'Failed to acknowledge alert' });
+    sendError(res, e, 'Failed to acknowledge alert');
   }
 });
 
@@ -109,7 +110,7 @@ router.post('/telemetry/correlate', (req, res) => {
     const correlation = telemetry.getDiagnosticCorrelation(device, brand, model, symptoms);
     res.json(correlation);
   } catch (e) {
-    res.status(500).json({ error: 'Failed to correlate' });
+    sendError(res, e, 'Failed to correlate');
   }
 });
 

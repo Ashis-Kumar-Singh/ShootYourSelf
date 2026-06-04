@@ -216,7 +216,7 @@
     html += '</div>';
     html += '<div class="mb-3"><label class="text-xs text-ink-gray block mb-1">Symptoms (one per line)</label>';
     html += '<textarea class="form-input" id="corrSymptoms" rows="3" placeholder="overheating\nbattery drain\nslow performance"></textarea></div>';
-    html += '<button class="btn-primary" onclick="window.runCorrelation()"><span class="material-symbols-outlined text-lg">correlation</span> Correlate</button>';
+    html += '<button class="btn-primary" onclick="window.runCorrelation()"><span class="material-symbols-outlined text-lg">hub</span> Correlate</button>';
     html += '<div id="correlationResults" class="mt-4 hidden"></div></div>';
 
     container.innerHTML = html;

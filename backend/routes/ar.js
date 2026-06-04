@@ -2,6 +2,7 @@
 const express = require('express');
 const ar = require('../ar');
 const sanitize = require('../utils/sanitize');
+const { sendError } = require('../utils/errors');
 
 const router = express.Router();
 
@@ -12,7 +13,7 @@ router.get('/ar/model/:deviceType', (req, res) => {
     if (!model) return res.status(404).json({ error: 'No AR model for device type' });
     res.json({ deviceType: req.params.deviceType, model });
   } catch (e) {
-    res.status(500).json({ error: 'Failed to get AR model' });
+    sendError(res, e, 'Failed to get AR model');
   }
 });
 
@@ -24,7 +25,7 @@ router.get('/ar/screws', (req, res) => {
     const screws = ar.getScrewPositions(deviceType, assembly);
     res.json({ deviceType, assembly, screws });
   } catch (e) {
-    res.status(500).json({ error: 'Failed to get screw positions' });
+    sendError(res, e, 'Failed to get screw positions');
   }
 });
 
@@ -35,7 +36,7 @@ router.get('/ar/components', (req, res) => {
     const components = ar.getComponentPositions(deviceType);
     res.json({ deviceType, components });
   } catch (e) {
-    res.status(500).json({ error: 'Failed to get components' });
+    sendError(res, e, 'Failed to get components');
   }
 });
 
@@ -47,7 +48,7 @@ router.get('/ar/pry-points', (req, res) => {
     const points = ar.getPryPoints(deviceType, assembly);
     res.json({ deviceType, assembly, pryPoints: points });
   } catch (e) {
-    res.status(500).json({ error: 'Failed to get pry points' });
+    sendError(res, e, 'Failed to get pry points');
   }
 });
 
@@ -62,7 +63,7 @@ router.get('/ar/overlay', (req, res) => {
     if (!overlay) return res.status(404).json({ error: 'No AR data for device type' });
     res.json(overlay);
   } catch (e) {
-    res.status(500).json({ error: 'Failed to generate overlay' });
+    sendError(res, e, 'Failed to generate overlay');
   }
 });
 
@@ -75,7 +76,7 @@ router.post('/ar/detect-screws', (req, res) => {
     const allDetected = screws.every(s => s.detected);
     res.json({ deviceType, screws, allDetected, remaining: screws.filter(s => !s.detected).length });
   } catch (e) {
-    res.status(500).json({ error: 'Failed to detect screws' });
+    sendError(res, e, 'Failed to detect screws');
   }
 });
 

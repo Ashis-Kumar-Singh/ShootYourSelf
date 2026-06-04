@@ -3,37 +3,41 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<meta name="description" content="ShootYourSelf — Community Intelligence. Global repair analytics, technician network, and community-contributed fixes."/>
+<meta property="og:title" content="SYS — Community Intelligence"/>
+<meta property="og:description" content="Global repair analytics and community-contributed fixes."/>
 <title>SYS — Community Intelligence</title>
 <link rel="icon" href="images/symbol.svg" type="image/svg+xml">
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes"/>
 <script>
-  tailwind.config = {
-    darkMode: "class",
-    theme: {
-      extend: {
-        fontFamily: {
-          headline: ["Libre Caslon Text", "serif"],
-          body: ["Hanken Grotesk", "sans-serif"],
-          mono: ["JetBrains Mono", "monospace"]
-        }
-      }
-    }
-  }
+window.tailwind=window.tailwind||{};
+tailwind.config={darkMode:"class",theme:{extend:{colors:{
+primary:"#0F766E",accent:"#EA580C",bg:"#FAFAF9",
+surface:"#FFFFFF","surface-sunken":"#F5F5F4",
+border:"#E7E5E4",muted:"#64748B",text:"#0F172A","text-secondary":"#334155"
+},fontFamily:{headline:["Libre Caslon Text","Georgia","serif"],body:["Hanken Grotesk","system-ui","sans-serif"],mono:["JetBrains Mono","monospace"]}}}};
 </script>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:wght@400;700&family=Hanken+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
-<link href="styles.css" rel="stylesheet"/>
-</head>
-<body>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:wght@400;700&family=Hanken+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&display=swap" rel="stylesheet"/>
 
-<header class="app-header">
-  <a href="/" class="app-header__brand">
-    <span class="app-header__logo">SYS</span>
-  </a>
-  <nav class="app-header__nav">
-    <a href="/">Systems</a>
-    <a href="community.html" class="is-active">Archive</a>
-    <a href="ecosystem.html">Manuals</a>
+<link href="styles.css?v=3" rel="stylesheet"/>
+</head>
+<body style="background:var(--color-bg);color:var(--color-text);font-family:var(--font-body);min-height:100vh">
+
+<header class="app-header" style="position:sticky;top:0;z-index:50">
+  <button id="sidebarToggle" class="sidebar-toggle" aria-label="Toggle navigation" data-sidebar-toggle>
+    <span class="material-symbols-outlined">menu</span>
+  </button>
+  <div class="app-header__brand">
+    <div class="app-header__logo">SYS</div>
+    <span>Command Center</span>
+  </div>
+  <nav class="app-header__nav" data-nav>
+    <a href="/"><span class="material-symbols-outlined">dns</span>Systems</a>
+    <a href="community.html" class="is-active"><span class="material-symbols-outlined">archive</span>Archive</a>
+    <a href="ecosystem.html"><span class="material-symbols-outlined">menu_book</span>Manuals</a>
   </nav>
   <div class="app-header__spacer"></div>
   <div class="app-header__actions">
@@ -43,19 +47,73 @@
     <button id="darkModeToggle" class="icon-btn" aria-label="Toggle dark mode">
       <span class="material-symbols-outlined">dark_mode</span>
     </button>
-    <span class="user-pill">
+    <div class="user-pill">
       <span class="user-pill__avatar">T</span>
-      T-4029
-    </span>
+      <span>T-4029</span>
+    </div>
   </div>
 </header>
+
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<div class="app-sidebar" id="appSidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-section__head">
+      <span class="material-symbols-outlined">fingerprint</span>
+      <h2 class="font-headline" id="statusPill">Standing By</h2>
+    </div>
+    <dl class="sidebar-dl summary-list">
+      <div><dt>Device</dt><dd id="summaryDevice">-</dd></div>
+      <div><dt>Brand</dt><dd id="summaryBrand">-</dd></div>
+      <div><dt>Model</dt><dd id="summaryModel">-</dd></div>
+      <div><dt>Issue</dt><dd id="summaryIssue" class="is-accent">-</dd></div>
+    </dl>
+    <div class="sidebar-progress">
+      <div class="sidebar-progress__label">
+        <span id="progressCopy">Diagnostic Depth</span>
+        <span id="progressPct">0%</span>
+      </div>
+      <div class="sidebar-progress__bar session-progress-bar">
+        <div class="sidebar-progress__fill" id="progressFill"></div>
+      </div>
+    </div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a href="/"><span class="material-symbols-outlined">terminal</span>Command Center</a>
+    <a href="community.html"><span class="material-symbols-outlined">diversity_3</span>Community</a>
+    <a href="vision.html"><span class="material-symbols-outlined">image_search</span>Visual Diagnostics</a>
+    <a href="telemetry.html"><span class="material-symbols-outlined">query_stats</span>Telemetry</a>
+    <a href="device-memory.html"><span class="material-symbols-outlined">memory</span>Device Memory</a>
+    <a href="offline.html"><span class="material-symbols-outlined">cloud_off</span>Offline Mode</a>
+    <a href="ar.html"><span class="material-symbols-outlined">view_in_ar</span>AR Assistant</a>
+    <a href="ecosystem.html"><span class="material-symbols-outlined">public</span>Ecosystem</a>
+  </nav>
+
+  <div class="sidebar-foot">
+    <button class="btn btn--accent btn--block" id="restartBtn">
+      <span class="material-symbols-outlined">add_circle</span>
+      Initialize New Repair
+    </button>
+    <div class="row">
+      <button class="btn btn--ghost btn--sm sidebar-foot-btn">
+        <span class="material-symbols-outlined">help_center</span>
+        <span class="mono-label">Support</span>
+      </button>
+      <button class="btn btn--ghost btn--sm sidebar-foot-btn">
+        <span class="material-symbols-outlined">terminal</span>
+        <span class="mono-label">Logs</span>
+      </button>
+    </div>
+  </div>
+</div>
 
 <main class="app-main">
   <div class="app-main__inner">
 
     <div class="page-head">
       <div class="page-head__title">
-        <span class="page-head__icon">CI</span>
+        <span class="page-head__icon" style="background:linear-gradient(135deg,var(--color-primary),var(--color-accent))">CI</span>
         <div>
           <h1>Community Intelligence</h1>
           <p>Global repair analytics &amp; technician network</p>
@@ -74,7 +132,9 @@
     </nav>
 
     <div id="communityContent">
-      <div class="text-center py-12"><p style="color:var(--color-text-muted)">Loading community data...</p></div>
+      <div class="card" style="text-align:center;padding:48px">
+        <p style="color:var(--color-text-muted)">Loading community data...</p>
+      </div>
     </div>
 
   </div>
@@ -82,7 +142,7 @@
 
 <div id="toastContainer" class="toast-container"></div>
 
-<script src="js/chrome.js"></script>
-<script src="js/community.js"></script>
+<script src="js/chrome.js?v=20260601-1"></script>
+<script src="js/community.js?v=20260601-1"></script>
 </body>
 </html>

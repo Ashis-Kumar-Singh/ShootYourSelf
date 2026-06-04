@@ -2,6 +2,7 @@
 const express = require('express');
 const community = require('../community');
 const sanitize = require('../utils/sanitize');
+const { sendError } = require('../utils/errors');
 
 const router = express.Router();
 
@@ -15,7 +16,7 @@ router.get('/community/success-rate', (req, res) => {
     const rate = community.getRepairSuccessRate(device, brand, model);
     res.json({ device, brand, model, successRate: rate });
   } catch (e) {
-    res.status(500).json({ error: 'Failed to get success rate' });
+    sendError(res, e, 'Failed to get success rate');
   }
 });
 
@@ -28,7 +29,7 @@ router.get('/community/top-fixes', (req, res) => {
     const fixes = community.getTopFixes(device, brand, model, limit);
     res.json({ device, brand, model, fixes });
   } catch (e) {
-    res.status(500).json({ error: 'Failed to get top fixes' });
+    sendError(res, e, 'Failed to get top fixes');
   }
 });
 
@@ -42,7 +43,7 @@ router.get('/community/device-stats', (req, res) => {
     const allStats = community.getAllDevicesStats();
     res.json({ devices: allStats });
   } catch (e) {
-    res.status(500).json({ error: 'Failed to get device stats' });
+    sendError(res, e, 'Failed to get device stats');
   }
 });
 
@@ -51,7 +52,7 @@ router.get('/community/analytics', (req, res) => {
     const analytics = community.getGlobalAnalytics();
     res.json(analytics);
   } catch (e) {
-    res.status(500).json({ error: 'Failed to get analytics' });
+    sendError(res, e, 'Failed to get analytics');
   }
 });
 
@@ -66,7 +67,7 @@ router.post('/community/technicians', (req, res) => {
     const profile = community.createTechnicianProfile(displayName, bio, specialties);
     res.status(201).json({ technician: profile });
   } catch (e) {
-    res.status(500).json({ error: 'Failed to create technician profile' });
+    sendError(res, e, 'Failed to create technician profile');
   }
 });
 
@@ -76,7 +77,7 @@ router.get('/community/technicians/:id', (req, res) => {
     if (!profile) return res.status(404).json({ error: 'Technician not found' });
     res.json({ technician: profile });
   } catch (e) {
-    res.status(500).json({ error: 'Failed to get technician' });
+    sendError(res, e, 'Failed to get technician');
   }
 });
 
@@ -86,7 +87,7 @@ router.get('/community/technicians', (req, res) => {
     const leaderboard = community.getTechnicianLeaderboard(limit);
     res.json({ technicians: leaderboard });
   } catch (e) {
-    res.status(500).json({ error: 'Failed to get leaderboard' });
+    sendError(res, e, 'Failed to get leaderboard');
   }
 });
 
@@ -107,7 +108,7 @@ router.post('/community/fixes', (req, res) => {
     const fix = community.submitCommunityFix(technicianId, device, brand, model, category, title, description, steps, symptoms);
     res.status(201).json({ fix });
   } catch (e) {
-    res.status(500).json({ error: 'Failed to submit fix' });
+    sendError(res, e, 'Failed to submit fix');
   }
 });
 
@@ -120,7 +121,7 @@ router.get('/community/fixes', (req, res) => {
     const fixes = community.getCommunityFixes(device, brand, model, limit);
     res.json({ fixes });
   } catch (e) {
-    res.status(500).json({ error: 'Failed to get fixes' });
+    sendError(res, e, 'Failed to get fixes');
   }
 });
 
@@ -130,7 +131,7 @@ router.post('/community/fixes/:id/approve', (req, res) => {
     if (!result) return res.status(404).json({ error: 'Fix not found' });
     res.json(result);
   } catch (e) {
-    res.status(500).json({ error: 'Failed to approve fix' });
+    sendError(res, e, 'Failed to approve fix');
   }
 });
 
@@ -142,7 +143,7 @@ router.post('/community/fixes/:id/vote', (req, res) => {
     const result = community.voteOnCommunityFix(req.params.id, voterId, Math.max(-1, Math.min(1, vote)));
     res.json(result);
   } catch (e) {
-    res.status(500).json({ error: 'Failed to vote' });
+    sendError(res, e, 'Failed to vote');
   }
 });
 
@@ -160,7 +161,7 @@ router.post('/community/warnings', (req, res) => {
     const result = community.submitRepairWarning(device, brand, model, category, warning, severity);
     res.status(201).json(result);
   } catch (e) {
-    res.status(500).json({ error: 'Failed to submit warning' });
+    sendError(res, e, 'Failed to submit warning');
   }
 });
 
@@ -172,7 +173,7 @@ router.get('/community/warnings', (req, res) => {
     const warnings = community.getRepairWarnings(device, brand, model);
     res.json({ warnings });
   } catch (e) {
-    res.status(500).json({ error: 'Failed to get warnings' });
+    sendError(res, e, 'Failed to get warnings');
   }
 });
 
@@ -181,7 +182,7 @@ router.post('/community/warnings/:id/upvote', (req, res) => {
     const upvotes = community.upvoteWarning(req.params.id);
     res.json({ upvotes });
   } catch (e) {
-    res.status(500).json({ error: 'Failed to upvote' });
+    sendError(res, e, 'Failed to upvote');
   }
 });
 
@@ -202,7 +203,7 @@ router.post('/community/failure-reports', (req, res) => {
     const report = community.submitFailureReport(device, brand, model, category, symptom, failure, repairAttempted, successful, region);
     res.status(201).json(report);
   } catch (e) {
-    res.status(500).json({ error: 'Failed to submit report' });
+    sendError(res, e, 'Failed to submit report');
   }
 });
 
@@ -214,7 +215,7 @@ router.get('/community/heatmap', (req, res) => {
     const heatmap = community.getFailureHeatmap(device, brand, model);
     res.json({ device, brand, model, heatmap });
   } catch (e) {
-    res.status(500).json({ error: 'Failed to get heatmap' });
+    sendError(res, e, 'Failed to get heatmap');
   }
 });
 
@@ -226,7 +227,7 @@ router.get('/community/trends', (req, res) => {
     const trends = community.getFailureTrends(device, brand, model);
     res.json(trends);
   } catch (e) {
-    res.status(500).json({ error: 'Failed to get trends' });
+    sendError(res, e, 'Failed to get trends');
   }
 });
 
@@ -238,7 +239,7 @@ router.get('/community/brand-reliability', (req, res) => {
     const reliability = community.getBrandReliability(brand, limit);
     res.json({ brand, models: reliability });
   } catch (e) {
-    res.status(500).json({ error: 'Failed to get reliability data' });
+    sendError(res, e, 'Failed to get reliability data');
   }
 });
 

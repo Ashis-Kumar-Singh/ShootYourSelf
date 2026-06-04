@@ -3,16 +3,13 @@
 
   const chatBox = $("chatBox");
   const input = $("userInput");
-  const problemInput = $("problemInput");
-  const problemIntakeForm = $("problemIntakeForm");
-  const problemSubmitBtn = $("problemSubmitBtn");
   const sendBtn = $("sendBtn");
   const skipBtn = $("skipBtn");
   const backBtn = $("backBtn");
   const restartBtn = $("restartBtn");
   const composerHint = $("composerHint");
   const inputMeta = $("inputMeta");
-  const quickPrompts = $("quickPrompts");
+  const contextExamples = $("contextExamples");
   const statusPill = $("statusPill");
   const summaryDevice = $("summaryDevice");
   const summaryBrand = $("summaryBrand");
@@ -23,6 +20,7 @@
 
   let userScrolledUp = false;
   let searchTimerInterval = null;
+
   const STORAGE_KEY = "sys-chat-state";
   const FALLBACK_CATEGORY_ID = "troubleshooting";
   const MAX_CONTEXT_ENTRIES = 4;
@@ -153,13 +151,38 @@
     setTimeout(function () { if (toast.parentNode) toast.parentNode.removeChild(toast); }, 260);
   }
 
+  function showSearchSkeletons() {
+    var grid = document.getElementById("resultsGrid");
+    if (!grid) return;
+    if (document.getElementById("searchSkeletons")) return;
+    var wrapper = document.createElement("div");
+    wrapper.id = "searchSkeletons";
+    wrapper.className = "stack";
+    for (var i = 0; i < 4; i++) {
+      var card = document.createElement("div");
+      card.className = "card";
+      card.style.padding = "20px";
+      card.innerHTML = '<div class="skeleton skeleton--text short" style="width:40%;height:12px;margin-bottom:12px"></div>' +
+        '<div class="skeleton skeleton--text" style="height:14px;margin-bottom:8px"></div>' +
+        '<div class="skeleton skeleton--text" style="height:14px;margin-bottom:8px;width:85%"></div>' +
+        '<div class="skeleton skeleton--text tiny" style="width:30%;height:10px;margin-top:10px"></div>';
+      wrapper.appendChild(card);
+    }
+    grid.innerHTML = "";
+    grid.appendChild(wrapper);
+    var panel = document.getElementById("resultsPanel");
+    if (panel) panel.style.opacity = "1";
+  }
+
+  function hideSearchSkeletons() {
+    var skeletons = document.getElementById("searchSkeletons");
+    if (skeletons) skeletons.remove();
+  }
+
   function init() {
     bindEvents();
     chatBox.addEventListener("scroll", onChatScroll);
     input.addEventListener("input", autoResizeInput);
-    if (problemInput) {
-      problemInput.addEventListener("input", autoResizeProblemInput);
-    }
 
     // Remove skeleton loading
     var loadingEl = document.getElementById("chatLoading");
@@ -184,13 +207,6 @@
       event.preventDefault();
       handleSubmit();
     });
-
-    if (problemIntakeForm) {
-      problemIntakeForm.addEventListener("submit", function (event) {
-        event.preventDefault();
-        handleProblemIntakeSubmit();
-      });
-    }
 
     backBtn.addEventListener("click", goBack);
     skipBtn.addEventListener("click", function () {
@@ -227,7 +243,7 @@
       }
     });
 
-    quickPrompts.addEventListener("click", function (event) {
+    contextExamples.addEventListener("click", function (event) {
       const chip = event.target.closest("[data-prompt-value]");
       if (!chip || chip.disabled || state.busy) return;
       const value = chip.dataset.promptValue || "";
@@ -240,29 +256,12 @@
       input.focus();
     });
 
-    document.addEventListener("click", function (event) {
-      const exampleChip = event.target.closest("[data-problem-example]");
-      if (!exampleChip || !problemInput) return;
-      problemInput.value = exampleChip.dataset.problemExample || "";
-      autoResizeProblemInput();
-      problemInput.focus();
-    });
-
     input.addEventListener("keydown", function (event) {
       if (event.key === "Enter" && !event.shiftKey) {
         event.preventDefault();
         document.getElementById("composer").requestSubmit();
       }
     });
-
-    if (problemInput) {
-      problemInput.addEventListener("keydown", function (event) {
-        if (event.key === "Enter" && !event.shiftKey) {
-          event.preventDefault();
-          handleProblemIntakeSubmit();
-        }
-      });
-    }
   }
 
   async function loadConfigAndDevices() {
@@ -409,7 +408,6 @@
       true
     );
     syncSummary();
-    syncProblemIntake();
   }
 
   function resetConversation() {
@@ -610,6 +608,7 @@
       quickPrompts: [],
     });
 
+    showSearchSkeletons();
     const typingNode = addTyping();
     const searchStart = Date.now();
     let searchElapsed = 0;
@@ -624,14 +623,23 @@
       const brandQuery = state.selection.brand && state.selection.brand.id !== "generic"
         ? state.selection.brand.name
         : "";
-      const payload = await API.search.run(
-        state.selection.device.id,
-        brandQuery,
-        state.selection.model || "",
-        state.selection.category ? state.selection.category.id : FALLBACK_CATEGORY_ID,
-        searchContext
-      );
+      const [payload, findingsData] = await Promise.all([
+        API.search.run(
+          state.selection.device.id,
+          brandQuery,
+          state.selection.model || "",
+          state.selection.category ? state.selection.category.id : FALLBACK_CATEGORY_ID,
+          searchContext
+        ),
+        API.diagnostic.correlate(
+          state.selection.device.id,
+          brandQuery,
+          state.selection.model || "",
+          [state.selection.problemDescription || "", state.selection.category ? state.selection.category.label : ""].filter(Boolean)
+        ).catch(function () { return null; }),
+      ]);
       typingNode.remove();
+      hideSearchSkeletons();
 
       if (payload.note) {
         addSystem(payload.note);
@@ -641,13 +649,14 @@
         searchElapsed = Math.round(payload.ms / 1000);
       }
 
-      renderResults(payload.results || [], searchElapsed, searchContext);
+      renderResults(payload.results || [], searchElapsed, searchContext, findingsData);
 
       if (state.sessionId) {
         API.sessions.addStep(state.sessionId, 'search', { results: (payload.results || []).length, elapsed: searchElapsed }).catch(function () {});
       }
     } catch (error) {
       typingNode.remove();
+      hideSearchSkeletons();
       addSystem("Search failed after " + searchElapsed + "s. " + (error.message || "The backend is temporarily unavailable."));
       // Add retry button and fallback link
       var retryArticle = document.createElement("article");
@@ -687,10 +696,12 @@
     }
   }
 
-  function renderResults(results, elapsed, searchContext) {
+  function renderResults(results, elapsed, searchContext, findingsData) {
     state.step = "results";
     state.promptKey = "results";
     elapsed = elapsed || 0;
+
+    renderFindings(findingsData || null);
 
     const searchLabel = buildSearchLabel();
     const displayLabel = searchLabel || (state.selection.problemDescription ? state.selection.problemDescription.slice(0, 80) + "..." : "your search");
@@ -724,10 +735,33 @@
         const displayResults = (solutionResults.length ? solutionResults : results).slice(0, 12);
 
         resultsGrid.innerHTML = "";
-        displayResults.forEach(function (result) {
-          const temp = document.createElement("div");
-          temp.innerHTML = buildResultCard(result);
-          resultsGrid.appendChild(temp.firstElementChild);
+
+        var grouped = { video: [], guide: [], download: [], affiliate: [], link: [] };
+        displayResults.forEach(function (r) {
+          var t = r.type || "link";
+          if (grouped[t]) grouped[t].push(r);
+          else grouped.link.push(r);
+        });
+
+        var groupOrder = ["guide", "video", "download", "affiliate", "link"];
+        var groupLabels = { guide: "Repair Guides", video: "Video Tutorials", download: "Downloads & Drivers", affiliate: "Parts & Tools", link: "Other References" };
+        var groupIcons = { guide: "menu_book", video: "play_circle", download: "download", affiliate: "shopping_cart", link: "link" };
+
+        groupOrder.forEach(function (g) {
+          var items = grouped[g];
+          if (!items || !items.length) return;
+          var header = document.createElement("div");
+          header.className = "result-group-header";
+          header.innerHTML = '<div class="flex items-center gap-2 py-2 mt-1" style="border-bottom:1px solid var(--color-border)">' +
+            '<span class="material-symbols-outlined" style="font-size:16px;color:var(--color-text-secondary);opacity:0.6">' + groupIcons[g] + '</span>' +
+            '<span class="mono-label" style="font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:var(--color-text-secondary);opacity:0.6">' + groupLabels[g] + ' (' + items.length + ')</span>' +
+            '</div>';
+          resultsGrid.appendChild(header);
+          items.forEach(function (result) {
+            var temp = document.createElement("div");
+            temp.innerHTML = buildResultCard(result);
+            resultsGrid.appendChild(temp.firstElementChild);
+          });
         });
 
         resultsSources.innerHTML = "";
@@ -846,6 +880,117 @@
 
     html += "</div>";
     container.innerHTML = html;
+
+    appendExtractedChatMessage(extracted);
+  }
+
+  function appendExtractedChatMessage(extracted) {
+    if (!extracted || !extracted.length) return;
+
+    var node = document.createElement("article");
+    node.className = "chat-message assistant";
+    var html = '<div class="flex gap-4 items-start">' +
+      '<div class="assistant-avatar"><span class="material-symbols-outlined text-[18px]">memory</span></div>' +
+      '<div class="glass-surface border-l-4 border-forest-deep p-4 rounded-r-lg msg-bubble" style="max-width:100%">' +
+      '<p><strong>Extracted Solutions</strong></p>';
+
+    extracted.slice(0, 3).forEach(function (item) {
+      var summary = item.extractedText.slice(0, 200);
+      if (item.extractedText.length > 200) summary += "...";
+      html += '<div class="extracted-chat-card">' +
+        '<div class="extracted-card-head">' +
+        '<span class="extracted-badge">' + escapeHtml(item.type || "Solution") + '</span>' +
+        '<span class="extracted-source">' + escapeHtml(item.source || "web") + '</span>' +
+        '</div>' +
+        '<h4 class="extracted-title">' + escapeHtml(item.extractedTitle) + '</h4>' +
+        '<div class="extracted-text">' + escapeHtml(summary) + '</div>' +
+        '<div class="extracted-actions">' +
+        '<a class="link-chip" target="_blank" rel="noopener" href="' + escapeAttr(item.link) + '">View full source \u2197</a>' +
+        '<button type="button" class="vote-btn" data-upvote-link="' + escapeAttr(item.link) + '">Helpful</button>' +
+        '</div>' +
+        '</div>';
+    });
+
+    html += '<span class="message-time">' + getTimestamp() + '</span></div></div>';
+    node.innerHTML = html;
+    chatBox.appendChild(node);
+    scrollTranscript();
+  }
+
+  function renderFindings(findingsData) {
+    var panel = document.getElementById("findingsPanel");
+    if (!panel) return;
+
+    if (!findingsData || !findingsData.findings || !findingsData.findings.length) {
+      if (panel) panel.style.display = "none";
+      return;
+    }
+
+    panel.style.display = "block";
+    var f = findingsData;
+
+    var confPct = Math.round((f.overallConfidence || 0) * 100);
+    document.getElementById("findingsConfidence").textContent = confPct + "% confidence";
+    document.getElementById("findingsSummary").textContent = f.summary ? f.summary.text : "";
+
+    var list = document.getElementById("findingsList");
+    list.innerHTML = "";
+    f.findings.slice(0, 8).forEach(function (finding) {
+      var borderColors = { critical: "#dc2626", warning: "#ea580c", medium: "#ca8a04", info: "#3b82f6" };
+      var borderColor = borderColors[finding.severity] || "var(--color-border)";
+      var icons = { critical: "dangerous", warning: "warning", medium: "info", info: "info" };
+      var icon = icons[finding.severity] || "info";
+      var barColor = finding.confidence >= 0.7 ? "var(--color-success)" : finding.confidence >= 0.4 ? "var(--color-accent)" : "var(--color-text-secondary)";
+      var pct = Math.round(finding.confidence * 100);
+
+      var card = document.createElement("div");
+      card.style.cssText = "display:flex;gap:8px;padding:8px;border-radius:8px;border-left:2px solid " + borderColor + ";background:var(--color-bg-subtle)";
+      card.innerHTML =
+        '<span class="material-symbols-outlined" style="font-size:18px;margin-top:2px;flex-shrink:0;color:var(--color-text-secondary)">' + icon + '</span>' +
+        '<div style="flex-grow;min-width:0">' +
+        '<div style="display:flex;align-items:center;gap:8px">' +
+        '<span class="mono-label" style="font-size:9px;text-transform:uppercase;letter-spacing:0.05em;color:var(--color-text-secondary);opacity:0.6">' + escapeHtml(finding.source || "") + '</span>' +
+        (finding.correlated ? '<span class="mono-label" style="font-size:8px;color:#ea580c;text-transform:uppercase">cross-referenced</span>' : "") +
+        (finding.escalated ? '<span class="mono-label" style="font-size:8px;color:#dc2626;text-transform:uppercase">escalated</span>' : "") +
+        '</div>' +
+        '<p style="font-size:13px;font-weight:500;color:var(--color-text);margin:2px 0">' + escapeHtml(finding.message) + '</p>' +
+        '<div style="display:flex;align-items:center;gap:6px;margin-top:4px">' +
+        '<div style="flex-grow;max-width:100px;height:6px;border-radius:3px;background:var(--color-border)"><div style="height:100%;border-radius:3px;background:' + barColor + ';width:' + pct + '%"></div></div>' +
+        '<span class="mono-label" style="font-size:9px;color:var(--color-text-secondary)">' + pct + '%</span>' +
+        '</div>' +
+        '</div>';
+      list.appendChild(card);
+    });
+
+    var actions = document.getElementById("findingsActions");
+    actions.innerHTML = "";
+    if (f.recommendedActions && f.recommendedActions.length) {
+      var title = document.createElement("p");
+      title.className = "mono-label";
+      title.style.cssText = "font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:var(--color-text-secondary);margin-bottom:6px";
+      title.textContent = "Recommended Actions";
+      actions.appendChild(title);
+
+      var actionList = document.createElement("div");
+      actionList.style.cssText = "display:flex;flex-direction:column;gap:4px";
+      f.recommendedActions.forEach(function (a) {
+        var catColors = {
+          critical: "#dc2626",
+          fix: "#16a34a",
+          maintenance: "#2563eb",
+          preventive: "#ea580c",
+          diagnostic: "#7c3aed",
+          recommendation: "#0d9488",
+        };
+        var catColor = catColors[a.category] || "var(--color-text-secondary)";
+        var chip = document.createElement("div");
+        chip.className = "mono-label";
+        chip.style.cssText = "font-size:11px;padding:6px 8px;border-radius:6px;border:1px solid;background:rgba(255,255,255,0.5);color:" + catColor + ";border-color:" + catColor + "20";
+        chip.textContent = a.action;
+        actionList.appendChild(chip);
+      });
+      actions.appendChild(actionList);
+    }
   }
 
   function handleSubmit(rawValue) {
@@ -1283,7 +1428,11 @@
 
   function buildResultCard(result) {
     const typeLabel = result.type ? result.type.charAt(0).toUpperCase() + result.type.slice(1) : "Link";
-    const snippet = result.snippet ? "<p class=\"result-snippet\">" + escapeHtml(result.snippet) + "</p>" : "";
+
+    const snippet = result.snippet
+      ? "<p class=\"result-snippet\">" + escapeHtml(result.snippet) + "</p>"
+      : "";
+
     const affiliateNote = result.type === "affiliate"
       ? "<p class=\"result-snippet\">This is an affiliate link and may earn a commission.</p>"
       : "";
@@ -1296,9 +1445,23 @@
 
     const score = result.score || 0;
     const trustBarClass = score >= 70 ? "high" : score >= 40 ? "medium" : "low";
-    const difficulty = result.type === "guide" ? "Beginner" : result.type === "video" ? "Beginner" : result.type === "affiliate" ? "Beginner" : "Intermediate";
-    const estTime = result.type === "guide" ? "20-40 min" : result.type === "video" ? "10-30 min" : "30-60 min";
-    const riskLevel = score >= 70 ? "Low" : score >= 40 ? "Medium" : "High";
+
+    const difficulty = result.difficulty
+      ? result.difficulty.charAt(0).toUpperCase() + result.difficulty.slice(1)
+      : result.type === "guide" ? "Beginner"
+        : result.type === "video" ? "Beginner"
+          : score >= 60 ? "Intermediate" : "Advanced";
+
+    const estTime = result.estimatedTime
+      ? result.estimatedTime
+      : result.type === "guide" ? "20-40 min"
+        : result.type === "video" ? "10-30 min"
+          : score >= 70 ? "15-30 min" : score >= 40 ? "30-60 min" : "1-3 hours";
+
+    const riskLevel = result.riskLevel
+      ? result.riskLevel.charAt(0).toUpperCase() + result.riskLevel.slice(1)
+      : score >= 70 ? "Low"
+        : score >= 40 ? "Medium" : "High";
 
     const trustHtml = "<div class=\"result-trust\">" +
       "<div class=\"result-trust-item\"><span class=\"result-trust-label\">Confidence</span><div class=\"trust-meter\"><div class=\"trust-bar\"><div class=\"trust-bar-fill " + trustBarClass + "\" style=\"width:" + score + "%\"></div></div><span>" + score + "%</span></div></div>" +
@@ -1307,12 +1470,21 @@
       "<div class=\"result-trust-item\"><span class=\"result-trust-label\">Est. Time</span><span class=\"result-trust-value\">" + estTime + "</span></div>" +
       "</div>";
 
+    var groupBadges = "";
+    if (result.type === "guide") groupBadges += "<span class=\"badge badge--sm badge--guide\">guide</span>";
+    if (result.type === "video") groupBadges += "<span class=\"badge badge--sm badge--video\">video</span>";
+    if (score >= 75) groupBadges += "<span class=\"badge badge--sm badge--trust\">high trust</span>";
+    if (result.source && ["ifixit.com", "support.microsoft.com", "support.apple.com"].indexOf(result.source) !== -1) {
+      groupBadges += "<span class=\"badge badge--sm badge--official\">official</span>";
+    }
+
     return "<article class=\"result-card " + typeClass + "\" data-kind=\"" + escapeAttr(result.type || "link") + "\" aria-label=\"" + escapeAttr(typeLabel + ": " + (result.title || result.link)) + "\">" +
       thumbnailHtml +
       "<div class=\"result-body\">" +
       "<div class=\"result-meta\">" +
       "<span class=\"result-badge\">" + escapeHtml(typeLabel) + "</span>" +
       "<span class=\"result-source\">" + escapeHtml(result.source || "web") + "</span>" +
+      groupBadges +
       "</div>" +
       "<a class=\"result-title\" target=\"_blank\" rel=\"noopener\" href=\"" + escapeAttr(result.link) + "\">" + escapeHtml(result.title || result.link) + "</a>" +
       snippet +
@@ -1482,46 +1654,63 @@
     skipBtn.disabled = !!options.disabled;
     backBtn.hidden = !options.showBack;
     backBtn.disabled = !!options.disabled;
-    renderQuickPrompts(options.quickPrompts || []);
-    syncProblemIntake();
+    renderContextExamples();
 
     if (!options.disabled) {
       window.setTimeout(function () { input.focus(); }, 20);
     }
   }
 
-  function syncProblemIntake() {
-    if (!problemInput || !problemSubmitBtn) return;
-    const disabled = !!state.busy;
-    problemInput.disabled = disabled;
-    problemSubmitBtn.disabled = disabled;
+  function getContextExamplePool() {
+    if (state.step === "device" || !state.selection.device) {
+      return [
+        { label: "Phone not charging", value: "Phone not charging", mode: "submit" },
+        { label: "Dell laptop battery issue", value: "Dell laptop battery issue", mode: "submit" },
+        { label: "PS5 overheating", value: "PS5 overheating", mode: "submit" },
+        { label: "Printer paper jam", value: "Printer paper jam", mode: "submit" },
+      ];
+    }
+    if (state.step === "model") {
+      const device = state.selection.device;
+      var modelEx = "Aspire 5, XPS 13, MacBook Pro 14";
+      if (device.id === "phone") modelEx = "iPhone 14 Pro, Galaxy S24, Pixel 8";
+      else if (device.id === "tablet") modelEx = "iPad Air, Galaxy Tab S9, Fire HD 10";
+      else if (device.id === "console") modelEx = "PS5, Xbox Series X, Switch OLED";
+      else if (device.id === "printer") modelEx = "HP Envy 6055e, Canon PIXMA TS9520";
+      else if (device.id === "camera") modelEx = "Canon EOS R5, Sony A7 IV, Nikon Z6";
+      else if (device.id === "router") modelEx = "TP-Link Archer AX73, Netgear RAX50";
+      else if (device.id === "smartwatch") modelEx = "Watch Series 9, Galaxy Watch 6, Fenix 7";
+      return modelEx.split(", ").map(function (m) {
+        return { label: m, value: m, mode: "fill" };
+      });
+    }
+    if (state.step === "problem") {
+      return [
+        { label: "Not turning on at all", value: "Not turning on at all", mode: "submit" },
+        { label: "Battery drains quickly", value: "Battery drains quickly", mode: "submit" },
+        { label: "Screen flickers or has lines", value: "Screen flickers or has lines", mode: "submit" },
+        { label: "Overheating during use", value: "Overheating during use", mode: "submit" },
+      ];
+    }
+    return [];
   }
 
-  function handleProblemIntakeSubmit() {
-    if (!problemInput || state.busy) return;
-    const value = String(problemInput.value || "").trim();
-    if (!value) {
-      addSystem("Describe the device and problem first, then the chat will take it from there.");
-      problemInput.focus();
+  function renderContextExamples() {
+    var pool = getContextExamplePool();
+    if (!pool.length || state.step === "searching" || state.step === "results") {
+      contextExamples.innerHTML = "";
       return;
     }
-    input.value = value;
-    autoResizeInput();
-    handleSubmit(value);
-    problemInput.value = "";
-    autoResizeProblemInput();
-  }
-
-  function renderQuickPrompts(prompts) {
-    quickPrompts.innerHTML = "";
-    (prompts || []).forEach(function (prompt) {
-      const button = document.createElement("button");
-      button.type = "button";
-      button.className = "prompt-chip";
-      button.dataset.promptValue = prompt.value;
-      button.dataset.promptMode = prompt.mode || "fill";
-      button.textContent = prompt.label || prompt.value;
-      quickPrompts.appendChild(button);
+    contextExamples.innerHTML = '<span class="context-carousel__label">Try:</span> <span class="context-carousel__track" id="contextTrack"></span>';
+    var track = document.getElementById("contextTrack");
+    pool.forEach(function (item) {
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "context-chip";
+      btn.dataset.promptValue = item.value;
+      btn.dataset.promptMode = item.mode || "fill";
+      btn.textContent = item.label;
+      track.appendChild(btn);
     });
   }
 
@@ -1681,6 +1870,13 @@
     if (state.busy) return;
     if (state.step === "model") {
       state.selection.device = null;
+      state.selection.brand = null;
+      state.selection.model = null;
+      state.selection.category = null;
+      state.selection.problemDescription = "";
+      state.freeformNotes = [];
+      state.currentQuestions = [];
+      state.sessionId = null;
       state.promptKey = "";
       addSystem("Going back to choose a device.");
       routeNextStep();
@@ -1688,6 +1884,9 @@
     }
     if (state.step === "problem") {
       state.selection.model = null;
+      state.selection.brand = null;
+      state.selection.category = null;
+      state.selection.problemDescription = "";
       state.promptKey = "";
       addSystem("Going back to enter the model.");
       routeNextStep();
@@ -1697,7 +1896,6 @@
       state.selection.problemDescription = "";
       state.selection.brand = null;
       state.selection.category = null;
-      if (!state.selection.model) state.selection.model = null;
       state.promptKey = "";
       addSystem("Going back to describe the problem.");
       routeNextStep();
@@ -1723,12 +1921,6 @@
   function autoResizeInput() {
     input.style.height = "auto";
     input.style.height = Math.min(input.scrollHeight, 140) + "px";
-  }
-
-  function autoResizeProblemInput() {
-    if (!problemInput) return;
-    problemInput.style.height = "auto";
-    problemInput.style.height = Math.min(problemInput.scrollHeight, 132) + "px";
   }
 
   function clearSearchTimer() {

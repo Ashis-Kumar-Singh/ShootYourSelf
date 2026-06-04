@@ -32,15 +32,25 @@ function buildRecommendation(path, probabilityPercent) {
 }
 
 function buildResultMetadata(result, deviceContext) {
+  const score = result.score || 50;
+  const source = result.source || '';
+
+  const riskLevel = result.riskLevel || _inferRiskFromSource(source, score);
+  const repairDifficulty = result.difficulty || _inferDifficultyFromType(result.type, score);
+  const estimatedTime = result.estimatedTime || _inferTime(repairDifficulty);
+
   return {
     ...result,
-    trustLayer: {
-      confidence: result.score || 50,
-      riskLevel: _inferRiskFromSource(result.source),
-      repairDifficulty: _inferDifficultyFromType(result.type),
-      estimatedTime: _inferTimeFromType(result.type),
-      source: result.source,
-      type: result.type,
+    score,
+    riskLevel,
+    difficulty: repairDifficulty,
+    estimatedTime,
+    trustIndicators: {
+      evidenceLevel: _getEvidenceLevel(score),
+      sourceTrust: _getSourceTrust(source),
+      isOfficial: ['ifixit.com', 'support.microsoft.com', 'support.apple.com', 'support.dell.com', 'support.hp.com', 'support.lenovo.com', 'support.samsung.com'].some(d => source.includes(d)),
+      requiresTools: _requiresTools(result.steps, repairDifficulty),
+      hasVideo: result.type === 'video',
     },
   };
 }
@@ -51,14 +61,24 @@ function _inferRisk(difficulty) {
 }
 
 function _inferTime(difficulty) {
+  if (difficulty && typeof difficulty !== 'string') return '30-60 min';
   const map = { beginner: '15-30 min', intermediate: '30-60 min', advanced: '1-3 hours' };
   return map[difficulty] || '30-60 min';
 }
 
-function _getEvidenceLevel(confidence) {
-  if (confidence >= 80) return 'strong';
-  if (confidence >= 50) return 'moderate';
+function _getEvidenceLevel(score) {
+  if (score >= 80) return 'strong';
+  if (score >= 50) return 'moderate';
   return 'limited';
+}
+
+function _getSourceTrust(source) {
+  const trusted = ['ifixit.com', 'support.microsoft.com', 'support.apple.com', 'support.dell.com', 'support.hp.com', 'support.lenovo.com', 'support.samsung.com', 'support.asus.com'];
+  const known = ['youtube.com', 'reddit.com', 'stackexchange.com', 'tomshardware.com', 'wikihow.com', 'instructables.com', 'github.com', 'superuser.com'];
+  const str = String(source || '').toLowerCase();
+  for (const d of trusted) { if (str.includes(d)) return 'high'; }
+  for (const d of known) { if (str.includes(d)) return 'medium'; }
+  return 'low';
 }
 
 function _requiresTools(steps, difficulty) {
@@ -72,20 +92,19 @@ function _requiresTools(steps, difficulty) {
   return false;
 }
 
-function _inferRiskFromSource(source) {
-  const highRisk = ['unknown', 'sketchy', 'forum'];
+function _inferRiskFromSource(source, score) {
+  const highRisk = ['unknown', 'sketchy'];
   if (highRisk.includes(source || '')) return 'high';
-  return 'low';
+  if (score >= 70) return 'low';
+  if (score >= 40) return 'medium';
+  return 'high';
 }
 
-function _inferDifficultyFromType(type) {
+function _inferDifficultyFromType(type, score) {
+  if (score >= 70) return 'beginner';
+  if (score >= 40) return 'intermediate';
   const map = { guide: 'beginner', video: 'beginner', download: 'intermediate', affiliate: 'beginner' };
   return map[type] || 'intermediate';
-}
-
-function _inferTimeFromType(type) {
-  const map = { guide: '20-40 min', video: '10-30 min', download: '5-10 min' };
-  return map[type] || '30-60 min';
 }
 
 module.exports = {

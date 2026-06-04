@@ -1,27 +1,32 @@
 {
-  "name": "FixItSelf - Open Repair Intelligence",
+  "name": "ShootYourSelf — Open Repair Intelligence",
   "short_name": "SYS",
   "description": "Free device troubleshooting with multi-engine search, diagnostic guidance, and community repair intelligence.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#FAFAF9",
   "theme_color": "#0F766E",
+  "categories": ["utilities", "productivity", "education"],
+  "lang": "en-US",
+  "orientation": "any",
   "icons": [
     {
       "src": "images/symbol.svg",
       "sizes": "any",
-      "type": "image/svg+xml"
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
     }
   ],
+  "screenshots": [],
   "shortcuts": [
-    { "name": "Command Center", "short_name": "Repair", "url": "/" },
-    { "name": "Community", "short_name": "Community", "url": "/community.html" },
-    { "name": "Visual Diagnostics", "short_name": "Vision", "url": "/vision.html" },
-    { "name": "Telemetry", "short_name": "Telemetry", "url": "/telemetry.html" },
-    { "name": "Device Profiles", "short_name": "Devices", "url": "/device-memory.html" },
-    { "name": "Offline Packs", "short_name": "Offline", "url": "/offline.html" },
-    { "name": "AR Assistant", "short_name": "AR", "url": "/ar.html" },
-    { "name": "Ecosystem", "short_name": "Ecosystem", "url": "/ecosystem.html" },
-    { "name": "Admin", "short_name": "Admin", "url": "/admin.html" }
+    { "name": "Command Center", "short_name": "Repair", "url": "/", "description": "Start a new repair session" },
+    { "name": "Community", "short_name": "Community", "url": "/community.html", "description": "Community repair analytics" },
+    { "name": "Visual Diagnostics", "short_name": "Vision", "url": "/vision.html", "description": "AI image analysis" },
+    { "name": "Telemetry", "short_name": "Telemetry", "url": "/telemetry.html", "description": "Device telemetry data" },
+    { "name": "Device Profiles", "short_name": "Devices", "url": "/device-memory.html", "description": "Persistent device profiles" },
+    { "name": "Offline Packs", "short_name": "Offline", "url": "/offline.html", "description": "Download repair packs" },
+    { "name": "AR Assistant", "short_name": "AR", "url": "/ar.html", "description": "Augmented reality repairs" },
+    { "name": "Ecosystem", "short_name": "Ecosystem", "url": "/ecosystem.html", "description": "Public API and datasets" },
+    { "name": "Admin", "short_name": "Admin", "url": "/admin.html", "description": "System administration" }
   ]
 }

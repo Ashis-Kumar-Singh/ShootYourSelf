@@ -33,6 +33,7 @@ if (PROXY_ENABLED) {
 // ---- Shared database connection ----
 const db = require('./db');
 const { escapeSvgText, buildInlineThumbnail, ensureResultThumbnail, ensureResultThumbnails, normalizeLink, deduplicate, scoreResult, rankResults, inferType } = ranking;
+const trustLayer = require('./diagnostic/trust-layer');
 const { getCuratedLinks } = curated;
 
 function cached(key, fn) {
@@ -454,7 +455,8 @@ async function searchModel(deviceId, brand, model, categoryId, upvotes, context)
     }
 
     merged = deduplicate(merged);
-    return rankResults(merged, upvotes, TOP_K);
+    const ranked = rankResults(merged, upvotes, TOP_K);
+    return ranked.map(r => trustLayer.buildResultMetadata(r, null));
   });
 }
 

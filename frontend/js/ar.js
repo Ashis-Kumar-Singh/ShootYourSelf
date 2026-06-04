@@ -90,8 +90,8 @@
     let html = '<div class="flex gap-3 mb-4 items-end">';
     html += '<div><label class="text-xs text-ink-gray block mb-1">Device Type</label><select class="form-select" id="screwDevice"><option value="laptop">Laptop</option><option value="phone">Phone</option></select></div>';
     html += '<div><label class="text-xs text-ink-gray block mb-1">Assembly</label><input class="form-input" id="screwAssembly" value="bottom_panel" placeholder="bottom_panel"></div>';
-    html += '<button class="btn-primary" onclick="window.loadScrewPositions()"><span class="material-symbols-outlined text-lg">screws</span> Load</button>';
-    html += '</div><div id="screwData"><div class="empty-state"><span class="material-symbols-outlined">screenshot_region</span><p>Load screw positions for a device assembly.</p></div></div>';
+    html += '<button class="btn-primary" onclick="window.loadScrewPositions()"><span class="material-symbols-outlined text-lg">construction</span> Load</button>';
+    html += '</div><div id="screwData"><div class="empty-state"><span class="material-symbols-outlined">capture</span><p>Load screw positions for a device assembly.</p></div></div>';
 
     container.innerHTML = html;
 
@@ -105,7 +105,7 @@
         var data = r.ok ? await r.json() : { screws: [] };
         var screws = data.screws || [];
         if (!screws.length) {
-          dataDiv.innerHTML = '<div class="empty-state"><span class="material-symbols-outlined">screenshot_region</span><p>No screw data for this assembly.</p></div>';
+          dataDiv.innerHTML = '<div class="empty-state"><span class="material-symbols-outlined">capture</span><p>No screw data for this assembly.</p></div>';
           return;
         }
         var html = '<div class="stat-card"><h4 class="font-semibold text-forest-deep mb-3">' + screws.length + ' Screws in ' + escapeHtml(assembly) + '</h4>';

@@ -120,5 +120,18 @@
         return getJSON('/api/popular');
       },
     },
+
+    diagnostic: {
+      correlate: function (device, brand, model, symptoms) {
+        return retryWithBackoff(function () {
+          return postJSON('/api/telemetry/correlate', {
+            device: device || '',
+            brand: brand || '',
+            model: model || '',
+            symptoms: symptoms || [],
+          });
+        }, 1, 1500);
+      },
+    },
   };
 })();

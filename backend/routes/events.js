@@ -2,6 +2,7 @@
 const express = require('express');
 const eventLog = require('../event/logger');
 const sanitize = require('../utils/sanitize');
+const { sendError } = require('../utils/errors');
 
 const router = express.Router();
 
@@ -22,7 +23,7 @@ router.post('/events', (req, res) => {
 
     res.status(201).json({ status: 'ok' });
   } catch (e) {
-    res.status(500).json({ error: 'Failed to log event' });
+    sendError(res, e, 'Failed to log event');
   }
 });
 
@@ -32,7 +33,7 @@ router.get('/events/session/:sessionId', (req, res) => {
     const events = eventLog.getSessionEvents(req.params.sessionId);
     res.json({ events });
   } catch (e) {
-    res.status(500).json({ error: 'Failed to get events' });
+    sendError(res, e, 'Failed to get events');
   }
 });
 
@@ -43,7 +44,7 @@ router.get('/events/type/:type', (req, res) => {
     const events = eventLog.getEventsByType(req.params.type, limit);
     res.json({ events });
   } catch (e) {
-    res.status(500).json({ error: 'Failed to get events' });
+    sendError(res, e, 'Failed to get events');
   }
 });
 
@@ -53,7 +54,7 @@ router.get('/events/stats', (req, res) => {
     const stats = eventLog.getEventStats();
     res.json(stats);
   } catch (e) {
-    res.status(500).json({ error: 'Failed to get event stats' });
+    sendError(res, e, 'Failed to get event stats');
   }
 });
 

@@ -3,6 +3,7 @@ const express = require('express');
 const vision = require('../vision');
 const overlay = require('../vision/overlay');
 const sanitize = require('../utils/sanitize');
+const { sendError } = require('../utils/errors');
 
 const router = express.Router();
 
@@ -12,7 +13,7 @@ router.get('/vision/capabilities', (req, res) => {
     const caps = vision.getDetectionCapabilities();
     res.json(caps);
   } catch (e) {
-    res.status(500).json({ error: 'Failed to get capabilities' });
+    sendError(res, e, 'Failed to get capabilities');
   }
 });
 
@@ -82,7 +83,7 @@ router.get('/vision/overlay/step', (req, res) => {
     const overlayData = overlay.generateStepOverlay(step, totalSteps, { x: cx, y: cy, width: cw, height: ch });
     res.json({ overlay: overlayData });
   } catch (e) {
-    res.status(500).json({ error: 'Failed to generate overlay' });
+    sendError(res, e, 'Failed to generate overlay');
   }
 });
 
@@ -99,7 +100,7 @@ router.get('/vision/overlay/path', (req, res) => {
     if (!pathData) return res.status(400).json({ error: 'Invalid path type. Use: screw, pry, cable' });
     res.json({ path: pathData });
   } catch (e) {
-    res.status(500).json({ error: 'Failed to generate path overlay' });
+    sendError(res, e, 'Failed to generate path overlay');
   }
 });
 

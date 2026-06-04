@@ -2,6 +2,7 @@
 const express = require('express');
 const offline = require('../offline');
 const sanitize = require('../utils/sanitize');
+const { sendError } = require('../utils/errors');
 
 const router = express.Router();
 
@@ -15,7 +16,7 @@ router.post('/offline/packs/generate', (req, res) => {
     const pack = offline.generatePack(device, brand, model, packType);
     res.status(201).json({ pack });
   } catch (e) {
-    res.status(500).json({ error: 'Failed to generate pack: ' + e.message });
+    sendError(res, e, 'Failed to generate pack');
   }
 });
 
@@ -28,7 +29,7 @@ router.post('/offline/packs/generate-all', (req, res) => {
     const packs = offline.generateAllPacksForDevice(device, brand, model);
     res.status(201).json({ packs, count: packs.length });
   } catch (e) {
-    res.status(500).json({ error: 'Failed to generate packs' });
+    sendError(res, e, 'Failed to generate packs');
   }
 });
 
@@ -39,7 +40,7 @@ router.get('/offline/packs/:id', (req, res) => {
     if (!pack) return res.status(404).json({ error: 'Pack not found' });
     res.json({ pack });
   } catch (e) {
-    res.status(500).json({ error: 'Failed to get pack' });
+    sendError(res, e, 'Failed to get pack');
   }
 });
 
@@ -53,7 +54,7 @@ router.get('/offline/packs', (req, res) => {
     const packs = offline.listPacks(device, brand, model, limit);
     res.json({ packs });
   } catch (e) {
-    res.status(500).json({ error: 'Failed to list packs' });
+    sendError(res, e, 'Failed to list packs');
   }
 });
 

@@ -2,6 +2,7 @@
 const express = require('express');
 const sanitize = require('../utils/sanitize');
 const scraper = require('../scraper');
+const { logError, sendError } = require('../utils/errors');
 
 const router = express.Router();
 
@@ -12,7 +13,7 @@ router.post('/upvote', (req, res) => {
     scraper.addUpvote(link);
     const upvotes = scraper.getUpvotes();
     res.json({ status: "ok", count: upvotes[link] || 0 });
-  } catch (e) { res.status(500).json({ error: "Failed to upvote" }); }
+  } catch (e) { logError(req, e, "Failed to upvote"); sendError(res, e, "Failed to upvote"); }
 });
 
 router.post('/feedback', (req, res) => {
@@ -26,7 +27,7 @@ router.post('/feedback', (req, res) => {
     if (!issueId) return res.status(400).json({ error: "issueId is required" });
     scraper.addFeedback(issueId, !!helpful, device, brand, model, category);
     res.json({ status: "ok" });
-  } catch (e) { res.status(500).json({ error: "Failed to save feedback" }); }
+  } catch (e) { logError(req, e, "Failed to save feedback"); sendError(res, e, "Failed to save feedback"); }
 });
 
 module.exports = router;

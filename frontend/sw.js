@@ -1,4 +1,4 @@
-const CACHE = "sys-cache-v3";
+const CACHE = "sys-cache-v4";
 const URLS = [
   "/", "/index.html", "/chat.html", "/offline.html", "/styles.css",
   "/js/app.js", "/js/chat.js", "/js/admin.js",
@@ -6,7 +6,8 @@ const URLS = [
   "/js/device-memory.js", "/js/offline.js", "/js/ar.js", "/js/ecosystem.js",
   "/community.html", "/vision.html", "/telemetry.html",
   "/device-memory.html", "/offline.html", "/ar.html", "/ecosystem.html",
-  "/admin.html", "/privacy.html", "/manifest.json", "/images/symbol.svg"
+  "/admin.html", "/privacy.html", "/manifest.json", "/images/symbol.svg",
+  "/fonts/MaterialSymbolsOutlined.woff2"
 ];
 
 self.addEventListener("install", (e) => {

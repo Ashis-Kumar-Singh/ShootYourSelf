@@ -1,4 +1,4 @@
-/* FixItSelf shared chrome: theme + sidebar + nav highlight */
+/* ShootYourSelf shared chrome: theme + sidebar + nav highlight */
 (function () {
   'use strict';
 
